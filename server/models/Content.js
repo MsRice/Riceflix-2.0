@@ -15,11 +15,19 @@ const ContentSchema = new Schema(
     trailer_url: {
       type: String,
     },
-    cover_url: {
+    poster_url: {
       type: String,
     },
     tmdb_id: {
       type: String,
+    },
+    plot_embedding: {
+      type: [Number],
+      index: false,
+    },
+    raw_tmdb: {
+      type: Schema.Types.Mixed,
+      default: {},
     },
   },
   {
@@ -53,7 +61,7 @@ const EpisodeSchema = new Schema({
   duration: {
     type: Number,
   },
-  cover_url: {
+  poster_url: {
     type: String,
   },
 });

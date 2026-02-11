@@ -1,7 +1,8 @@
-require("dotenv").config();
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const express = require("express");
+const connectDB = require("./config/connection");
 const cors = require("cors");
-const connectDB = require("./src/config/connection");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use("/api/users", require("./src/routes/userRouter"));
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/content", require("./routes/contentRoutes"));
 
 // Health Check
 app.get("/", (req, res) => res.send("API is running 🚀"));

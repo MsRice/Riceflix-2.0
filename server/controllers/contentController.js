@@ -1,5 +1,8 @@
 const axios = require("axios");
+const { VoyageAIClient } = require("voyageai");
+
 const redis = require("redis");
+const Content = require("../models/Content");
 const client = redis.createClient();
 
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -107,6 +110,7 @@ async function getWall(req, res) {
 async function getContentDetails(req, res) {
   const { id } = req.params;
   const { type } = req.query;
+  //Might need to pass body here tmdb_byId does vace title and description
 
   if (!["movie", "tv"].includes(type)) {
     return res
@@ -122,14 +126,34 @@ async function getContentDetails(req, res) {
     const cachedDetail = await client.get(cacheKey);
     if (cachedDetail) return res.json(JSON.parse(cachedDetail));
 
-    const details = await fecthCategories(`${BASE_URL}/${type}}/${id}`, {
+    let content = await Content.findOne({ tmdb_id: id });
+
+    if (content) {
+      await client.setEx(cacheKey, 86400, JSON.stringify(details));
+      res.json(content);
+    }
+
+    const details = await fetchCategories(`${BASE_URL}/${type}/${id}`, {
       append_to_response: "videos,credits,similar,watch/providers",
       language: "en-US",
     });
 
-    await client.setEx(cacheKey, 86400, JSON.stringify(details));
+    const textToEmbed = `${details.title || details.name}: ${details.overview}`;
+    const embedding = await getVoyageEmbedding(textToEmbed);
 
-    res.json(details);
+    content = await Content.create({
+      tmdb_id: id,
+      type: type,
+      title: details.original_title || details.name,
+      description: details.overview,
+      release_date: details.release_date,
+      poster_url: details.poster_path,
+      plot_embedding: embedding,
+      raw_tmdb: details,
+    });
+
+    await client.setEx(cacheKey, 86400, JSON.stringify(content));
+    res.json(content);
   } catch (error) {
     res.status(404).json({ message: "Content not found" });
   }
@@ -188,6 +212,53 @@ async function searchContent(req, res) {
     await client.setEx(cacheKey, 86400, JSON.stringify(filteredResults));
 
     res.json(filteredResults);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+// AI Vector Search OpenAi Embeddin
+
+const voyageClient = new VoyageAIClient({ apiKey: process.env.VOYAGE_API_KEY });
+
+async function getVoyageEmbedding(text) {
+  const response = await voyageClient.embed({
+    input: text,
+    model: "voyage-3",
+  });
+  return response.data[0].embedding;
+}
+
+async function aiSearch(req, res) {
+  try {
+    const { query } = req.query;
+    if (!query) return res.status(400).json({ message: "Query required" });
+
+    // 1. Vectorize the search term using Voyage
+    const queryVector = await getVoyageEmbedding(query);
+
+    // 2. Query MongoDB
+    const results = await Content.aggregate([
+      {
+        $vectorSearch: {
+          index: "vector_index", // Must match your Atlas index name
+          path: "plot_embedding",
+          queryVector: queryVector,
+          numCandidates: 150,
+          limit: 12,
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          overview: 1,
+          poster_path: 1,
+          score: { $meta: "vectorSearchScore" },
+        },
+      },
+    ]);
+
+    res.json(results);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
