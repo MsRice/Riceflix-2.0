@@ -1,0 +1,8 @@
+.primary-btn {
+  background-color: var(--rice-red);
+  color: var(--rice-white);
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-weight: 700;
+}

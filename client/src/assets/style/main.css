@@ -1,0 +1,38 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+:root {
+  --nav-height: clamp(54px, 8vh, 72px);
+  --rice-red: #e50914;
+  --rice-white: #ffffff;
+  --xxlg-font: clamp(0.9rem, 8vh, 1.2rem);
+  --xlg-font: clamp(0.7rem, 8vh, 1rem);
+  --lg-font: clamp(0.6rem, 8vh, 0.9rem);
+  --md-font: clamp(0.5rem, 8vh, 0.8rem);
+  --sm-font: clamp(0.4rem, 8vh, 0.6rem);
+  --xsm-font: clamp(0.3rem, 8vh, 0.5rem);
+}
+body {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  background-color: rgb(0, 0, 0);
+}
+ul {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+}
+li {
+  list-style: none;
+}
+.container {
+  width: 100dvw;
+  height: 100%;
+
+  /* border: 10px solid #ff0066; */
+}
