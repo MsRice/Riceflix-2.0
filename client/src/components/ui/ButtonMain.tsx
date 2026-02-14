@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import type { ButtonProps } from "../../utils/types";
 
 
-const ButtonMain = ({children , to} : ButtonProps) => {
+const ButtonMain = ({children , to , className} : ButtonProps) => {
     return(
-        <Link to={to} className='primary-btn'>
+        <Link to={to} className={className}>
             {children}
         </Link>
     )

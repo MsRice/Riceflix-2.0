@@ -44,7 +44,7 @@ const Navbar = () => {
                     </div>
                     }
                 </div>
-                <ButtonMain to='/login'>{t('login')}</ButtonMain>
+                <ButtonMain to='/login' className={'primary-btn'}>{t('signin')}</ButtonMain>
             </div>
         </nav>
     );

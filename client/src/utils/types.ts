@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 export interface ButtonProps {
   children: ReactNode;
   to: string;
+  className: string;
 }
 
 export interface LanguageContextType {

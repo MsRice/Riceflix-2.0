@@ -8,12 +8,12 @@
   --nav-height: clamp(54px, 8vh, 72px);
   --rice-red: #e50914;
   --rice-white: #ffffff;
-  --xxlg-font: clamp(0.9rem, 8vh, 1.2rem);
-  --xlg-font: clamp(0.7rem, 8vh, 1rem);
-  --lg-font: clamp(0.6rem, 8vh, 0.9rem);
-  --md-font: clamp(0.5rem, 8vh, 0.8rem);
-  --sm-font: clamp(0.4rem, 8vh, 0.6rem);
-  --xsm-font: clamp(0.3rem, 8vh, 0.5rem);
+  --xxlg-font: clamp(2.8rem, 8vh, 3rem);
+  --xlg-font: clamp(2.4rem, 8vh, 2.6rem);
+  --lg-font: clamp(2.2rem, 8vh, 2.4rem);
+  --md-font: clamp(1rem, 8vh, 1.1rem);
+  --sm-font: clamp(0.8rem, 8vh, 1rem);
+  --xsm-font: clamp(0.6rem, 8vh, 1rem);
 }
 body {
   display: flex;
