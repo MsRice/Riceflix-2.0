@@ -1,5 +1,6 @@
 import { useMovie } from "../../contexts/movie/MovieContext";
 import Banner from "../layout/Banner";
+import LandingMoreReasons from "../layout/LandingMoreReasons";
 import LandingTrending from "../layout/LandingTrending";
 
 const LandingPage = () => {
@@ -9,7 +10,8 @@ const LandingPage = () => {
         <div className='container'>
            <Banner />
             {!loading && <LandingTrending />}
-            More Reasons to Join
+            <LandingMoreReasons />
+
             Frequently Asked Questions
             sencondary_Registration
             <div className="space"></div>

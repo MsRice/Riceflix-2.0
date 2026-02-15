@@ -4,6 +4,7 @@ import { useMovie } from "../../contexts/movie/MovieContext";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import type { CategoryMovie } from "../../utils/types";
 import TrendingCard from "../ui/TrendingCard";
+import { useTranslation } from "react-i18next";
 
 
 const LandingTrending = () => {
@@ -13,8 +14,7 @@ const LandingTrending = () => {
     const topTen:CategoryMovie[] = categoriesList?.trendingAll?.results?.slice(0,10) ?? []
     const [isStart , setIsStart] = useState(true)
     const [isEnd , setIsEnd] = useState(false)
-
-    console.log(topTen)
+    const {t} = useTranslation()
 
     const scrollLeft = (direction: "left" | "right") => {
         if(!rowRef.current) return
@@ -50,14 +50,14 @@ const LandingTrending = () => {
     return (
         <div className="landing__trending--container">
             <div className="landing__trending--wrapper">
-                <SectionTitle className="primary-title">Trending Now</SectionTitle>
+                <SectionTitle className="primary-title">{t('trending')}</SectionTitle>
                 <div className="trending__ten--wrapper">
                     <button className="arrow-btn" disabled={isStart} onClick={() => scrollLeft('left')}>
                         <MdKeyboardArrowLeft />
                     </button>
                     <div className="trending__ten--row" ref={rowRef}>
-                        {topTen.map((movie: CategoryMovie) =>(
-                            <TrendingCard {...movie}/>
+                        {topTen.map((movie: CategoryMovie , index) =>(
+                            <TrendingCard index={index} movie={movie}/>
                         ))}
                     </div>
                     <button className="arrow-btn" disabled={isEnd} onClick={() => scrollLeft('right')}>

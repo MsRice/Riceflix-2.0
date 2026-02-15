@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  min-height: 400px;
+  min-height: 340px;
 }
 .landing__trending--wrapper {
   margin-top: 36px;
@@ -19,11 +19,11 @@
 
 .trending__ten--row {
   display: flex;
-  width: 90%;
+  width: 94%;
   height: 100%;
   overflow-x: auto;
   scroll-behavior: smooth;
-  gap: 16px;
+  gap: 32px;
   scroll-snap-type: x mandatory;
 }
 .trending__ten--row::-webkit-scrollbar {
@@ -51,6 +51,49 @@
 }
 
 .trending__card--wrapper {
-  border: 2px solid firebrick;
-  flex: 0 0 276px;
+  /* border: 2px solid firebrick; */
+  flex: 0 0 200px;
+  position: relative;
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.trending__cardImage--wrapper {
+  height: 90%;
+  width: 90%;
+
+  border-radius: 8px;
+
+  transition: all 0.2s ease;
+  transform-origin: center;
+}
+
+.trending__cardNumber--wrapper {
+  position: absolute;
+  bottom: 5%;
+  left: 0;
+  font-size: clamp(6rem, 8vh, 7rem);
+  font-weight: 900;
+
+  color: black;
+  text-shadow:
+    -1.5px -1.5px 0 white,
+    1.5px -1.5px 0 white,
+    -1.5px 1.5px 0 white,
+    1.5px 1.5px 0 white;
+
+  transition: all 0.2s ease;
+  transform-origin: center;
+}
+
+.trending__cardImage--wrapper:hover,
+.trending__cardImage--wrapper:hover + .trending__cardNumber--wrapper {
+  transform: scale(1.1);
+}
+
+.trending__cardImage--image {
+  width: 100%;
+  border-radius: 8px;
 }

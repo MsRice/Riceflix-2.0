@@ -52,5 +52,6 @@ export interface CategoryMovie {
 }
 
 export interface TrendingCardProps {
+  index: number;
   movie: CategoryMovie;
 }

@@ -4,6 +4,7 @@
 
 @import url("./landing.css");
 @import url("./landingTrending.css");
+@import url("./landingMoreReasons.css");
 
 .space {
   height: 100dvh;
