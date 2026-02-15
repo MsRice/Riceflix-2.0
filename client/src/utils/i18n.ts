@@ -13,6 +13,9 @@ i18n.use(initReactI18next).init({
         hero_subtitle_info:
           "Ready to watch? Enter your email to create or restart your membership.",
         get_started: "Get Started",
+        connect_header: "The Netflix you love for just $7.99.",
+        connect_subheader: "Get our most affordable, ad-supported plan.",
+        learn_more: "Learn More",
       },
     },
     es: {
@@ -25,6 +28,9 @@ i18n.use(initReactI18next).init({
         hero_subtitle_info:
           "¿Listo para ver? Ingresa tu correo electrónico para crear o reiniciar tu suscripción.",
         get_started: "Empezar",
+        connect_header: "El Netflix que amas por sólo $7,99.",
+        connect_subheader: "Obtenga nuestro plan más asequible con publicidad.",
+        learn_more: "Más Información",
       },
     },
   },

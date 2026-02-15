@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Creepster&family=Figtree:ital@0;1&family=Happy+Monkey&family=Outfit:wght@700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Share+Tech&display=swap");
+
 * {
   padding: 0;
   margin: 0;
@@ -10,7 +12,7 @@
   --rice-white: #ffffff;
   --xxlg-font: clamp(2.8rem, 8vh, 3rem);
   --xlg-font: clamp(2.4rem, 8vh, 2.6rem);
-  --lg-font: clamp(2.2rem, 8vh, 2.4rem);
+  --lg-font: clamp(1.2rem, 8vh, 1.6rem);
   --md-font: clamp(1rem, 8vh, 1.1rem);
   --sm-font: clamp(0.8rem, 8vh, 1rem);
   --xsm-font: clamp(0.6rem, 8vh, 1rem);
@@ -20,6 +22,7 @@ body {
   justify-content: center;
   width: 100vw;
   background-color: rgb(0, 0, 0);
+  color: #ffffff;
 }
 ul {
   list-style-type: none;
@@ -33,6 +36,4 @@ li {
 .container {
   width: 100dvw;
   height: 100%;
-
-  /* border: 10px solid #ff0066; */
 }

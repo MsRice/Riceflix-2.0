@@ -26,7 +26,7 @@ const Navbar = () => {
             document.removeEventListener("mousedown", handleClickOutside);
 
         }
-    },[])
+    },[openLangMenu])
     
     return (
         <nav className='navigation--wrapper'>

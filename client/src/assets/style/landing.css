@@ -1,6 +1,5 @@
 .landing__banner--wrapper {
   width: 100dvw;
-  height: 100%;
 
   display: flex;
   justify-content: center;
@@ -8,6 +7,22 @@
   align-items: center;
 
   position: relative;
+  background:
+    radial-gradient(
+      circle at 40% 35%,
+      rgba(250, 86, 86, 0.3) 20%,
+      transparent 50%
+    ),
+    radial-gradient(
+        circle at 60% 35%,
+        rgba(250, 86, 86, 0.3) 20%,
+        transparent 50%
+      )
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(81, 72, 245, 0.3) 5%,
+        transparent 50%
+      );
 }
 
 .banner__image--wrapper {
@@ -19,6 +34,7 @@
   position: relative;
   overflow: hidden;
   max-width: 1800px;
+  max-height: 760px;
 
   border-left: 8px;
   border-top: 0px;
@@ -76,6 +92,13 @@
   width: 1900px;
   height: 120px;
   background: rgb(0, 0, 0);
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(81, 72, 245, 0.3) 5%,
+      transparent 50%
+    ),
+    rgb(0, 0, 0);
   border-radius: 50%;
   z-index: 10;
   border: 6px solid var(--rice-red);
@@ -137,4 +160,55 @@
   height: 100%;
   flex: 3;
   font-size: var(--md-font);
+}
+.hero__subheader--container {
+  width: 100%;
+  height: 140px;
+  background:
+    linear-gradient(to bottom, transparent, black),
+    radial-gradient(circle at 50% 5px, #1d184e 10px, transparent 50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.connect__container--wrapper {
+  min-width: 70%;
+  height: 140px;
+
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  transition: all 0.2s ease;
+}
+.connect__container--wrapper:hover {
+  transform: scale(1.08);
+}
+.connect__container--wrapper:hover .connect__header--container {
+  background: linear-gradient(to right, #42215d, #161a3f);
+}
+.connect__image--wrapper {
+  height: 100%;
+}
+.connect__image--img {
+  height: 100%;
+}
+.connect__header--container {
+  border-radius: 12px;
+  background: linear-gradient(to right, #251631, #161a3f);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+
+  padding: 0 20px;
+}
+.connect__header--wrapper {
+  height: 100%;
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-evenly;
 }

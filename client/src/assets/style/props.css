@@ -6,3 +6,18 @@
   padding: 6px 12px;
   font-weight: 700;
 }
+.secondary-btn {
+  background-color: #404358;
+  color: var(--rice-white);
+  border: none;
+  border-radius: 6px;
+  padding: 12px 18px;
+  font-weight: 700;
+}
+
+.primary-title {
+  font-size: var(--lg-font);
+  font-weight: 700;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding-bottom: 18px;
+}

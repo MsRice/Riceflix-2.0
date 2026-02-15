@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   mongodb:
     image: mongo:latest
@@ -8,6 +7,26 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  server:
+    build: ./server
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/movie-db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+
+  client:
+    build:
+      context: ./client
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - server
   redis:
     image: redis:alpine
     container_name: movie-cache

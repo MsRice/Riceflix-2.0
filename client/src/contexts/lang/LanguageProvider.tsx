@@ -8,8 +8,6 @@ const LanguageProvider = ({children}: LanguageProviderProps) => {
         localStorage.getItem('lang') || 'en'
     )
 
-    console.log('nt+lb' , language)
-
 
     useEffect(() => {
         i18n.changeLanguage(language)
