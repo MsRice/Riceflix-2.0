@@ -18,7 +18,7 @@ export interface LanguageProviderProps {
   children: ReactNode;
 }
 export interface MovieContextType {
-  categoriesList: [];
+  categoriesList: CategoriesList | null;
   loading: boolean;
 }
 export interface MovieProviderProps {
@@ -51,6 +51,18 @@ export interface CategoryMovie {
   first_air_date?: string;
 }
 
+export interface MovieCategory {
+  page: number;
+  results: CategoryMovie[];
+  total_pages: number;
+  total_results: number;
+}
+
+export interface CategoriesList {
+  trendingAll: MovieCategory;
+  trendingMovies: MovieCategory;
+  trendingTV: MovieCategory;
+}
 export interface TrendingCardProps {
   index: number;
   movie: CategoryMovie;

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { MovieContext} from "./MovieContext";
-import type { MovieProviderProps } from "../../utils/types";
+import type { CategoriesList, MovieProviderProps } from "../../utils/types";
 
 const MovieProvider = ({children}: MovieProviderProps) => {
 
 
-    const [categoriesList , setCategoriesList] = useState<[]>([])
+    const [categoriesList , setCategoriesList] = useState<CategoriesList | null>(null)
     const [loading , setLoading] = useState(false)
 
     useEffect(() =>{

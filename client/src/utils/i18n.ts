@@ -13,7 +13,7 @@ i18n.use(initReactI18next).init({
         hero_subtitle_info:
           "Ready to watch? Enter your email to create or restart your membership.",
         get_started: "Get Started",
-        connect_header: "The Netflix you love for just $7.99.",
+        connect_header: "The Riceflix you love for just $7.99.",
         connect_subheader: "Get our most affordable, ad-supported plan.",
         learn_more: "Learn More",
         trending: "Trending Now",
@@ -35,6 +35,58 @@ i18n.use(initReactI18next).init({
         more_reasons_title_4: "Create profiles for kids",
         more_reasons_subtitle_4:
           "Send kids on adventures with their favorite characters in a space made just for them — free with your membership.",
+
+        faq_question_1: "What is Riceflix?",
+        faq_answer_1:
+          "Riceflix is a streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices. You can watch as much as you want, whenever you want – all for one low monthly price. There's always something new to discover and new TV shows and movies are added every week!",
+        faq_question_2: "How much does Riceflix cost?",
+        faq_answer_2:
+          "Watch Riceflix on your smartphone, tablet, Smart TV, laptop, or streaming device, all for one fixed monthly fee. Plans range from $7.99 to $24.99/month (pre-tax).",
+        faq_question_3: "Where can I watch?",
+        faq_answer_3:
+          "Watch anywhere, anytime. Sign in with your Riceflix account to watch instantly on the web at Riceflix.com from your personal computer or on any internet-connected device that offers the Riceflix app, including smart TVs, smartphones, tablets, streaming media players and game consoles. You can also download your favorite shows with the iOS or Android app. Use downloads to watch while you're on the go and without an internet connection. Take Riceflix with you anywhere.",
+        faq_question_4: "How do I cancel?",
+        faq_answer_4:
+          "Riceflix is flexible. You can easily cancel your account online in two clicks. There are no cancellation fees – start or stop your account anytime.",
+        faq_question_5: "What can I watch on Riceflix?",
+        faq_answer_5:
+          "Riceflix has an extensive library of feature films, documentaries, TV shows, anime, award-winning Riceflix originals, and more. Watch as much as you want, anytime you want.",
+        faq_question_6: "Is Riceflix good for kids?",
+        faq_answer_6:
+          "The Riceflix Kids experience is included in your membership to give parents control while kids enjoy family-friendly TV shows and movies in their own space. Kids profiles come with PIN-protected parental controls that let you restrict the maturity rating of content kids can watch and block specific titles you don’t want kids to see.",
+
+        footer_link_1: "FAQ",
+        footer_link_2: "Media Center",
+        footer_link_3: "Redeem Gift Cards",
+        footer_link_4: "Privacy",
+        footer_link_5: "Speed Test",
+        footer_link_6: "Ad Choices",
+        footer_link_7: "Help Center",
+        footer_link_8: "Investor Relations",
+        footer_link_9: "Buy Gift Cards",
+        footer_link_10: "Cookie Preferences",
+        footer_link_11: "Legal Notices",
+        footer_link_12: "Account",
+        footer_link_13: "Jobs",
+        footer_link_14: "Ways to Watch",
+        footer_link_15: "Corporate Information",
+        footer_link_16: "Only on Riceflix",
+        footer_link_17: "Riceflix House",
+        footer_link_18: "Riceflix Shop",
+        footer_link_19: "Terms of Use",
+        footer_link_20: "Contact Us",
+        footer_link_21: "Do Not Sell My Personal Information",
+
+        author: "Designed & Engineered by Patrice (Rice 🍚) Maxwell",
+
+        enter_info: "Enter your info to sign in",
+        or_new_acct: "Or get started with a new account.",
+        rePATCHA:
+          "This page is protected by Google reCAPTCHA to ensure you're not a bot.",
+        rePATCHA_more:
+          "The information collected by Google reCAPTCHA is subject to the Google Privacy Policy and Terms of Service, and is used for providing, maintaining, and improving the reCAPTCHA service and for general security purposes (it is not used for personalized advertising by Google).",
+        continue: "Continue",
+        get_help: "Get Help",
       },
     },
     es: {
@@ -47,7 +99,7 @@ i18n.use(initReactI18next).init({
         hero_subtitle_info:
           "¿Listo para ver? Ingresa tu correo electrónico para crear o reiniciar tu suscripción.",
         get_started: "Empezar",
-        connect_header: "El Netflix que amas por sólo $7,99.",
+        connect_header: "El Riceflix que amas por sólo $7,99.",
         connect_subheader: "Obtenga nuestro plan más asequible con publicidad.",
         learn_more: "Más Información",
         trending: "Tendencia Ahora",
@@ -69,6 +121,54 @@ i18n.use(initReactI18next).init({
         more_reasons_title_4: "Crear perfiles para niños",
         more_reasons_subtitle_4:
           "Envía a los niños a aventuras con sus personajes favoritos en un espacio creado solo para ellos, gratis con tu membresía.",
+
+        faq_question_1: "¿Qué es Riceflix?",
+        faq_answer_1:
+          "Riceflix es un servicio de streaming que ofrece una amplia variedad de series premiadas, películas, anime, documentales y mucho más en miles de dispositivos conectados a Internet. Puedes ver todo lo que quieras, cuando quieras, por un precio mensual accesible. Siempre hay algo nuevo por descubrir, y cada semana se agregan nuevas series y películas.",
+
+        faq_question_2: "¿Cuánto cuesta Riceflix?",
+        faq_answer_2:
+          "Disfruta Riceflix en tu smartphone, tablet, Smart TV, laptop o dispositivo de streaming por una tarifa mensual fija. Los planes van desde $7.99 hasta $24.99 al mes (antes de impuestos).",
+
+        faq_question_3: "¿Dónde puedo verlo?",
+        faq_answer_3:
+          "Mira donde quieras y cuando quieras. Inicia sesión en tu cuenta de Riceflix para ver contenido al instante desde la web en tu computadora o en cualquier dispositivo conectado a Internet que tenga la aplicación de Riceflix, incluyendo Smart TVs, smartphones, tablets, reproductores multimedia y consolas de videojuegos. También puedes descargar tus series y películas favoritas con la app para iOS o Android y verlas sin conexión. Lleva Riceflix contigo a donde vayas.",
+
+        faq_question_4: "¿Cómo puedo cancelar?",
+        faq_answer_4:
+          "Riceflix es flexible. Puedes cancelar tu cuenta fácilmente en línea con solo unos clics. No hay cargos por cancelación: puedes iniciar o detener tu suscripción en cualquier momento.",
+
+        faq_question_5: "¿Qué puedo ver en Riceflix?",
+        faq_answer_5:
+          "Riceflix cuenta con un amplio catálogo de películas, documentales, series, anime y producciones originales premiadas. Mira todo lo que quieras, cuando quieras.",
+
+        faq_question_6: "¿Riceflix es adecuado para niños?",
+        faq_answer_6:
+          "La experiencia Riceflix Kids está incluida en tu membresía para que los padres tengan control mientras los niños disfrutan de contenido familiar en su propio espacio. Los perfiles infantiles incluyen controles parentales protegidos con PIN que permiten restringir la clasificación de contenido y bloquear títulos específicos que no deseas que los niños vean.",
+
+        footer_link_1: "Preguntas Frecuentes",
+        footer_link_2: "Centro de Medios",
+        footer_link_3: "Canjear Tarjetas de Regalo",
+        footer_link_4: "Privacidad",
+        footer_link_5: "Prueba de Velocidad",
+        footer_link_6: "Opciones de Anuncios",
+        footer_link_7: "Centro de Ayuda",
+        footer_link_8: "Relaciones con Inversionistas",
+        footer_link_9: "Comprar Tarjetas de Regalo",
+        footer_link_10: "Preferencias de Cookies",
+        footer_link_11: "Avisos Legales",
+        footer_link_12: "Cuenta",
+        footer_link_13: "Empleos",
+        footer_link_14: "Formas de Ver",
+        footer_link_15: "Información Corporativa",
+        footer_link_16: "Solo en Riceflix",
+        footer_link_17: "Casa Riceflix",
+        footer_link_18: "Tienda Riceflix",
+        footer_link_19: "Términos de Uso",
+        footer_link_20: "Contáctanos",
+        footer_link_21: "No Vender Mi Información Personal",
+
+        author: "Diseñado y fabricado por Patrice (Arroz 🍚) Maxwell",
       },
     },
   },

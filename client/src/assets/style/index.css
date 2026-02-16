@@ -5,7 +5,6 @@
 @import url("./landing.css");
 @import url("./landingTrending.css");
 @import url("./landingMoreReasons.css");
+@import url("./landingfaq.css");
 
-.space {
-  height: 100dvh;
-}
+@import url("./login.css");

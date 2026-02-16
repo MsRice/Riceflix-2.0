@@ -1,5 +1,8 @@
 import { useMovie } from "../../contexts/movie/MovieContext";
 import Banner from "../layout/Banner";
+import Footer from "../layout/Footer";
+import Landing2ndRegistration from "../layout/Landing2ndRegistration";
+import LandingFAQ from "../layout/LandingFAQ";
 import LandingMoreReasons from "../layout/LandingMoreReasons";
 import LandingTrending from "../layout/LandingTrending";
 
@@ -11,12 +14,11 @@ const LandingPage = () => {
            <Banner />
             {!loading && <LandingTrending />}
             <LandingMoreReasons />
-
-            Frequently Asked Questions
-            sencondary_Registration
-            <div className="space"></div>
+            <LandingFAQ />
+            <Landing2ndRegistration />
+            <Footer />
+ 
         </div>
-        <footer></footer>
         </>
     );
 }

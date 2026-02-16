@@ -11,7 +11,7 @@ const LandingTrending = () => {
     const rowRef = useRef<HTMLDivElement|null>(null)
     const { categoriesList } = useMovie()
 
-    const topTen:CategoryMovie[] = categoriesList?.trendingAll?.results?.slice(0,10) ?? []
+    const topTen = categoriesList?.trendingAll?.results?.slice(0,10) ?? []
     const [isStart , setIsStart] = useState(true)
     const [isEnd , setIsEnd] = useState(false)
     const {t} = useTranslation()
@@ -57,7 +57,7 @@ const LandingTrending = () => {
                     </button>
                     <div className="trending__ten--row" ref={rowRef}>
                         {topTen.map((movie: CategoryMovie , index) =>(
-                            <TrendingCard index={index} movie={movie}/>
+                            <TrendingCard key={index} index={index} movie={movie}/>
                         ))}
                     </div>
                     <button className="arrow-btn" disabled={isEnd} onClick={() => scrollLeft('right')}>

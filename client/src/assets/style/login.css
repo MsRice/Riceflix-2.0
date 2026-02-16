@@ -1,0 +1,72 @@
+.login__container {
+  min-height: 400px;
+  background: linear-gradient(to top, black, rgb(55, 12, 12));
+}
+
+.login__container--wrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+.login__signin--wrapper {
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+}
+.login__signin--wrapper h2 {
+  font-weight: 800;
+  font-size: 2rem;
+  padding-bottom: 12px;
+}
+.login__signin--wrapper h4 {
+  padding-bottom: 20px;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: #999;
+}
+
+.login--form {
+  display: flex;
+  flex-direction: column;
+}
+.login--form input {
+  width: 100%;
+  background-color: rgba(2, 2, 2, 0.452);
+  border: 1.6px solid grey;
+}
+.login--form input::placeholder {
+  color: #999;
+}
+
+.get__help--wrapper {
+  padding: 40px 0;
+}
+.get__help--wrapper h4 {
+  color: white;
+}
+.login-started {
+  width: 100%;
+  text-align: center;
+  padding: 14px 0 14px 12px;
+  font-size: 1.1rem;
+}
+.login__footer--container {
+  background-color: #191a1b;
+  height: 100%;
+}
+.login__footer {
+  min-height: 300px;
+}
+
+.repatcha--wrapper {
+  font-size: 0.8rem;
+
+  white-space: normal;
+  width: 425px;
+}
+.repatcha--wrapper p {
+  color: #999;
+}
+.repatcha--wrapper b {
+  color: white;
+}
