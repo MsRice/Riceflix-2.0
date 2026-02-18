@@ -5,6 +5,7 @@ import { IoLanguageSharp } from "react-icons/io5";
 import { useLanguage } from '../../contexts/lang/LanguageContext';
 import { useEffect, useRef, useState } from 'react';
 import { TiArrowSortedDown } from "react-icons/ti";
+import { Link } from 'react-router-dom';
 const Navbar = () => {
     const { t } = useTranslation()
     const { language , setLanguage } = useLanguage()
@@ -30,7 +31,7 @@ const Navbar = () => {
     
     return (
         <nav className='navigation--wrapper'>
-            <div className='navigation-title--wrapper'><img className='navigation-logo' src={riceflix_logo} alt="Riceflix Logo" /></div>
+            <div className='navigation-title--wrapper'><Link to={'/'}><img className='navigation-logo' src={riceflix_logo} alt="Riceflix Logo" /></Link></div>
             <div className='navigation--nav'>
                 <div className='navigation-dropdown--wrapper'>
                     <div className='navigation-input--dropdown' onClick={() => {setOpenLangMenu((prev) => !prev)}}>

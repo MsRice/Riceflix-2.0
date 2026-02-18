@@ -31,7 +31,7 @@ function auth(req, res, next) {
   }
 }
 function requireProfile(req, res, next) {
-  if (!req.user.profileId) {
+  if (!req.user || !req.user.profileId) {
     return res.status(403).json({
       message: "Access denied. Please select a profile first.",
     });
@@ -39,5 +39,7 @@ function requireProfile(req, res, next) {
   next();
 }
 
-module.exports = auth;
-module.exports = requireProfile;
+module.exports = {
+  auth,
+  requireProfile,
+};

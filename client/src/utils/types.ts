@@ -1,9 +1,9 @@
-import type { ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-export interface ButtonProps {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  to: string;
-  className: string;
+  to?: string;
+  className?: string;
 }
 export interface SectionTitleProps {
   children: ReactNode;
@@ -66,4 +66,40 @@ export interface CategoriesList {
 export interface TrendingCardProps {
   index: number;
   movie: CategoryMovie;
+}
+
+interface Profile {
+  name: string;
+  avatar_img: string;
+  role: "owner" | "guest";
+  watchlist: string[];
+  history: string[];
+  favorite: string[];
+}
+export interface User {
+  _id: string;
+  email: string;
+  password: string;
+  profiles: Profile[];
+  subscription_tier: "basic" | "premium";
+  next_billing_date: Date;
+  is_subscription_active: boolean;
+  role: "user" | "admin";
+}
+
+export interface Credentials {
+  email: string;
+  password: string;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  token: string | null;
+  login: (userData: Credentials) => Promise<void>;
+  register: (userData: Credentials) => Promise<void>;
+  logout: () => void;
+}
+
+export interface AuthenticationProviderProps {
+  children: React.ReactNode;
 }

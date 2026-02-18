@@ -165,6 +165,7 @@
   font-size: 1rem;
   flex: 8;
   padding: 18px 0 18px 12px;
+  color: white;
 }
 .hero__header--form input::placeholder {
   color: white;

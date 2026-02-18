@@ -22,3 +22,14 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding-bottom: 18px;
 }
+
+.profile-btn {
+  background-color: transparent;
+  color: #4e4e4e;
+  border: 2px solid #4e4e4e;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-weight: 500;
+  height: 6.25dvh;
+  font-size: 1.4rem;
+}

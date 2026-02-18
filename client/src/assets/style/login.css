@@ -33,6 +33,34 @@
   width: 100%;
   background-color: rgba(2, 2, 2, 0.452);
   border: 1.6px solid grey;
+  color: white;
+}
+.input-wrapper {
+  width: 100%;
+  background-color: rgba(2, 2, 2, 0.452);
+  border: 1.6px solid grey;
+  color: white;
+
+  height: 100%;
+  border-radius: 4px;
+
+  border: 2px solid grey;
+  font-weight: 700;
+  font-size: 1rem;
+  flex: 8;
+
+  display: flex;
+}
+.log-icon {
+  border: none;
+  background-color: transparent;
+  font-size: 1.5rem;
+  color: white;
+  padding: 0 12px;
+}
+.input-wrapper input {
+  background: none;
+  border: none;
 }
 .login--form input::placeholder {
   color: #999;
@@ -50,9 +78,13 @@
   padding: 14px 0 14px 12px;
   font-size: 1.1rem;
 }
-.login__footer--container {
+.login__footer--container,
+.registration__footer--container {
   background-color: #191a1b;
-  height: 100%;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .login__footer {
   min-height: 300px;
@@ -69,4 +101,55 @@
 }
 .repatcha--wrapper b {
   color: white;
+}
+
+/*  Registration */
+
+.registration__container {
+  min-height: 900px;
+  background-color: white;
+  width: 100dvw;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.registration__signin--wrapper {
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  max-width: 650px;
+}
+.registration__signin--wrapper h2 {
+  font-weight: 800;
+  font-size: 2rem;
+  padding-bottom: 12px;
+  color: black;
+}
+.registration__signin--wrapper h4 {
+  padding-bottom: 20px;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: black;
+}
+
+.registration__footer--container {
+  background-color: rgb(229, 229, 229);
+}
+
+.registration__image--wrapper {
+  display: flex;
+  max-height: 100px;
+}
+.registration__image--img {
+  height: 100%;
+}
+.repatcha--registration {
+  padding-top: 70px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

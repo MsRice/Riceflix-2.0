@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const { error } = require("console");
 const { Schema } = mongoose;
 
 const ProfileSchema = new Schema({
@@ -36,12 +37,6 @@ const ProfileSchema = new Schema({
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 
 const userSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-  },
   email: {
     type: String,
     required: true,
@@ -76,14 +71,13 @@ const userSchema = new Schema({
 });
 
 // The Pre-Save Hook: Hash password before saving
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-    next();
   } catch (err) {
-    next(err);
+    console.error(err);
   }
 });
 

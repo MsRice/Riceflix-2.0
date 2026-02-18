@@ -31,7 +31,7 @@ const Footer = () => {
     return (
         <footer>
             <div className="footer__header--wrapper">
-                <p>Questions? Call <a href="tel:1-866-952-4456">1-866-952-4456</a></p>
+                <p>{t("questions")}<a href="tel:1-866-952-4456">1-866-952-4456</a></p>
             </div>
             <div className="footer__links--wrapper">
                 <ul className="footer__links">

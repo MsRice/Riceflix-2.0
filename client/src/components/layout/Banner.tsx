@@ -6,31 +6,43 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { RxCrossCircled } from "react-icons/rx";
+import { useNavigate } from 'react-router-dom';
 
 const Banner = () => {
     const { t } = useTranslation()
     const [email, setEmail] = useState("");
     const [isValid, setIsValid] = useState<boolean>(false);
 
-    function validateEmail(value: string) {
-    const trimmed = value.trim();
-    if (!trimmed) {
-      setIsValid(false);
-      return;
+    const navigate = useNavigate();
+
+    function validateEmail(value: string):boolean {
+        const trimmed = value.trim();
+        
+        if (!trimmed) return false
+        
+        const input = document.createElement("input");
+        input.type = "email";
+        input.value = trimmed;
+
+        return input.checkValidity()
     }
+    
+    
+    
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+      
+        if (!email) return;
+        const valid = validateEmail(email);
 
-    const input = document.createElement("input");
-    input.type = "email";
-    input.value = trimmed;
+        setIsValid(valid)
 
-    setIsValid(input.checkValidity());
-  }
+        if(!valid) return
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    setEmail(value);
-    validateEmail(value);
-  }
+        navigate("/registration", {
+            state: { email },
+        });
+    };
 
     return (
         <>
@@ -45,14 +57,15 @@ const Banner = () => {
                 <h6>{t("hero_subtitle_info")}</h6>
                 <div className='header__form--wrapper'>
 
-                <form className='hero__header--form'>
+                <form className='hero__header--form' onSubmit={handleSubmit}>
                   
-                    <input id='email' type="text" value={email} onChange={handleChange} placeholder='Email address' />
+                    <input id='email' type="text" value={email} onChange={e => setEmail(e.target.value)} placeholder='Email address' />
                     
-                    <ButtonMain to='/registration' className={'primary-btn get-started'}>{t('get_started')}<MdKeyboardArrowRight /></ButtonMain>
+                    <ButtonMain type="submit" className={'primary-btn get-started'}>{t('get_started')}<MdKeyboardArrowRight /></ButtonMain>
                 </form>
+             
                 {!isValid && email.length > 0 && (
-                    <p style={{ color: "red" }}><RxCrossCircled />Please enter a valid email</p>
+                    <p style={{ color: "red", fontWeight: 800}}><RxCrossCircled />Please enter a valid email</p>
                 )}
                 </div>
 

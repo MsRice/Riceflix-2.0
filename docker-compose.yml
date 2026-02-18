@@ -11,9 +11,8 @@ services:
     build: ./server
     ports:
       - "8000:8000"
-    environment:
-      - MONGO_URI=mongodb://mongodb:27017/movie-db
-      - REDIS_URL=redis://redis:6379
+    env_file:
+      - .env.docker
     depends_on:
       - mongodb
       - redis

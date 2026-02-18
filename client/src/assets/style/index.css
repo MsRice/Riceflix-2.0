@@ -7,4 +7,6 @@
 @import url("./landingMoreReasons.css");
 @import url("./landingfaq.css");
 
-@import url("./login.css");
+@import url("./login.css"); /*  aslo has registration style  */
+
+@import url("./profiles.css");

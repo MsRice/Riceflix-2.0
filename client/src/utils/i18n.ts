@@ -19,6 +19,7 @@ i18n.use(initReactI18next).init({
         trending: "Trending Now",
         more_reasons: "More Reasons to Join",
         faq: "Frequently Asked Questions",
+        valid_email: "Please enter a valid email",
 
         more_reasons_title_1: "Enjoy on your TV",
         more_reasons_subtitle_1:
@@ -55,6 +56,7 @@ i18n.use(initReactI18next).init({
         faq_answer_6:
           "The Riceflix Kids experience is included in your membership to give parents control while kids enjoy family-friendly TV shows and movies in their own space. Kids profiles come with PIN-protected parental controls that let you restrict the maturity rating of content kids can watch and block specific titles you don’t want kids to see.",
 
+        questions: "Questions? Call",
         footer_link_1: "FAQ",
         footer_link_2: "Media Center",
         footer_link_3: "Redeem Gift Cards",
@@ -87,6 +89,7 @@ i18n.use(initReactI18next).init({
           "The information collected by Google reCAPTCHA is subject to the Google Privacy Policy and Terms of Service, and is used for providing, maintaining, and improving the reCAPTCHA service and for general security purposes (it is not used for personalized advertising by Google).",
         continue: "Continue",
         get_help: "Get Help",
+        finish_acct_setup: "Finish setting up your account",
       },
     },
     es: {
@@ -105,6 +108,7 @@ i18n.use(initReactI18next).init({
         trending: "Tendencia Ahora",
         more_reasons: "Más razones para unirse",
         faq: "Preguntas frecuentes",
+        valid_email: "Por favor, introduzca un correo electrónico válido",
 
         more_reasons_title_1: "Disfrútalo en tu TV",
         more_reasons_subtitle_1:
@@ -146,6 +150,7 @@ i18n.use(initReactI18next).init({
         faq_answer_6:
           "La experiencia Riceflix Kids está incluida en tu membresía para que los padres tengan control mientras los niños disfrutan de contenido familiar en su propio espacio. Los perfiles infantiles incluyen controles parentales protegidos con PIN que permiten restringir la clasificación de contenido y bloquear títulos específicos que no deseas que los niños vean.",
 
+        questions: "¿Preguntas? Llamar",
         footer_link_1: "Preguntas Frecuentes",
         footer_link_2: "Centro de Medios",
         footer_link_3: "Canjear Tarjetas de Regalo",
@@ -169,6 +174,16 @@ i18n.use(initReactI18next).init({
         footer_link_21: "No Vender Mi Información Personal",
 
         author: "Diseñado y fabricado por Patrice (Arroz 🍚) Maxwell",
+        enter_info: "Ingresa tu información para iniciar sesión",
+        or_new_acct: "O comience con una nueva cuenta.",
+
+        rePATCHA:
+          "Esta página está protegida por Google reCAPTCHA para garantizar que no eres un bot.",
+        rePATCHA_more:
+          "La información recopilada por Google reCAPTCHA está sujeta a la Política de privacidad y las Condiciones del servicio de Google, y se utiliza para proporcionar, mantener y mejorar el servicio reCAPTCHA y para fines de seguridad general (no se utiliza para publicidad personalizada por parte de Google).",
+        continue: "Continuar",
+        get_help: "Get Help",
+        finish_acct_setup: "Termine de configurar su cuenta",
       },
     },
   },

@@ -3,12 +3,13 @@ const User = require("../models/User.js");
 const jwt = require("jsonwebtoken");
 
 async function registration(req, res) {
+  console.log("ntt");
   try {
-    const { username, email, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !email || !password) {
+    if (!email || !password) {
       return res.status(400).json({
-        message: "Plese give a username, email and password",
+        message: "Plese give an email and password",
       });
     }
 
@@ -20,14 +21,12 @@ async function registration(req, res) {
     }
 
     const newUser = await User.create({
-      username,
       email,
       password,
     });
 
     const payload = {
       id: newUser._id,
-      username: newUser.username,
       role: "user",
     };
 
@@ -39,7 +38,6 @@ async function registration(req, res) {
       token,
       user: {
         id: newUser._id,
-        username: newUser.username,
         email: newUser.email,
       },
     });
@@ -93,6 +91,18 @@ async function login(req, res) {
   } catch (error) {
     console.error(error);
     res.status(400).json({ error: error.message });
+  }
+}
+
+async function getUser(req, res) {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (err) {
+    return res.status(500).json({ message: "Token is invalid or expired" });
   }
 }
 
@@ -279,6 +289,7 @@ async function deleteListItem(req, res) {
 module.exports = {
   registration,
   login,
+  getUser,
   createProfile,
   updateList,
   getProfile,

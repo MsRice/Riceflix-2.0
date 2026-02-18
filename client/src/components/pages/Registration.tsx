@@ -1,3 +1,4 @@
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import riceflix_logo  from '../../assets/images/Riceflix_Logos/Riceflix logo.png'
 import { IoLanguageSharp, IoLogoGithub, IoLogoLinkedin } from 'react-icons/io5';
@@ -5,28 +6,35 @@ import { TiArrowSortedDown } from 'react-icons/ti';
 import { FaHandshake } from 'react-icons/fa';
 import RiceCodes  from "../../assets/images/rice_codesLOGOS/Rice_logo_only_no_background.svg?react";
 import { useLanguage } from '../../contexts/lang/LanguageContext';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import ButtonMain from '../ui/ButtonMain';
-import { MdKeyboardArrowDown} from 'react-icons/md';
 import { RxCrossCircled } from 'react-icons/rx';
 import { LuEye, LuEyeClosed } from 'react-icons/lu';
 import { useAuthentication } from '../../contexts/auth/AuthenticationContext';
-import { Link } from 'react-router-dom';
+import electronics from '../../assets/images/Netflix_assets/electronics.png';
 
-const Login = () => {
+
+
+const Registration = () => {
+    const location = useLocation()
+    const navigate = useNavigate()
+
     const { t } = useTranslation()
-    const { login } = useAuthentication()
+    const { register } = useAuthentication()
     const [error, setError] = useState<string | null>(null)
 
     const { language , setLanguage } = useLanguage()
     const [ openLangMenu , setOpenLangMenu ] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
 
-    const [email, setEmail] = useState("");
+    const [email , setEmail ] = useState(location.state?.email || '')
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [type , setType] = useState('password')
+     const [confType , setConfType] = useState('password')
     const [isValid, setIsValid] = useState<boolean>(false);
     const [learnOpen, setLearnOpen] = useState<boolean>(false);
+
 
 
     function validateEmail(value: string) {
@@ -49,24 +57,36 @@ const Login = () => {
     validateEmail(value);
   }
 
-const handleForm = async (event: React.FormEvent) => {
+    const passwordsMatch = useMemo(() => {
+        if (!confirmPassword) return true;
+        return password === confirmPassword;
+    }, [password, confirmPassword]);
+
+ const handleForm = async (event: React.FormEvent) => {
     event.preventDefault();
-    const userData = { email ,password }
-
+    const userData = { email ,password ,confirmPassword}
     
-    try {
-        await login(userData)
-    } catch (error) {
-        setError((error as Error).message)
+    setError(null)
+    console.log('nt', userData ,error)
+    if(!passwordsMatch) {
+        setError('Passwords do not match!')
+        return
     }
-    
-    
-}
 
-function togglePass(){
-    setType(
-        type === 'password' ? 'text' : 'password'
-    ) 
+    try {
+               
+            await register(userData)
+            navigate('/')
+        
+        } catch (error: unknown) {
+        if(error instanceof Error){
+
+            setError(error.message)
+        }else{
+            setError('Something went wrong try again')
+        }
+        }
+    
 }
 
     useEffect(() => {
@@ -85,19 +105,24 @@ function togglePass(){
 
         }
     },[openLangMenu])
+
     return (
-        <>
+          <>
         
-        <div className="container login__container">
+        <div className="registration__container">
             <nav className='navigation--wrapper'>
                 <div className='navigation-title--wrapper'><Link to={'/'}><img className='navigation-logo' src={riceflix_logo} alt="Riceflix Logo" /></Link></div>
-
+                <ButtonMain to='/login' className={'secondary-btn'}>{t('signin')}</ButtonMain>
             </nav>
             <div className='login__container--wrapper'>
 
           
-            <div className='login__signin--wrapper'>
-                <h2>{t("enter_info")}</h2>
+            <div className='registration__signin--wrapper'>
+                <div className="registration__image--wrapper">
+
+                <img src={electronics} className="registration__image--img"  />
+                </div>
+                <h2>{t("finish_acct_setup")}</h2>
                 <h4>{t("or_new_acct")}</h4>
                  <div className='header__form--wrapper'>
 
@@ -106,34 +131,42 @@ function togglePass(){
                     <input id='email' type="text" value={email} onChange={handleChange} placeholder='Email address' />
 
                     <div className='input-wrapper'>
-                    <input id='password' type={type} value={password} onChange={e => setPassword(e.target.value)} placeholder='password' />
+                        <input id='password' type={type} value={password} onChange={e => setPassword(e.target.value)} placeholder='password' />
                         <button 
                             type="button"
                             className='log-icon'
                             aria-label={type === 'password' ? 'Show password' : 'Hide password'} 
-                            onClick={togglePass}>
+                            onClick={() => setType(type === 'password' ? 'text' : 'password') }>
                                 {type === 'password' ? <LuEyeClosed /> :<LuEye /> }
+                        </button>
+                    </div>
+                    <div className='input-wrapper'>
+                        <input id='password' type={type} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder='password' />
+                        <button 
+                            type="button"
+                            className='log-icon'
+                            aria-label={type === 'password' ? 'Show password' : 'Hide password'} 
+                            onClick={() => setConfType(confType === 'password' ? 'text' : 'password') }>
+                                {confType === 'password' ? <LuEyeClosed /> :<LuEye /> }
                         </button>
                     </div>
                     
                     <ButtonMain type='submit' className={'primary-btn login-started '}>{t('continue')}</ButtonMain>
                 </form>
                 {!isValid && email.length > 0 && (
-                    <p style={{ color: "red" }}><RxCrossCircled />Please enter a valid email</p>
+                    <p style={{ color: "red" }}><RxCrossCircled />{t("valid_email")}</p>
                 )}
-               { error && <p>{error}</p> }
+               { error && <p style={{ color: "red" }}>{error}</p> }
                 </div>
-                <div className='get__help--wrapper'>
-                    <h4>{t("get_help" )}<MdKeyboardArrowDown/></h4>
-                </div>
-                <div className='repatcha--wrapper'>
-                    <p>{t("rePATCHA")} <b onClick={() => setLearnOpen(prev => !prev)}>{t("learn_more")}</b></p>
+                
+                <div className='repatcha--wrapper repatcha--registration '>
+                    <p>{t("rePATCHA")} <b onClick={() => setLearnOpen(prev => !prev)} style={{ color: "grey" }}>{t("learn_more")}</b></p>
                     {learnOpen && <p>{t("rePATCHA_more")}</p>}
                 </div>
                 </div>
             </div>
         </div>
-        <div className=' login__footer--container'>
+        <div className=' registration__footer--container'>
             <footer className='login__footer'>
                 <div className="footer__header--wrapper">
                     <p>{t("questions")} <a href="tel:1-866-952-4456">1-866-952-4456</a> (Toll-Free)</p>
@@ -189,8 +222,7 @@ function togglePass(){
             </footer>
         </div>            
     </>
-        
     );
 }
 
-export default Login;
+export default Registration;
