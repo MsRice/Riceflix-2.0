@@ -69,13 +69,16 @@ export interface TrendingCardProps {
 }
 
 interface Profile {
+  _id: string;
   name: string;
   avatar_img: string;
   role: "owner" | "guest";
   watchlist: string[];
   history: string[];
-  favorite: string[];
+  favorites: string[];
+  isKid: boolean;
 }
+
 export interface User {
   _id: string;
   email: string;
@@ -91,13 +94,27 @@ export interface Credentials {
   email: string;
   password: string;
 }
+export interface CreateCredentials extends Omit<ProfileCredentials, "_id"> {
+  avatar_img: string | null;
+}
+
+export interface ProfileCredentials {
+  _id: string;
+  name?: string;
+  isKid?: boolean;
+}
 
 export interface AuthContextType {
   user: User | null;
   token: string | null;
+  activeProfileId: string | null;
+  setActiveProfileId: (id: string | null) => void;
   login: (userData: Credentials) => Promise<void>;
   register: (userData: Credentials) => Promise<void>;
   logout: () => void;
+  createProfile: (data: CreateCredentials) => Promise<void>;
+  updateProfile: (updateData: ProfileCredentials) => Promise<void>;
+  deleteProfile: (profileId: string) => Promise<void>;
 }
 
 export interface AuthenticationProviderProps {

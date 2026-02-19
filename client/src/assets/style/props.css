@@ -33,3 +33,15 @@
   height: 6.25dvh;
   font-size: 1.4rem;
 }
+.profile-btn:hover {
+  color: #e8e8e8;
+  border-color: #e8e8e8;
+}
+
+.exit-btn {
+  position: absolute;
+  font-size: var(--lg-font);
+  right: 12px;
+  top: 10px;
+  transition: all 0.3s ease;
+}

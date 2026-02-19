@@ -11,7 +11,7 @@ import { MdKeyboardArrowDown} from 'react-icons/md';
 import { RxCrossCircled } from 'react-icons/rx';
 import { LuEye, LuEyeClosed } from 'react-icons/lu';
 import { useAuthentication } from '../../contexts/auth/AuthenticationContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const { t } = useTranslation()
@@ -28,6 +28,7 @@ const Login = () => {
     const [isValid, setIsValid] = useState<boolean>(false);
     const [learnOpen, setLearnOpen] = useState<boolean>(false);
 
+      const navigate = useNavigate()
 
     function validateEmail(value: string) {
     const trimmed = value.trim();
@@ -55,7 +56,9 @@ const handleForm = async (event: React.FormEvent) => {
 
     
     try {
+        console.log('mlb')
         await login(userData)
+        navigate('/')
     } catch (error) {
         setError((error as Error).message)
     }

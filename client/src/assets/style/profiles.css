@@ -91,21 +91,245 @@
 
 /* Modal */
 
-.modal-row {
-  max-width: 700px;
-  width: 100%;
-  min-height: 550px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 0.1rem solid #4e4e4e;
-  background-color: #1515158a;
-  border-radius: 8px;
-}
 .modal-container {
   background-color: #0d0d0d;
   height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.modal-row {
+  max-width: 700px;
+  width: 100%;
+  max-height: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 0.1rem solid #4e4e4e;
+  background-color: #1515158a;
+  border-radius: 8px;
+
+  position: absolute;
+  height: 100%;
+}
+
+.addProfile__form--wrapper {
+  height: 100%;
+  width: 100%;
+}
+.addProfile__form {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.addProfile__input--wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.addProfile__title--wrapper {
+  text-align: center;
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+}
+.addProfile__title {
+  font-size: 2rem;
+}
+.addProfile__subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+}
+.addProfile__subtitle--wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 24px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid grey;
+}
+
+.addProfile_image--wrapper {
+  border-radius: 4px;
+  height: 8dvh;
+  width: 8.5dvh;
+}
+
+.addProfile__name--wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+.addProfile__name--wrapper input {
+  height: 70%;
+  width: 100%;
+  background-color: transparent;
+  border: 1.6px solid grey;
+  color: white;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.addProfile__buttons--wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  max-height: 300px;
+  height: 100%;
+}
+.kid__container--wrapper {
+  margin-inline: 24px;
+  border-radius: 4px;
+  background-color: #343434;
+  display: flex;
+  padding: 8px;
+  align-items: center;
+}
+.addProfile__kid--wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.addProfile__kid--wrapper h4 {
+  font-size: 1.3rem;
+}
+.addProfile__kid--wrapper h6 {
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+.selected--wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #8a8a8a;
+  padding: 2px;
+  width: 80px;
+  height: 80%;
+  border-radius: 24px;
+  font-size: 2rem;
+  transition: all 0.3s ease;
+}
+.selected--wrapper.active {
+  justify-content: end;
+  background-color: rgb(61, 61, 228);
+}
+.submit__btns--wrapper {
+  margin: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.save-btn {
+  background-color: #e5e5e9;
+  color: #0d0d0d;
+  border: none;
+  border-radius: 4px;
+  padding: 18px 18px;
+  font-size: var(--md-font);
+  font-weight: 700;
+}
+.save-btn:hover {
+  background-color: #b0b0b2;
+}
+.cancel-btn {
+  background-color: transparent;
+  color: var(--rice-white);
+  border: none;
+  font-size: var(--md-font);
+  border-radius: 4px;
+  padding: 18px 18px;
+  font-weight: 700;
+  transition: all 200ms ease;
+}
+.cancel-btn:hover {
+  background-color: #7d7d7d;
+}
+
+/*  Editing */
+
+.profile_image--wrapper.edit {
+  position: relative;
+}
+
+.profile__edit--wrapper {
+  position: absolute;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  /* opacity: 0; */
+  /* pointer-events: none; */
+
+  transition: opacity 0.25s ease;
+
+  font-size: 3rem;
+}
+
+.pencil-svg {
+  width: 100%;
+  transition: color 0.2s ease;
+}
+.trash-svg {
+  width: 100%;
+  transition: color 0.2s ease;
+}
+
+.dividor {
+  border: 1px solid rgb(254, 254, 254);
+  height: 60%;
+}
+.pencil-svg:hover {
+  color: rgb(130, 130, 255);
+}
+.trash-svg:hover {
+  color: rgb(226, 88, 88);
+}
+
+.input-profile_card--name {
+  width: 100%;
+  background-color: rgba(2, 2, 2, 0.452);
+  border: 1.6px solid grey;
+
+  border-radius: 4px;
+
+  margin-top: 12px;
+
+  border: 2px solid grey;
+  font-weight: 700;
+  font-size: 1.4em;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.input-profile_card--name input {
+  background-color: rgba(2, 2, 2, 0.452);
+  border: none;
+  color: white;
+}
+
+.check-svg {
+  color: grey;
+}
+.check-svg:hover {
+  color: rgb(130, 130, 255);
 }

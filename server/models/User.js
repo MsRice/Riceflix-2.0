@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { error } = require("console");
+const { type } = require("os");
 const { Schema } = mongoose;
 
 const ProfileSchema = new Schema({
@@ -17,20 +18,22 @@ const ProfileSchema = new Schema({
     required: true,
     default: "guest",
   },
+  isKid: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   watchlist: {
     type: [Schema.Types.ObjectId],
     ref: "Content",
-    unique: true,
   },
   history: {
     type: [Schema.Types.ObjectId],
     ref: "Content",
-    unique: true,
   },
-  favorite: {
+  favorites: {
     type: [Schema.Types.ObjectId],
     ref: "Content",
-    unique: true,
   },
 });
 

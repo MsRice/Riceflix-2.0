@@ -30,12 +30,21 @@ async function registration(req, res) {
       role: "user",
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "2h",
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "15m",
     });
 
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
     res.status(201).json({
-      token,
+      accessToken,
       user: {
         id: newUser._id,
         email: newUser.email,
@@ -76,12 +85,21 @@ async function login(req, res) {
       role: "user", // user only login , adim login stretch goal
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "15m",
     });
 
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
     res.json({
-      token,
+      accessToken,
       user: {
         id: user._id,
         username: user.username,
@@ -102,16 +120,16 @@ async function getUser(req, res) {
     }
     res.json(user);
   } catch (err) {
-    return res.status(500).json({ message: "Token is invalid or expired" });
+    return res.status(401).json({ message: "Token is invalid or expired" });
   }
 }
 
 async function createProfile(req, res) {
   try {
     const userId = req.user.id;
-    const { name, avatar_img } = req.body;
+    const { name, avatar_img, isKid } = req.body;
 
-    if (!name) {
+    if (!name || name.trim() === "") {
       return res.status(400).json({
         message: "Plese give a name",
       });
@@ -136,23 +154,14 @@ async function createProfile(req, res) {
       name,
       avatar_img,
       role,
+      isKid,
     });
     await user.save();
 
     const createdProfile = user.profiles[user.profiles.length - 1];
 
-    const payload = {
-      id: user._id,
-      profileId: createdProfile.profileId,
-      role: createdProfile.role,
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "2h",
-    });
-
-    res.status(201).json({
-      token,
+    return res.status(201).json({
+      message: "Profile created successfully",
       profile: createdProfile,
     });
   } catch (error) {
@@ -223,6 +232,55 @@ async function getProfile(req, res) {
   }
 }
 
+async function deleteProfile(req, res) {
+  try {
+    const userId = req.user.id;
+    const profileId = req.params.id || req.body.profileId;
+
+    if (!profileId) {
+      return res.status(400).json({
+        message: "No profile ID provided",
+      });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const profile = user.profiles.id(profileId);
+
+    if (!profile) {
+      return res.status(404).json({
+        message: "Profile not found",
+      });
+    }
+
+    // 🔥 Prevent deleting owner profile
+    if (profile.role === "owner") {
+      return res.status(403).json({
+        message: "Owner profile cannot be deleted",
+      });
+    }
+
+    profile.deleteOne(); // remove subdocument
+    await user.save();
+
+    return res.status(200).json({
+      message: "Profile deleted successfully",
+      profiles: user.profiles,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: "Server error",
+    });
+  }
+}
+
 async function getList(req, res) {
   try {
     const userId = req.user.id;
@@ -286,6 +344,64 @@ async function deleteListItem(req, res) {
   }
 }
 
+async function updateProfile(req, res) {
+  try {
+    const userId = req.user.id;
+    const { profileId, name, isKid } = req.body;
+
+    if (!profileId) {
+      return res.status(400).json({
+        message: "Profile ID is required",
+      });
+    }
+
+    const updateFields = {};
+
+    if (name !== undefined) {
+      if (name.trim() === "") {
+        return res.status(400).json({
+          message: "Profile name cannot be empty",
+        });
+      }
+      updateFields["profiles.$.name"] = name.trim();
+    }
+
+    if (isKid !== undefined) {
+      updateFields["profiles.$.isKid"] = isKid;
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({
+        message: "No valid fields provided for update",
+      });
+    }
+
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId, "profiles._id": profileId },
+      { $set: updateFields },
+      { new: true },
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        message: "User or profile not found",
+      });
+    }
+
+    const updatedProfile = updatedUser.profiles.id(profileId);
+
+    return res.status(200).json({
+      message: "Profile updated successfully",
+      profile: updatedProfile,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
+}
+
 module.exports = {
   registration,
   login,
@@ -293,6 +409,8 @@ module.exports = {
   createProfile,
   updateList,
   getProfile,
+  deleteProfile,
   getList,
   deleteListItem,
+  updateProfile,
 };
