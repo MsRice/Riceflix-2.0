@@ -1,18 +1,27 @@
 
 import { useEffect, useState } from 'react';
-import type { AuthenticationProviderProps, CreateCredentials, Credentials, ProfileCredentials, User } from '../../utils/types';
+import type { AuthenticationProviderProps, CreateCredentials, Credentials, Profile, ProfileCredentials, User } from '../../utils/types';
 import { AuthenticationContext } from './AuthenticationContext';
+
 
 const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
     const [user , setUser] = useState<User | null>(null)
     const [token, setToken] = useState<string | null>(null)
     const [activeProfileId, setActiveProfileId] = useState<string | null>(null);
+     const [activeProfile, setActiveProfile] = useState<Profile | null>(null)
+     const [authLoading, setAuthLoading] = useState(true)
 
     
     
-    useEffect(() => {
-    setToken(localStorage.getItem('token'))
-    }, [])
+  useEffect(() => {
+  const storedToken = localStorage.getItem('token')
+
+  if (storedToken) {
+    setToken(storedToken)
+  }
+
+  setAuthLoading(false)
+}, [])
     
     useEffect(() =>{
         
@@ -43,6 +52,7 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
     refreshLogger()
     },[token])
 
+    
     const login = async (userData:Credentials) => {
         const res  = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login`,{
             
@@ -109,6 +119,24 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
             profiles: [...prev!.profiles, profile]
         }));
     };
+
+    
+    const getProfile = async (profileId: string):Promise<void> => {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/profile?id=${profileId}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" ,  Authorization: `Bearer ${token}`},
+     
+            });
+            
+            if (!res.ok) {
+                const error = await res.json();
+                throw new Error(error.message);
+            }
+    
+            const { profile } = await res.json()
+            setActiveProfile(profile)
+            
+      }
 
     const updateProfile = async (updateData: ProfileCredentials) => {
         if(!user || !token) return
@@ -184,7 +212,7 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
 
 
     return (
-        <AuthenticationContext.Provider value={{user, token, activeProfileId ,setActiveProfileId ,login, register, logout ,createProfile, updateProfile, deleteProfile }}>
+        <AuthenticationContext.Provider value={{user,  token, authLoading ,activeProfile , activeProfileId ,setActiveProfileId ,login, register, logout ,createProfile, getProfile,updateProfile, deleteProfile }}>
             {children}
         </AuthenticationContext.Provider>
     );

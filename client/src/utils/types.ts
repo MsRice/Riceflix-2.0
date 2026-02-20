@@ -68,7 +68,7 @@ export interface TrendingCardProps {
   movie: CategoryMovie;
 }
 
-interface Profile {
+export interface Profile {
   _id: string;
   name: string;
   avatar_img: string;
@@ -107,12 +107,15 @@ export interface ProfileCredentials {
 export interface AuthContextType {
   user: User | null;
   token: string | null;
+  authLoading: boolean;
+  activeProfile: Profile | null;
   activeProfileId: string | null;
   setActiveProfileId: (id: string | null) => void;
   login: (userData: Credentials) => Promise<void>;
   register: (userData: Credentials) => Promise<void>;
   logout: () => void;
   createProfile: (data: CreateCredentials) => Promise<void>;
+  getProfile: (id: string) => Promise<void>;
   updateProfile: (updateData: ProfileCredentials) => Promise<void>;
   deleteProfile: (profileId: string) => Promise<void>;
 }

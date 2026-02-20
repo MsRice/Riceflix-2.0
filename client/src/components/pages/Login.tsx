@@ -15,7 +15,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const { t } = useTranslation()
-    const { login } = useAuthentication()
+    const { login ,user} = useAuthentication()
     const [error, setError] = useState<string | null>(null)
 
     const { language , setLanguage } = useLanguage()
@@ -58,7 +58,8 @@ const handleForm = async (event: React.FormEvent) => {
     try {
         console.log('mlb')
         await login(userData)
-        navigate('/')
+        console.log(user) 
+        navigate('/profiles')
     } catch (error) {
         setError((error as Error).message)
     }

@@ -1,6 +1,7 @@
 const User = require("../models/User.js");
 
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 async function registration(req, res) {
   console.log("ntt");
@@ -213,21 +214,29 @@ async function getProfile(req, res) {
     const userId = req.user.id;
     const profileId = req.user.profileId || req.query.id;
 
+    console.log("REQ USER:", req.user);
+    console.log("USER ID:", req.user?.id);
+    console.log("PROFILE ID:", req.query.id);
+
     if (!profileId) {
       return res.status(400).json({ message: "No profile ID provided" });
     }
 
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!mongoose.Types.ObjectId.isValid(profileId)) {
+      return res.status(400).json({ message: "Invalid profile ID" });
+    }
+    const user = await User.findOne(
+      { _id: userId, "profiles._id": new mongoose.Types.ObjectId(profileId) },
+      { "profiles.$": 1 },
+    );
 
-    const profile = user.profiles.id(profileId);
-
-    if (!profile) {
+    if (!user) {
       return res.status(404).json({ message: "Profile not found" });
     }
 
-    res.json(profile);
+    res.json(user.profiles[0]);
   } catch (error) {
+    console.error("🔥 GET PROFILE ERROR:", error);
     res.status(500).json({ error: error.message });
   }
 }

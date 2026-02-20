@@ -2,27 +2,34 @@ import ButtonMain from "../ui/ButtonMain";
 import user_smile from '../../assets/images/Netflix_assets/user_smile.png'
 import { FaCheckSquare, FaPlusCircle } from "react-icons/fa";
 import { useAuthentication } from "../../contexts/auth/AuthenticationContext";
-import { useState } from "react";
+import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { HiMinusCircle } from "react-icons/hi";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import type { CreateCredentials, ProfileCredentials } from "../../utils/types";
 import { FaPencilAlt } from "react-icons/fa";
 import { IoTrashSharp } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const Profiles = () => {
-    const { user , createProfile , deleteProfile , updateProfile} = useAuthentication()
+    const { user , createProfile , deleteProfile , updateProfile , getProfile , authLoading} = useAuthentication()
     const [isModalOpen ,setIsModalOpen] = useState(false)
     const [isEditing ,setIsEditing] = useState(false)
     const [isKid, setIsKid] = useState(false);
     const [name, setName] = useState('');
     const [editingProfile , setEditingProfile ] = useState<ProfileCredentials | null>(null)
 
-     const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<string | null>(null)
+    const { t } = useTranslation()
+    const navigate = useNavigate()
 
-    console.log(user)
+    const profiles = user?.profiles ?? []
 
-    const getNextAvailableAvatar = (profiles: CreateCredentials[]) => {
+    console.log('auhtloading' , authLoading)
+    console.log('profiles' , profiles)
+
+    const getNextAvailableAvatar = (profiles: CreateCredentials[] = []) => {
         const usedNumbers = profiles.map(profile => {
             const match = profile.avatar_img?.match(/card-(\d+)/);
             return match ? Number(match[1]) : null;
@@ -35,7 +42,7 @@ const Profiles = () => {
         }
 
         return null; 
-        };
+    };
 
     async function createProfileForm(e : React.FormEvent){
         e.preventDefault()
@@ -86,17 +93,31 @@ const Profiles = () => {
         }
 
     }
+
+    async function handleSelectedProfile(profileId :string){
+        console.log('ntlb')
+
+        try {
+           await getProfile(profileId)
+            navigate("/browse")
+
+        } catch (error) {
+            console.error(error);
+            
+        }
+    }
+
     return (
         <div className='container profile-container modal-container'>
         {!isModalOpen ?
             <div className="profile-row">
-                        <h1 className="profile__title">Who's watching?</h1>
+                        <h1 className="profile__title">{t("whos_watching")}</h1>
                         <div className="profile_cards--wrapper">
-                        {user?.profiles.map((profile) => (
+                        {profiles.map((profile) => (
                             editingProfile?._id === profile._id ? (
 
                                 
-                                <div className="profile_card--wrapper ">
+                                <div key={profile._id} className="profile_card--wrapper">
                                 <div className={`profile_image--wrapper ${profile.avatar_img} ${isEditing ? 'edit' : ''}`}>
                                 <img src={`${user_smile}`} className="profile_image--img" />
                                 </div>
@@ -105,12 +126,23 @@ const Profiles = () => {
                             ) : (
 
                                 
-                                <div className="profile_card--wrapper ">
+                                <div key={profile._id} className="profile_card--wrapper" onClick={() => handleSelectedProfile(profile._id)}>
                                 <div className={`profile_image--wrapper ${profile.avatar_img} ${isEditing ? 'edit' : ''}`}>
                                 <img src={`${user_smile}`} className="profile_image--img" />
                                 {isEditing && 
                                 <div className="profile__edit--wrapper">
-                                <FaPencilAlt onClick={() => handleEdit(profile)} className="pencil-svg"/><span className="dividor"></span><IoTrashSharp onClick={() => handleDeleteProfile(profile._id)} className="trash-svg"/>
+                                <FaPencilAlt 
+                                    onClick={(e) => {
+                                        e.stopPropagation() 
+                                        handleEdit(profile)
+                                    }} className="pencil-svg"/>
+                                    
+                                    <span className="dividor"></span>
+                                    
+                                <IoTrashSharp onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleDeleteProfile(profile._id)
+                                    }} className="trash-svg"/>
 
                                 </div>
                                 }
@@ -122,25 +154,25 @@ const Profiles = () => {
                             
                         ))}
                         
-                        {(user?.profiles.length ?? 0) < 5  && !isEditing &&
+                        {profiles.length < 5  && !isEditing &&
                             
                             <div className="profile_card--wrapper" onClick={() => setIsModalOpen(prev => !prev)}>
                             <div className="profile_image--wrapper card-add">
                             <FaPlusCircle className="profile_image--add" />
                             </div>
-                            <h3 className="profile_card--name">Add Profile</h3>
+                            <h3 className="profile_card--name">{t("add_profile")}</h3>
                             </div>
                         }
                         
 
                 </div>
                 <div className="profile__btn--row">
-{
-    
-}
-
-                <ButtonMain onClick={() => setIsEditing(prev => !prev)} className="profile-btn">Manage Profiles</ButtonMain>
-                <ButtonMain onClick={() => setIsEditing(prev => !prev)} className="secondary-btn">Done</ButtonMain>
+                {
+                    !isEditing?
+                    <ButtonMain onClick={() => setIsEditing(prev => !prev)} className="profile-btn">{t("manage_profile")}</ButtonMain>
+                    :
+                <ButtonMain onClick={() => setIsEditing(prev => !prev)} className="secondary-btn">{t("done")}</ButtonMain>
+                }   
                 </div>
             </div>
             : <>
@@ -150,8 +182,8 @@ const Profiles = () => {
                     <form className="addProfile__form" onSubmit={createProfileForm}>
                         <div className="addProfile__input--wrapper">
                             <div className="addProfile__title--wrapper">
-                                <h2 className="addProfile__title">Add a profile</h2>
-                                <h3 className="addProfile__subtitle">Add a profile for another person watching Netflix</h3>
+                                <h2 className="addProfile__title">{t("add_a_profile")}</h2>
+                                <h3 className="addProfile__subtitle">{t("add_a_profile_sub")}</h3>
                             </div>
                             <div className="addProfile__subtitle--wrapper">
                                 <div className={`addProfile_image--wrapper card-${user?.profiles.length || 0 + 1}`}>
@@ -166,8 +198,8 @@ const Profiles = () => {
                         <div className="addProfile__buttons--wrapper">
                             <div className="kid__container--wrapper">
                                 <div className="addProfile__kid--wrapper">
-                                    <h4>Kids Profile</h4>
-                                    <h6>Only see kid-friendly TV Show and movies</h6>
+                                    <h4>{t("kid_profile")}</h4>
+                                    <h6>{t("kid_profile_sub")}</h6>
                                 </div>
                                 <div className={`selected--wrapper ${isKid ? "active" : ""}`}
                                     onClick={()=> setIsKid(prev => !prev)}
@@ -181,8 +213,8 @@ const Profiles = () => {
                             </div>
 
                             <div className="submit__btns--wrapper">
-                                <ButtonMain className="save-btn" type="submit">Save</ButtonMain>    
-                                <ButtonMain className="cancel-btn" onClick={clearForm}>Cancel</ButtonMain>    
+                                <ButtonMain className="save-btn" type="submit">{t("save")}</ButtonMain>    
+                                <ButtonMain className="cancel-btn" onClick={clearForm}>{t("cancel")}</ButtonMain>    
                             </div>  
                         </div>  
                     </form>
