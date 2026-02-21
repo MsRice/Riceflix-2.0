@@ -95,7 +95,7 @@ const Profiles = () => {
     }
 
     async function handleSelectedProfile(profileId :string){
-        console.log('ntlb')
+        console.log('ntlb' , profileId)
 
         try {
            await getProfile(profileId)

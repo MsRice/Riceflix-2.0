@@ -6,6 +6,7 @@ i18n.use(initReactI18next).init({
     en: {
       translation: {
         signin: "Sign In",
+        signout: "Sign out of RiceFlix",
         english: "English",
         spanish: "Spanish",
         hero_title: "Unlimited movies, TV shows, and more",
@@ -105,6 +106,7 @@ i18n.use(initReactI18next).init({
     es: {
       translation: {
         signin: "Iniciar sesión",
+        signout: "Cerrar sesión en RiceFlix",
         english: "Inglés",
         spanish: "Español",
         hero_title: "Películas y series ilimitadas y mucho más",

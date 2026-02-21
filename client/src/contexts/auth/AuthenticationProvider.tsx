@@ -132,9 +132,9 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
                 const error = await res.json();
                 throw new Error(error.message);
             }
-    
-            const { profile } = await res.json()
-            setActiveProfile(profile)
+            const data = await res.json()
+            console.log(data)
+            setActiveProfile(data)
             
       }
 
