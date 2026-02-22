@@ -97,13 +97,11 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
     }
 
     const createProfile = async (data: CreateCredentials) => {
-        console.log('ntlb')
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profiles`, {
             method: "POST",
             headers: { "Content-Type": "application/json" ,  Authorization: `Bearer ${token}`},
             body: JSON.stringify(data),
         });
-        console.log('ntlbs')
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.message);
@@ -133,7 +131,6 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
                 throw new Error(error.message);
             }
             const data = await res.json()
-            console.log(data)
             setActiveProfile(data)
             
       }

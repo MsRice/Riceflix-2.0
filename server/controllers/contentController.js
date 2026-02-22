@@ -19,6 +19,7 @@ async function fetchCategories(url, parameters) {
       Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
     },
   };
+  console.log("Voyage Key:", process.env.VOYAGE_API_KEY);
   const category = await axios.request(options);
   return category.data;
 }
@@ -109,7 +110,7 @@ async function getWall(req, res) {
 
 async function getContentDetails(req, res) {
   const { id } = req.params;
-  const { type } = req.query;
+  const { type, language = "en-US" } = req.query;
   //Might need to pass body here tmdb_byId does vace title and description
 
   if (!["movie", "tv"].includes(type)) {
@@ -118,7 +119,10 @@ async function getContentDetails(req, res) {
       .json({ message: "Invalid type. Must be 'movie' or 'tv'." });
   }
 
-  const cacheKey = `content_${type}_${id}`;
+  if (!["en-US", "es-ES"].includes(language)) {
+    return res.status(400).json({ message: "Invalid language" });
+  }
+  const cacheKey = `content_${type}_${id}_${language}`;
 
   try {
     if (!client.isOpen) await client.connect();
@@ -129,13 +133,13 @@ async function getContentDetails(req, res) {
     let content = await Content.findOne({ tmdb_id: id });
 
     if (content) {
-      await client.setEx(cacheKey, 86400, JSON.stringify(details));
-      res.json(content);
+      await client.setEx(cacheKey, 86400, JSON.stringify(content));
+      return res.json(content);
     }
 
     const details = await fetchCategories(`${BASE_URL}/${type}/${id}`, {
       append_to_response: "videos,credits,similar,watch/providers",
-      language: "en-US",
+      language,
     });
 
     const textToEmbed = `${details.title || details.name}: ${details.overview}`;
@@ -155,7 +159,8 @@ async function getContentDetails(req, res) {
     await client.setEx(cacheKey, 86400, JSON.stringify(content));
     res.json(content);
   } catch (error) {
-    res.status(404).json({ message: "Content not found" });
+    console.error("CONTENT CONTROLLER ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -224,7 +229,7 @@ const voyageClient = new VoyageAIClient({ apiKey: process.env.VOYAGE_API_KEY });
 async function getVoyageEmbedding(text) {
   const response = await voyageClient.embed({
     input: text,
-    model: "voyage-3",
+    model: "voyage-2",
   });
   return response.data[0].embedding;
 }
@@ -263,6 +268,7 @@ async function aiSearch(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
 module.exports = {
   getWall,
   getContentDetails,

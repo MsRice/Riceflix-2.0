@@ -15,12 +15,21 @@ import { FaUsersViewfinder ,FaRegCircleQuestion } from "react-icons/fa6";
 
 const BrowserNavbar = () => {
     const { t } = useTranslation()
-    const { activeProfile } = useAuthentication()
+    const { activeProfile , logout} = useAuthentication()
 
     const [ openLangMenu , setOpenLangMenu ] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
 
-    console.log(activeProfile)
+    const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50); // threshold
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -40,7 +49,8 @@ const BrowserNavbar = () => {
     },[openLangMenu])
     
     return (
-        <nav className='browser-navigation--wrapper'>
+        <nav className={`browser-navigation--container ${isScrolled ? "navbar--scrolled" : ""}` }>
+            <div className={`browser-navigation--wrapper `}>
             <div className='navigation-title--wrapper'>
                 <Link to={'/'}><img className='navigation-logo' src={riceflix_logo} alt="Riceflix Logo" /></Link>
                 <ul className='browser-nav__links'>
@@ -67,20 +77,20 @@ const BrowserNavbar = () => {
 
                     </div>
                    
-                    <div ref={menuRef} className='browser-navigation--dropdown'>
+                    <div className='browser-navigation--dropdown'>
 
                         <TiArrowSortedUp className='arrowup-svg'/>
                         <ul>
-                            <li className='dropdown_opt'><TiPencil />Manage Profiles</li>
-                            <li className='dropdown_opt'><FaUsersViewfinder />Transfer Profile</li>
-                            <li className='dropdown_opt'><FaRegUser />Account</li>
-                            <li className='dropdown_opt'><FaRegCircleQuestion />Help Center</li>
-                            <li className='dropdown_opt'>{t("signout")}</li>
+                            <li className='dropdown_opt'><TiPencil className='do-svg'/>Manage Profiles</li>
+                            <li className='dropdown_opt'><FaUsersViewfinder className='do-svg'/>Transfer Profile</li>
+                            <li className='dropdown_opt'><FaRegUser className='do-svg'/>Account</li>
+                            <li className='dropdown_opt'><FaRegCircleQuestion className='do-svg'/>Help Center</li>
+                            <li className='dropdown_opt signout_opt' onClick={logout}>{t("signout")}</li>
                         </ul>
                     </div>
                 
                 </div>
-                
+            </div>    
             </div>
         </nav>
     );

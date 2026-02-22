@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const Profiles = () => {
-    const { user , createProfile , deleteProfile , updateProfile , getProfile , authLoading} = useAuthentication()
+    const { user , createProfile , deleteProfile , updateProfile , getProfile } = useAuthentication()
     const [isModalOpen ,setIsModalOpen] = useState(false)
     const [isEditing ,setIsEditing] = useState(false)
     const [isKid, setIsKid] = useState(false);
@@ -26,8 +26,7 @@ const Profiles = () => {
 
     const profiles = user?.profiles ?? []
 
-    console.log('auhtloading' , authLoading)
-    console.log('profiles' , profiles)
+
 
     const getNextAvailableAvatar = (profiles: CreateCredentials[] = []) => {
         const usedNumbers = profiles.map(profile => {
@@ -95,7 +94,7 @@ const Profiles = () => {
     }
 
     async function handleSelectedProfile(profileId :string){
-        console.log('ntlb' , profileId)
+        
 
         try {
            await getProfile(profileId)

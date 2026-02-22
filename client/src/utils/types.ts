@@ -17,9 +17,27 @@ export interface LanguageContextType {
 export interface LanguageProviderProps {
   children: ReactNode;
 }
+
+export interface ContentDetails {
+  _id: string;
+  tmdb_id: number;
+  type: "movie" | "tv";
+  title: string;
+  description: string;
+  release_date?: string;
+  poster_url?: string;
+  plot_embedding?: number[];
+  raw_tmdb: unknown;
+}
+
 export interface MovieContextType {
   categoriesList: CategoriesList | null;
   loading: boolean;
+  getContentDetails: (
+    contentId: number,
+    type: "movie" | "tv" | undefined,
+    language: "en-US" | "es-ES",
+  ) => Promise<ContentDetails | null>;
 }
 export interface MovieProviderProps {
   children: ReactNode;

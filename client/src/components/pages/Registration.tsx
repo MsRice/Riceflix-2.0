@@ -67,7 +67,7 @@ const Registration = () => {
     const userData = { email ,password ,confirmPassword}
     
     setError(null)
-    console.log('nt', userData ,error)
+  
     if(!passwordsMatch) {
         setError('Passwords do not match!')
         return

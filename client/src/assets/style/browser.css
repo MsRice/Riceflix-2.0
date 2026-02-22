@@ -1,5 +1,5 @@
 .browser__banner--wrapper {
-  background-color: aqua;
+  background-color: #141414;
   width: 100dvw;
   height: 100dvh;
 
@@ -13,19 +13,34 @@
 
 /* BrowserNavbar */
 
+.browser-navigation--container {
+  height: var(--nav-height);
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  transition: all 0.3s ease;
+}
+
 .browser-navigation--wrapper {
+  align-items: center;
   display: flex;
   height: var(--nav-height);
   max-width: 1800px;
   width: 100vw;
 
   padding: 40px 0;
-  align-items: center;
   justify-content: space-between;
 
-  position: absolute;
+  position: fixed;
   top: 0;
   z-index: 10;
+}
+
+.navbar--scrolled {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), #141414);
+  backdrop-filter: blur(6px);
 }
 
 .navigation-title--wrapper {
@@ -49,7 +64,6 @@
 
 .browser-navigation-dropdown--wrapper {
   position: relative;
-  border: 1px inset #ff0000;
 }
 
 .browser-navigation {
@@ -70,6 +84,8 @@
   border-radius: 4px;
   height: 4.5dvh;
   width: 4.5dvh;
+  max-height: 38px;
+  max-width: 38px;
 }
 
 .browser-navigation--dropdown {
@@ -82,13 +98,48 @@
   align-items: flex-end;
   top: 6dvh;
   right: 0;
+  opacity: 0;
+  transition: all 200ms ease;
 }
+
 .arrowup-svg {
-  border: 1px inset #ff0000;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
+
+  position: absolute;
+  top: -16px;
+  right: 30px;
 }
 .browser-navigation--dropdown ul {
-  border: 1px inset #ff0000;
-  background-color: lightgrey;
+  height: 250px;
+  width: 220px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+  border-radius: 2px;
+}
+
+.browser-navigation:hover + .browser-navigation--dropdown,
+.browser-navigation--dropdown:hover {
+  opacity: 1;
+}
+.dropdown_opt {
   width: 100%;
+  display: flex;
+  gap: 10px;
+  height: 100%;
+  align-items: center;
+  padding: 0 10px;
+}
+.dropdown_opt:hover {
+  text-decoration: underline;
+}
+.signout_opt {
+  border-top: 1px solid whitesmoke;
+  justify-content: center;
+  align-items: center;
+}
+.do-svg {
+  font-size: 1.7rem;
 }

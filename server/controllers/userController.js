@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
 async function registration(req, res) {
-  console.log("ntt");
   try {
     const { email, password } = req.body;
 
@@ -213,10 +212,6 @@ async function getProfile(req, res) {
   try {
     const userId = req.user.id;
     const profileId = req.user.profileId || req.query.id;
-
-    console.log("REQ USER:", req.user);
-    console.log("USER ID:", req.user?.id);
-    console.log("PROFILE ID:", req.query.id);
 
     if (!profileId) {
       return res.status(400).json({ message: "No profile ID provided" });
