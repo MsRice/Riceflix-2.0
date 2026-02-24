@@ -19,7 +19,6 @@ async function fetchCategories(url, parameters) {
       Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
     },
   };
-  console.log("Voyage Key:", process.env.VOYAGE_API_KEY);
   const category = await axios.request(options);
   return category.data;
 }

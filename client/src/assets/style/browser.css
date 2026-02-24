@@ -143,3 +143,65 @@
 .do-svg {
   font-size: 1.7rem;
 }
+
+/* Browser Banner */
+
+.browser-banner__container--wrapper {
+  width: 100%;
+  height: 100%;
+}
+.browser-banner--wrapper {
+  /* position: absolute; */
+  width: 100%;
+  height: 100%;
+}
+.browser-banner__frame--wrapper {
+  height: 100vh;
+  width: 100dvw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.browser-banner__frame {
+  border: none;
+  height: 100%;
+  width: 177.78vh;
+  pointer-events: none;
+}
+.browser-banner__image {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.browser-banner__info--container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+
+  align-items: center;
+}
+.browser-banner__info--wrapper {
+  max-height: 400px;
+  border: 4px solid blue;
+  max-width: 40%;
+  margin-left: 40px;
+}
+
+.browser-banner--title {
+  font-size: var(--xxlg-font);
+  padding-bottom: 10px;
+}
+.browser-banner--description {
+  font-size: var(--md-font);
+  padding-bottom: 10px;
+}
+
+.banner__buttons {
+  display: flex;
+
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
