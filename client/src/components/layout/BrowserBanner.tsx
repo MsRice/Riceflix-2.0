@@ -4,6 +4,9 @@ import { useLanguage } from "../../contexts/lang/LanguageContext";
 import type { ContentDetails } from "../../utils/types";
 import YouTube from "react-youtube";
 import ButtonMain from "../ui/ButtonMain";
+import { FaPlay } from "react-icons/fa6";
+import { CiCircleInfo } from "react-icons/ci";
+
 
 const BrowserBanner = () => {
 
@@ -49,25 +52,26 @@ const BrowserBanner = () => {
     
     }, [randomMovie, language , getContentDetails]);
 
+    const trailer = bannerDetails?.raw_tmdb?.videos?.results
+                ?.find(
+                (el) =>
+                    ["Official Trailer", "Official Teaser"].some((keyword) =>
+                 el.name?.includes(keyword)
+                ))
     console.log(randomMovie)
     console.log(bannerDetails)
 
     return (
         <div className="browser-banner__container--wrapper">
 
-        {videoEnded ? <>
-            {bannerDetails?.raw_tmdb?.videos?.results
-                ?.filter(
-                (el) =>
-                    el.name === "Official Trailer" ||
-                    el.name === "Official Teaser"
-                )
-                .map((el) => (
-                <div key={el.id} className="browser-banner--wrapper">
+        {!videoEnded ? <>
+            { trailer &&
+                
+                <div key={trailer.id} className="browser-banner--wrapper">
                     <figure className='browser-banner__frame--wrapper'>
 
                         <YouTube 
-                            videoId={el.key}
+                            videoId={trailer.key}
                             className='browser-banner__frame'
                             title="Trailer"
                             
@@ -87,7 +91,7 @@ const BrowserBanner = () => {
                             
                 </div>
                             
-            ))}
+            }
                        
         </> : <>
         <div className="browser-banner--wrapper">
@@ -101,8 +105,8 @@ const BrowserBanner = () => {
                 <h1 className="browser-banner--title">{bannerDetails?.title}</h1>
                 <p className="browser-banner--description">{bannerDetails?.description}</p>
                 <div className="banner__buttons">
-                    <ButtonMain className="profile-btn ">Play</ButtonMain>
-                    <ButtonMain className="primary-btn">More Info</ButtonMain>
+                    <ButtonMain className="play-btn"><FaPlay className="button-svg"/>Play</ButtonMain>
+                    <ButtonMain className="info-btn"><CiCircleInfo className="button-svg"/>More Info</ButtonMain>
                 </div>
             </div>
         </div>

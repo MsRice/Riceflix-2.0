@@ -67,6 +67,12 @@ export interface CategoryMovie {
 
   release_date?: string;
   first_air_date?: string;
+  original_language?: string;
+}
+
+export interface CategorySectionProps {
+  children: ReactNode;
+  sectionResults?: MovieCategory;
 }
 
 export interface MovieCategory {
@@ -80,6 +86,12 @@ export interface CategoriesList {
   trendingAll: MovieCategory;
   trendingMovies: MovieCategory;
   trendingTV: MovieCategory;
+  actionMovies: MovieCategory;
+  comdeyMovies: MovieCategory;
+  documentaries: MovieCategory;
+  horrorMovies: MovieCategory;
+  romanceMovies: MovieCategory;
+  topRatedMovies: MovieCategory;
 }
 export interface TrendingCardProps {
   index: number;
