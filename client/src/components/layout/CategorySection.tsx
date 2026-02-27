@@ -5,7 +5,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import CategoryCard from "./CategoryCard";
 
 const CategorySection = ({children , sectionResults}:CategorySectionProps) => {
-    console.log(sectionResults)
+    // console.log(sectionResults)
     const rowRef = useRef<HTMLDivElement|null>(null)
 
 
@@ -41,7 +41,7 @@ const CategorySection = ({children , sectionResults}:CategorySectionProps) => {
         <div className="category__container--wrapper">
             <SectionTitle className="secondary-title">{children}</SectionTitle>
             <div className="category__row--wrapper">
-                <button className="arrow-btn" onClick={() => scrollLeft('left')}>
+                <button className="arrow-btn-left" onClick={() => scrollLeft('left')}>
                     <MdKeyboardArrowLeft />
                 </button>
                 <div ref={rowRef} className="category__items--wrapper">
@@ -51,7 +51,7 @@ const CategorySection = ({children , sectionResults}:CategorySectionProps) => {
                         
                     ))}
                 </div>
-                <button className="arrow-btn" onClick={() => scrollLeft('right')}>
+                <button className="arrow-btn-right" onClick={() => scrollLeft('right')}>
                     <MdKeyboardArrowRight />
                 </button>
             </div>

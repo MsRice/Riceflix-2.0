@@ -6,10 +6,11 @@ import YouTube from "react-youtube";
 import ButtonMain from "../ui/ButtonMain";
 import { FaPlay } from "react-icons/fa6";
 import { CiCircleInfo } from "react-icons/ci";
+import { useTranslation } from "react-i18next";
 
 
 const BrowserBanner = () => {
-
+    const { t } = useTranslation()
     const { categoriesList , getContentDetails } = useMovie()
     const { language } = useLanguage()
     const[ bannerDetails , setBannerDetails ] = useState<ContentDetails | null>()
@@ -105,8 +106,8 @@ const BrowserBanner = () => {
                 <h1 className="browser-banner--title">{bannerDetails?.title}</h1>
                 <p className="browser-banner--description">{bannerDetails?.description}</p>
                 <div className="banner__buttons">
-                    <ButtonMain className="play-btn"><FaPlay className="button-svg"/>Play</ButtonMain>
-                    <ButtonMain className="info-btn"><CiCircleInfo className="button-svg"/>More Info</ButtonMain>
+                    <ButtonMain className="play-btn"><FaPlay className="button-svg"/>{t("play")}</ButtonMain>
+                    <ButtonMain className="info-btn"><CiCircleInfo className="button-svg"/>{t("more_info")}</ButtonMain>
                 </div>
             </div>
         </div>

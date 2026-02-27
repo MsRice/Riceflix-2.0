@@ -49,12 +49,12 @@ const Landing2ndRegistration = () => {
 
                 <form className='hero__header--form' onSubmit={handleSubmit}>
                   
-                    <input id='email' type="text" value={email} onChange={e => setEmail(e.target.value)} placeholder='Email address' />
+                    <input id='email' type="text" value={email} onChange={e => setEmail(e.target.value)} placeholder={t("email_address")} />
                     
                     <ButtonMain type='submit' className={'primary-btn secondary-started'}>{t('get_started')}<MdKeyboardArrowRight /></ButtonMain>
                 </form>
                 {!isValid && email.length > 0 && (
-                    <p style={{ color: "red" , fontWeight: 800 }}><RxCrossCircled />Please enter a valid email</p>
+                    <p style={{ color: "red" , fontWeight: 800 }}><RxCrossCircled />{t("valid_email")}</p>
                 )}
                 </div>
         </div>

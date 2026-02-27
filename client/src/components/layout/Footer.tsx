@@ -5,8 +5,9 @@ import { useLanguage } from "../../contexts/lang/LanguageContext";
 import { useTranslation } from "react-i18next";
 import { FaHandshake } from "react-icons/fa";
 import RiceCodes  from "../../assets/images/rice_codesLOGOS/Rice_logo_only_no_background.svg?react";
+import type { FooterProps } from "../../utils/types";
 
-const Footer = () => {
+const Footer = ({className}: FooterProps) => {
         const { t } = useTranslation()
         const { language , setLanguage } = useLanguage()
         const [ openLangMenu , setOpenLangMenu ] = useState(false)
@@ -29,7 +30,7 @@ const Footer = () => {
             }
         },[openLangMenu])
     return (
-        <footer>
+        <footer className={className}>
             <div className="footer__header--wrapper">
                 <p>{t("questions")}<a href="tel:1-866-952-4456">1-866-952-4456</a></p>
             </div>
@@ -78,7 +79,7 @@ const Footer = () => {
                     <li className="social__link"><a href="https://app.joinhandshake.com/profiles/gqqjmh" target="_blank">
                         <FaHandshake />
                     </a></li>
-                    <li className="social__link"><a href="https://https://github.com/MsRice" target="_blank">
+                    <li className="social__link"><a href="https://github.com/MsRice" target="_blank">
                         <IoLogoGithub />
                     </a></li>
                     <li className="social__link"><a href="https://www.linkedin.com/in/patrice-maxwell" target="_blank">

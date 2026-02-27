@@ -106,10 +106,10 @@ function togglePass(){
 
                 <form className='hero__header--form login--form' onSubmit={handleForm}>
                   
-                    <input id='email' type="text" value={email} onChange={handleChange} placeholder='Email address' />
+                    <input id='email' type="text" value={email} onChange={handleChange} placeholder={t("email_address")}/>
 
                     <div className='input-wrapper'>
-                    <input id='password' type={type} value={password} onChange={e => setPassword(e.target.value)} placeholder='password' />
+                    <input id='password' type={type} value={password} onChange={e => setPassword(e.target.value)} placeholder={t("password")}/>
                         <button 
                             type="button"
                             className='log-icon'
@@ -122,7 +122,7 @@ function togglePass(){
                     <ButtonMain type='submit' className={'primary-btn login-started '}>{t('continue')}</ButtonMain>
                 </form>
                 {!isValid && email.length > 0 && (
-                    <p style={{ color: "red" }}><RxCrossCircled />Please enter a valid email</p>
+                    <p style={{ color: "red" }}><RxCrossCircled />{t("valid_email")}</p>
                 )}
                { error && <p>{error}</p> }
                 </div>
@@ -139,7 +139,7 @@ function togglePass(){
         <div className=' login__footer--container'>
             <footer className='login__footer'>
                 <div className="footer__header--wrapper">
-                    <p>{t("questions")} <a href="tel:1-866-952-4456">1-866-952-4456</a> (Toll-Free)</p>
+                    <p>{t("questions")} <a href="tel:1-866-952-4456">1-866-952-4456</a> ({t("toll_free")})</p>
                 </div>
                 <div className="footer__links--wrapper">
                     <ul className="footer__links">

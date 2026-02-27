@@ -20,6 +20,8 @@ i18n.use(initReactI18next).init({
         trending: "Trending Now",
         more_reasons: "More Reasons to Join",
         faq: "Frequently Asked Questions",
+        email_address: "Email address",
+        password: "Password",
         valid_email: "Please enter a valid email",
 
         more_reasons_title_1: "Enjoy on your TV",
@@ -58,6 +60,7 @@ i18n.use(initReactI18next).init({
           "The Riceflix Kids experience is included in your membership to give parents control while kids enjoy family-friendly TV shows and movies in their own space. Kids profiles come with PIN-protected parental controls that let you restrict the maturity rating of content kids can watch and block specific titles you don’t want kids to see.",
 
         questions: "Questions? Call",
+        toll_free: "Toll-Free",
         footer_link_1: "FAQ",
         footer_link_2: "Media Center",
         footer_link_3: "Redeem Gift Cards",
@@ -80,7 +83,7 @@ i18n.use(initReactI18next).init({
         footer_link_20: "Contact Us",
         footer_link_21: "Do Not Sell My Personal Information",
 
-        author: "Designed & Engineered by Patrice (Rice 🍚) Maxwell",
+        author: 'Designed & Engineered by Patrice "Rice 🍚" Maxwell',
 
         enter_info: "Enter your info to sign in",
         or_new_acct: "Or get started with a new account.",
@@ -101,6 +104,27 @@ i18n.use(initReactI18next).init({
         kid_profile_sub: "Only see kid-friendly TV Show and movies",
         save: "Save",
         cancel: "Cancel",
+
+        play: "Play",
+        more_info: "More Info",
+
+        category_section_trending_all: "Trending All",
+        category_section_action_movies: "Action Movies",
+        category_section_comedy_movies: "Comedy Movies",
+        category_section_trending_tv: "Trending Tv",
+
+        browser_nav_link_home: "Home",
+        browser_nav_link_show: "Show",
+        browser_nav_link_movies: "Movies",
+        browser_nav_link_games: "Games",
+        browser_nav_link_new_popular: "New & Popular",
+        browser_nav_link_my_list: "My List",
+        browser_nav_link_browse_by: "Browse by Language",
+
+        browser_dropdown_opt_manage_profiles: "Manage Profiles",
+        browser_dropdown_opt_transfer_profiles: "Transfer Profile",
+        browser_dropdown_opt_account: "Account",
+        browser_dropdown_opt_help_center: "Help Center",
       },
     },
     es: {
@@ -120,6 +144,8 @@ i18n.use(initReactI18next).init({
         trending: "Tendencia Ahora",
         more_reasons: "Más razones para unirse",
         faq: "Preguntas frecuentes",
+        email_address: "Dirección de correo electrónico",
+        password: "Contraseña",
         valid_email: "Por favor, introduzca un correo electrónico válido",
 
         more_reasons_title_1: "Disfrútalo en tu TV",
@@ -163,6 +189,7 @@ i18n.use(initReactI18next).init({
           "La experiencia Riceflix Kids está incluida en tu membresía para que los padres tengan control mientras los niños disfrutan de contenido familiar en su propio espacio. Los perfiles infantiles incluyen controles parentales protegidos con PIN que permiten restringir la clasificación de contenido y bloquear títulos específicos que no deseas que los niños vean.",
 
         questions: "¿Preguntas? Llamar",
+        toll_free: "Número gratuito",
         footer_link_1: "Preguntas Frecuentes",
         footer_link_2: "Centro de Medios",
         footer_link_3: "Canjear Tarjetas de Regalo",
@@ -185,7 +212,7 @@ i18n.use(initReactI18next).init({
         footer_link_20: "Contáctanos",
         footer_link_21: "No Vender Mi Información Personal",
 
-        author: "Diseñado y fabricado por Patrice (Arroz 🍚) Maxwell",
+        author: 'Diseñado y desarrollado  por Patrice "Arrozito 🍚" Maxwell',
         enter_info: "Ingresa tu información para iniciar sesión",
         or_new_acct: "O comience con una nueva cuenta.",
 
@@ -194,7 +221,7 @@ i18n.use(initReactI18next).init({
         rePATCHA_more:
           "La información recopilada por Google reCAPTCHA está sujeta a la Política de privacidad y las Condiciones del servicio de Google, y se utiliza para proporcionar, mantener y mejorar el servicio reCAPTCHA y para fines de seguridad general (no se utiliza para publicidad personalizada por parte de Google).",
         continue: "Continuar",
-        get_help: "Get Help",
+        get_help: "Obtener ayuda",
         finish_acct_setup: "Termine de configurar su cuenta",
         whos_watching: "¿Quién está mirando?",
         add_profile: "Agregar perfil",
@@ -208,6 +235,27 @@ i18n.use(initReactI18next).init({
           "Vea únicamente programas de televisión y películas aptos para niños.",
         save: "Ahorrar",
         cancel: "Cancelar",
+
+        play: "Reproducir",
+        more_info: "Más Info",
+
+        category_section_trending_all: "Tendencias",
+        category_section_action_movies: "Películas de Acción",
+        category_section_comedy_movies: "Películas de Comedia",
+        category_section_trending_tv: "Series en Tendencia",
+
+        browser_nav_link_home: "Inicio",
+        browser_nav_link_show: "Series",
+        browser_nav_link_movies: "Películas",
+        browser_nav_link_games: "Juegos",
+        browser_nav_link_new_popular: "Nuevo y Popular",
+        browser_nav_link_my_list: "Mi Lista",
+        browser_nav_link_browse_by: "Explorar por Idioma",
+
+        browser_dropdown_opt_manage_profiles: "Administrar Perfiles",
+        browser_dropdown_opt_transfer_profiles: "Transferir Perfil",
+        browser_dropdown_opt_account: "Cuenta",
+        browser_dropdown_opt_help_center: "Centro de Ayuda",
       },
     },
   },

@@ -17,7 +17,7 @@ const Home = () => {
 
             </div>
             
-            <Footer />
+            <Footer className="browser-footer"/>
         </div>
         </>
     );

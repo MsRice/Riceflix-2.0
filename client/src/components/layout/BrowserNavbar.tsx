@@ -54,13 +54,13 @@ const BrowserNavbar = () => {
             <div className='navigation-title--wrapper'>
                 <Link to={'/'}><img className='navigation-logo' src={riceflix_logo} alt="Riceflix Logo" /></Link>
                 <ul className='browser-nav__links'>
-                    <li>Home</li>
-                    <li>Show</li>
-                    <li>Movies</li>
-                    <li>Games</li>
-                    <li>New & Popular</li>
-                    <li>My List</li>
-                    <li>Browse by Language</li>
+                    <li>{t("browser_nav_link_home")}</li>
+                    <li>{t("browser_nav_link_show")}</li>
+                    <li>{t("browser_nav_link_movies")}</li>
+                    <li>{t("browser_nav_link_games")}</li>
+                    <li>{t("browser_nav_link_new_popular")}</li>
+                    <li>{t("browser_nav_link_my_list")}</li>
+                    <li>{t("browser_nav_link_browse_by")}</li>
                 </ul>    
             </div>
             <div className='navigation--nav'>
@@ -81,10 +81,10 @@ const BrowserNavbar = () => {
 
                         <TiArrowSortedUp className='arrowup-svg'/>
                         <ul>
-                            <li className='dropdown_opt'><TiPencil className='do-svg'/>Manage Profiles</li>
-                            <li className='dropdown_opt'><FaUsersViewfinder className='do-svg'/>Transfer Profile</li>
-                            <li className='dropdown_opt'><FaRegUser className='do-svg'/>Account</li>
-                            <li className='dropdown_opt'><FaRegCircleQuestion className='do-svg'/>Help Center</li>
+                            <li className='dropdown_opt'><TiPencil className='do-svg'/>{t("browser_dropdown_opt_manage_profiles")}</li>
+                            <li className='dropdown_opt'><FaUsersViewfinder className='do-svg'/>{t("browser_dropdown_opt_transfer_profiles")}</li>
+                            <li className='dropdown_opt'><FaRegUser className='do-svg'/>{t("browser_dropdown_opt_account")}</li>
+                            <li className='dropdown_opt'><FaRegCircleQuestion className='do-svg'/>{t("browser_dropdown_opt_help_center")}</li>
                             <li className='dropdown_opt signout_opt' onClick={logout}>{t("signout")}</li>
                         </ul>
                     </div>

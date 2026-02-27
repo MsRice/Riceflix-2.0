@@ -65,6 +65,7 @@ const Profiles = () => {
         e.preventDefault()
         setName('')
         setIsKid(false)
+        setIsModalOpen(prev => !prev)
     }
     async function handleDeleteProfile(profileId :string){
         try{

@@ -16,7 +16,7 @@ const LandingPage = () => {
             <LandingMoreReasons />
             <LandingFAQ />
             <Landing2ndRegistration />
-            <Footer />
+            <Footer className="landing-footer"/>
  
         </div>
         </>
