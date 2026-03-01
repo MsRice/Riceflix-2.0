@@ -212,6 +212,8 @@
   max-height: 60%;
   max-width: 40%;
   margin-left: 40px;
+  text-shadow: 2px 2px 14px black;
+  color: white;
 }
 
 .browser-banner--title {
@@ -289,6 +291,7 @@
 
 .category__image--wrapper {
   border: none;
+  position: relative;
 }
 .category__items--wrapper::-webkit-scrollbar {
   display: none;
@@ -308,7 +311,6 @@
   background-color: #141414;
 }
 .category__details--wrapper {
-  border: 3px solid fuchsia;
   background-color: #141414;
   opacity: 0;
   visibility: hidden;
@@ -321,6 +323,9 @@
   border-radius: 0 0 5px 5px;
   display: flex;
   flex-direction: column;
+  box-shadow:
+    5px 5px 10px 2px rgba(0, 0, 0, 0.705),
+    -5px 5px 10px 2px rgba(0, 0, 0, 0.705);
 }
 .category__item--wrapper:hover {
   overflow: visible;
@@ -330,6 +335,7 @@
   box-shadow:
     5px 5px 10px 2px rgba(0, 0, 0, 0.705),
     -5px 5px 10px 2px rgba(0, 0, 0, 0.705);
+  border-radius: 6px 6px 0 0;
 }
 
 .category__item--wrapper:first-child:hover {
@@ -353,10 +359,19 @@
   width: 100%;
   height: 100%;
 }
-
+.category__cardImage--image:hover {
+  border-radius: 6px 6px 0 0;
+}
+.category__card-title {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+  color: black;
+  text-shadow: 0 0 10px whitesmoke;
+  font-weight: 700;
+}
 .arrow-btn-left,
 .arrow-btn-right {
-  background-color: blue;
   color: aliceblue;
   position: absolute;
 
@@ -378,4 +393,45 @@
 }
 .arrow-btn-left {
   left: 30px;
+}
+
+/* Category Card Hover Details */
+
+.details__btns--wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 10px 10px 10px;
+}
+.btns--wrapper {
+  display: flex;
+  padding: 2px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.detail-btn {
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex;
+  border: 1px solid rgb(209, 209, 209);
+  padding: 4px;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1a1a;
+}
+.play {
+  padding-left: 8px;
+  background-color: aliceblue;
+  color: black;
+}
+
+.details__genres--wrapper {
+  /* display: flex; */
+  gap: 14px;
+}
+
+.details__genres--wrapper:nth-child::after {
+  content: ",";
 }

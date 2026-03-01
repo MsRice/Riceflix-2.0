@@ -9,7 +9,7 @@ const BrowserCategories = () => {
 
 
 
-    console.log(categoriesList)
+    // console.log(categoriesList)
     return (
         <div className="categories-section__container--wrapper">
             
