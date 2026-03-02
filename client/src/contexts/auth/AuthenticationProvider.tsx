@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import type { AuthenticationProviderProps, CreateCredentials, Credentials, Profile, ProfileCredentials, User } from '../../utils/types';
+import type { AuthenticationProviderProps, CreateCredentials, Credentials, Profile, ProfileCredentials, ProfileListData, User } from '../../utils/types';
 import { AuthenticationContext } from './AuthenticationContext';
 
 
@@ -199,6 +199,35 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
 
 
 
+       const updateProfileList = async ({profileId , contentId , listName}: ProfileListData) => {
+        if(!user || !token) return
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profiles/${profileId}/${listName}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" , Authorization: `Bearer ${token}` },
+            body: JSON.stringify({contentId})
+        });
+         if (!res.ok) {
+            const error = await res.json()
+            throw new Error(error.message)
+            }
+
+       const updatedProfile = await res.json();
+       if (!updatedProfile?._id) return;
+
+        setUser((prev) => {
+            if (!prev) return prev;
+
+            return {
+            ...prev,
+            profiles: prev.profiles.map((profile) =>
+                profile._id === updatedProfile._id
+                ? updatedProfile
+                : profile
+            ),
+
+            }
+        })}
+
     useEffect(() => {
         const storedToken = localStorage.getItem("token")
         if (storedToken) {
@@ -207,9 +236,11 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
     }, [])
 
 
+    
+    
 
     return (
-        <AuthenticationContext.Provider value={{user,  token, authLoading ,activeProfile , activeProfileId ,setActiveProfileId ,login, register, logout ,createProfile, getProfile,updateProfile, deleteProfile }}>
+        <AuthenticationContext.Provider value={{user,  token, authLoading ,activeProfile , activeProfileId ,setActiveProfileId ,login, register, logout ,createProfile, getProfile,updateProfile, deleteProfile ,updateProfileList}}>
             {children}
         </AuthenticationContext.Provider>
     );

@@ -83,7 +83,8 @@ const BrowserBanner = () => {
                                     autoplay: 1,
                                     mute:1,
                                     controls: 0,
-                                    fullscreen: 1
+                                    fullscreen: 1,
+                                    origin: window.location.origin,
                                 }
                             }}
                             onEnd={() => setVideoEnded(true)}/>

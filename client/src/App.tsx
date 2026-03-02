@@ -6,6 +6,7 @@ import Registration from "./components/pages/Registration";
 import { useAuthentication } from "./contexts/auth/AuthenticationContext";
 import Profiles from "./components/pages/Profiles";
 import type { ReactNode } from "react";
+import Watch from "./components/pages/Watch";
 
 const App = () => {
 
@@ -13,6 +14,7 @@ const App = () => {
   
   const ProtectedRoute = ({children}: {children :ReactNode}) => {
     const { user ,authLoading} = useAuthentication()
+    
     if (authLoading) return null
     if (!user){
       return <Navigate to="/login" replace/>
@@ -39,7 +41,12 @@ const App = () => {
         </ProtectedRoute>
         
         }/>
-    
+     <Route path="/watch/:contentId/:type" element={
+        <ProtectedRoute>
+        <Watch />
+        </ProtectedRoute>
+        
+        }/>
     
     </Routes>
   );

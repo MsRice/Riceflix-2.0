@@ -1,0 +1,80 @@
+.watch__container {
+  width: 100dvw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: none;
+  background-color: #141414;
+
+  position: relative;
+}
+
+.watch--wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.watch__frame {
+  border: none;
+  height: 100%;
+  width: 100vw;
+  pointer-events: none;
+  transform: scaleX(1.2);
+}
+
+.video-controls__overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.control__container--back,
+.control__container--tracker,
+.control__container--play,
+.control__container--volume,
+.control__container--fullscreen {
+  border: 2px solid chartreuse;
+  position: absolute;
+}
+
+.control__container--back {
+  top: 1%;
+  left: 1%;
+}
+.control__container--tracker {
+  bottom: 10%;
+  width: 100%;
+}
+.control__container--play {
+  bottom: 0;
+  left: 1%;
+}
+.control__container--volume {
+  bottom: 0;
+  left: 5%;
+
+  display: flex;
+  flex-direction: column;
+}
+.control__container--volume input {
+  border: 2px solid fuchsia;
+  transform: rotate(270deg);
+}
+.control__container--fullscreen {
+  bottom: 0;
+  right: 1%;
+}
+
+.control__container--btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 3rem;
+  color: rgb(255, 252, 252);
+}

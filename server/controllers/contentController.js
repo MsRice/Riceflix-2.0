@@ -90,14 +90,14 @@ async function getWall(req, res) {
       }),
     ]);
     const categories = {
-      trendingAll,
-      trendingTV,
-      topRatedMovies,
-      actionMovies,
-      comdeyMovies,
-      horrorMovies,
-      romanceMovies,
-      documentaries,
+      trendingAll: normalizeCategory(trendingAll),
+      trendingTV: normalizeCategory(trendingTV, "tv"),
+      topRatedMovies: normalizeCategory(topRatedMovies, "movie"),
+      actionMovies: normalizeCategory(actionMovies, "movie"),
+      comdeyMovies: normalizeCategory(comdeyMovies, "movie"),
+      horrorMovies: normalizeCategory(horrorMovies, "movie"),
+      romanceMovies: normalizeCategory(romanceMovies, "movie"),
+      documentaries: normalizeCategory(documentaries, "movie"),
     };
     await client.setEx(CACHE_KEY, 14400, JSON.stringify(categories));
     res.json(categories);
@@ -106,6 +106,16 @@ async function getWall(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
+const normalizeCategory = (data, type) => {
+  return {
+    ...data,
+    results: data.results.map((item) => ({
+      ...item,
+      media_type: item.media_type ?? type,
+    })),
+  };
+};
 
 async function getContentDetails(req, res) {
   const { id } = req.params;

@@ -47,6 +47,7 @@ const BrowserNavbar = () => {
 
         }
     },[openLangMenu])
+
     
     return (
         <nav className={`browser-navigation--container ${isScrolled ? "navbar--scrolled" : ""}` }>

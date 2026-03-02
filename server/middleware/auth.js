@@ -22,6 +22,8 @@ function auth(req, res, next) {
       role: decoded.role,
     };
 
+    // console.log("DECODED TOKEN:", decoded);
+
     next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {

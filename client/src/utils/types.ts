@@ -438,6 +438,14 @@ export interface ProfileCredentials {
   isKid?: boolean;
 }
 
+export type ProfileListTypes = "watchlist" | "history" | "favorites";
+
+export interface ProfileListData {
+  profileId: string;
+  contentId: number;
+  listName: ProfileListTypes;
+}
+
 export interface AuthContextType {
   user: User | null;
   token: string | null;
@@ -452,6 +460,7 @@ export interface AuthContextType {
   getProfile: (id: string) => Promise<void>;
   updateProfile: (updateData: ProfileCredentials) => Promise<void>;
   deleteProfile: (profileId: string) => Promise<void>;
+  updateProfileList: (profileData: ProfileListData) => void;
 }
 
 export interface AuthenticationProviderProps {

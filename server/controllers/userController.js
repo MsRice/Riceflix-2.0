@@ -170,40 +170,45 @@ async function createProfile(req, res) {
   }
 }
 
-async function updateList(req, res) {
+// Get List
+
+async function getWatchlist(req, res) {
+  getList(req, res, "watchlist");
+}
+async function getFavorites(req, res) {
+  getList(req, res, "favorites");
+}
+async function getHistory(req, res) {
+  getList(req, res, "history");
+}
+async function getList(req, res, listType) {
   try {
-    const userId = req.user.id;
-    const { profileId, listName, contentId } = req.body;
+    const userId = req.params;
+    const { profileId } = req.user;
 
-    const validLists = ["watchlist", "history", "favorite"];
-    if (!validLists.includes(listName)) {
-      return res.status(400).json({ message: "Invalid list name" });
+    const validLists = ["watchlist", "history", "favorites"];
+    if (!validLists.includes(listType)) {
+      return res.status(400).json({ message: "Invalid list type" });
     }
 
-    if (!contentId || !profileId) {
-      return res
-        .status(400)
-        .json({ message: "Missing profileId or contentId" });
-    }
+    const user = await User.findOne({
+      _id: userId,
+      "profiles._id": profileId,
+    }).populate({
+      path: `profiles.${listType}`,
+      model: "Content",
+    });
 
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: userId, "profiles._id": profileId },
-      {
-        $addToSet: { [`profiles.$.${listName}`]: contentId },
-      },
-      { new: true },
-    );
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User or Profile not found" });
-    }
+    const profile = user.profiles.id(profileId);
+    if (!profile) return res.status(404).json({ message: "Profile not found" });
 
     res.status(200).json({
-      message: `Successfully added to ${listName}`,
-      profiles: updatedUser.profiles,
+      listName: listType,
+      data: profile[listType],
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -285,36 +290,6 @@ async function deleteProfile(req, res) {
   }
 }
 
-async function getList(req, res) {
-  try {
-    const userId = req.user.id;
-    const { profileId } = req.user;
-    const { listType } = req.params;
-
-    const validLists = ["watchlist", "history", "favorite"];
-    if (!validLists.includes(listType)) {
-      return res.status(400).json({ message: "Invalid list type" });
-    }
-
-    const user = await User.findById(userId).populate({
-      path: `profiles.${listType}`,
-      model: "Content",
-    });
-
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const profile = user.profiles.id(profileId);
-    if (!profile) return res.status(404).json({ message: "Profile not found" });
-
-    res.status(200).json({
-      listName: listType,
-      data: profile[listType],
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
-
 async function deleteListItem(req, res) {
   try {
     const userId = req.user.id;
@@ -331,7 +306,7 @@ async function deleteListItem(req, res) {
       {
         $pull: { [`profiles.$.${listType}`]: contentId },
       },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!updatedUser) {
@@ -383,7 +358,7 @@ async function updateProfile(req, res) {
     const updatedUser = await User.findOneAndUpdate(
       { _id: userId, "profiles._id": profileId },
       { $set: updateFields },
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!updatedUser) {
@@ -406,6 +381,151 @@ async function updateProfile(req, res) {
   }
 }
 
+async function updateWatchList(req, res) {
+  try {
+    const userId = req.user.id;
+    const { profileId } = req.params;
+    const { contentId } = req.body;
+
+    const updatedUser = await updateList(
+      userId,
+      profileId,
+      "watchlist",
+      contentId,
+    );
+
+    if (!updatedUser)
+      return res.status(404).json({ message: "User or Profile not found" });
+    const updatedProfile = updatedUser.profiles.id(profileId);
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    console.error("🔥 FULL BACKEND ERROR:");
+    console.error(error);
+    console.error("STACK:", error.stack);
+    res.status(500).json({ error: error.message });
+  }
+}
+async function updateFavorites(req, res) {
+  try {
+    const userId = req.user.id;
+    const { profileId } = req.params;
+    const { contentId } = req.body;
+
+    const updatedUser = await updateList(
+      userId,
+      profileId,
+      "favorites",
+      contentId,
+    );
+
+    if (!updatedUser)
+      return res.status(404).json({ message: "User or Profile not found" });
+
+    const updatedProfile = updatedUser.profiles.id(profileId);
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    console.error("🔥 FULL BACKEND ERROR:");
+    console.error(error);
+    console.error("STACK:", error.stack);
+    res.status(500).json({ error: error.message });
+  }
+}
+async function updateHistory(req, res) {
+  try {
+    const userId = req.user.id;
+    const { profileId } = req.params;
+    const { contentId } = req.body;
+
+    const updatedUser = await updateList(
+      userId,
+      profileId,
+      "history",
+      contentId,
+    );
+
+    if (!updatedUser)
+      return res.status(404).json({ message: "User or Profile not found" });
+
+    const updatedProfile = updatedUser.profiles.id(profileId);
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    console.error("🔥 FULL BACKEND ERROR:");
+    console.error(error);
+    console.error("STACK:", error.stack);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function updateList(userId, profileId, listName, contentId) {
+  return await User.findOneAndUpdate(
+    { _id: userId, "profiles._id": profileId },
+    { $addToSet: { [`profiles.$.${listName}`]: Number(contentId) } },
+    { returnDocument: "after" },
+  );
+}
+
+async function deleteWatchList(req, res) {
+  try {
+    const userId = req.user.id;
+    const { profileId, contentId } = req.params;
+
+    const updatedUser = await deleteFromProfileList(
+      userId,
+      profileId,
+      "watchlist",
+      contentId,
+    );
+    if (!updatedUser)
+      return res.status(404).json({ message: "User or profile not found" });
+    res.status(200).json({ message: "Removed from watchlist" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+async function deleteFavorites(req, res) {
+  try {
+    const userId = req.user.id;
+    const { profileId, contentId } = req.params;
+
+    const updatedUser = await deleteFromProfileList(
+      userId,
+      profileId,
+      "favorites",
+      contentId,
+    );
+    if (!updatedUser)
+      return res.status(404).json({ message: "User or profile not found" });
+    res.status(200).json({ message: "Removed from favorites" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+async function deleteHistory(req, res) {
+  try {
+    const userId = req.user.id;
+    const { profileId, contentId } = req.params;
+
+    const updatedUser = await deleteFromProfileList(
+      userId,
+      profileId,
+      "history",
+      contentId,
+    );
+    if (!updatedUser)
+      return res.status(404).json({ message: "User or profile not found" });
+    res.status(200).json({ message: "Removed from history" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function deleteFromProfileList(userId, profileId, listName, contentId) {
+  return User.findOneAndUpdate(
+    { _id: userId, "profiles._id": profileId },
+    { $pull: { [`profiles.$.${listName}`]: contentId } },
+    { returnDocument: "after" },
+  );
+}
 module.exports = {
   registration,
   login,
@@ -417,4 +537,13 @@ module.exports = {
   getList,
   deleteListItem,
   updateProfile,
+  getWatchlist,
+  getFavorites,
+  getHistory,
+  updateWatchList,
+  updateFavorites,
+  updateHistory,
+  deleteWatchList,
+  deleteFavorites,
+  deleteHistory,
 };

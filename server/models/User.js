@@ -24,16 +24,16 @@ const ProfileSchema = new Schema({
     default: false,
   },
   watchlist: {
-    type: [Schema.Types.ObjectId],
-    ref: "Content",
+    type: [Number],
+    default: [],
   },
   history: {
-    type: [Schema.Types.ObjectId],
-    ref: "Content",
+    type: [Number],
+    default: [],
   },
   favorites: {
-    type: [Schema.Types.ObjectId],
-    ref: "Content",
+    type: [Number],
+    default: [],
   },
 });
 

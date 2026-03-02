@@ -23,7 +23,7 @@ const MovieProvider = ({children}: MovieProviderProps) => {
                 }
                 const categories = await res.json()
                 setCategoriesList(categories)
-                
+                console.log('ntt' , categories)
             } catch (error) {
                 console.error(error);
                 

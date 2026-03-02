@@ -95,11 +95,13 @@ const Profiles = () => {
     }
 
     async function handleSelectedProfile(profileId :string){
+
         
 
         try {
            await getProfile(profileId)
-            navigate("/browse")
+            console.log(profileId)
+           navigate("/browse")
 
         } catch (error) {
             console.error(error);

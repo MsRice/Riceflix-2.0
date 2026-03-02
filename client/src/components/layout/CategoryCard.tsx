@@ -1,4 +1,4 @@
-import type { CategoryMovie, ContentDetails, MetaCategoryData } from "../../utils/types";
+import type { CategoryMovie, ContentDetails, MetaCategoryData, ProfileListTypes } from "../../utils/types";
 import { IoPlay } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
 import { HiOutlineThumbUp } from "react-icons/hi";
@@ -6,12 +6,16 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useMovie } from "../../contexts/movie/MovieContext";
 import { useState } from "react";
 import { useLanguage } from "../../contexts/lang/LanguageContext";
+import { useAuthentication } from "../../contexts/auth/AuthenticationContext";
+import { useNavigate } from "react-router-dom";
 
 
 const CategoryCard = ({item}:{item: CategoryMovie}) => {
     const { getContentDetails } = useMovie()
+    const { activeProfile , updateProfileList } = useAuthentication()
     const [indexDetailed , setIndexDetailed] = useState<MetaCategoryData | null>(null)
     const { language } = useLanguage()
+    const navigate = useNavigate()
 
     const mockTvDetails: MetaCategoryData = {
         type: 'tv', 
@@ -27,7 +31,7 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
             size: 1080,
             type: "Trailer"
         }, 
-        season_ct: '1 Season', 
+        season_ct: '3 Season', 
         production_co: {
             id: 21444,
             logo_path: "/wSejGn3lAZdQ5muByxvzigwyDY6.png",
@@ -69,7 +73,6 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
         ]
     }
 
-    console.log('nt+lb' ,  indexDetailed)
     const fetchDetails = async () => {
         if (indexDetailed) return;
             const contentDetails = await getContentDetails(
@@ -85,49 +88,67 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
             setIndexDetailed(meta)
     }
 
-        function metaCategoryData( contentDetails : ContentDetails ): MetaCategoryData {
-            if(contentDetails.type === "tv"){
-                const seasons = contentDetails.raw_tmdb.number_of_seasons ?? 0;
-                return {
-                    type: "tv",
-                    trailer: contentDetails?.raw_tmdb.videos?.results.find((el) =>
-                        ["Trailer", "Teaser"].some((keyword) =>
-                        el.name?.includes(keyword)
-                        )),
-                    season_ct:  `${seasons} Season${seasons > 1 ? "s" : ""}`,
-                    production_co: contentDetails   .raw_tmdb.production_companies[0] ?? 0 ,
-                    genres: contentDetails.raw_tmdb.genres
-    
-                }
-              
+    function handlePlay(contentId:number ,listName:ProfileListTypes, type: "movie" | "tv" | undefined  ){
+        console.log(item , type)
+        handleListUpdate(contentId ,listName)
+        navigate(`/watch/${contentId}/${type}`)
+        
+    }
+
+    function handleListUpdate(contentId:number ,listName:ProfileListTypes ){
+        
+
+        console.log(activeProfile?._id , contentId , listName)
+        const profileId = activeProfile?._id || 'null'
+
+        updateProfileList({profileId, contentId , listName})
+
+
+    }
+
+    function metaCategoryData( contentDetails : ContentDetails ): MetaCategoryData {
+        if(contentDetails.type === "tv"){
+            const seasons = contentDetails.raw_tmdb.number_of_seasons ?? 0;
+            return {
+                type: "tv",
+                trailer: contentDetails?.raw_tmdb.videos?.results.find((el) =>
+                    ["Trailer", "Teaser"].some((keyword) =>
+                    el.name?.includes(keyword)
+                    )),
+                season_ct:  `${seasons} Season${seasons > 1 ? "s" : ""}`,
+                production_co: contentDetails   .raw_tmdb.production_companies[0] ?? 0 ,
+                genres: contentDetails.raw_tmdb.genres
+
             }
-              const runtime = contentDetails.raw_tmdb.runtime ?? 0;
-
-                const hours = Math.floor(runtime / 60);
-                const mins = runtime % 60;
-
-                const formattedRuntime =
-                    hours > 0 && mins > 0
-                    ? `${hours}h ${mins}m`
-                    : hours > 0
-                    ? `${hours}h`
-                    : `${mins}m`;
-
-                return {
-                    type:"movie",
-                    trailer: contentDetails.raw_tmdb.videos?.results.find( (el) =>
-                        ["Official Trailer", "Official Teaser"].some((keyword) =>
-                        el.name?.includes(keyword)
-                        )),
-                    runtime:  formattedRuntime,
-                    production_co: contentDetails.raw_tmdb.production_companies[0] ?? null,
-                    genres: contentDetails.raw_tmdb.genres
-
-        
-                }
-        
             
         }
+            const runtime = contentDetails.raw_tmdb.runtime ?? 0;
+
+            const hours = Math.floor(runtime / 60);
+            const mins = runtime % 60;
+
+            const formattedRuntime =
+                hours > 0 && mins > 0
+                ? `${hours}h ${mins}m`
+                : hours > 0
+                ? `${hours}h`
+                : `${mins}m`;
+
+            return {
+                type:"movie",
+                trailer: contentDetails.raw_tmdb.videos?.results.find( (el) =>
+                    ["Official Trailer", "Official Teaser"].some((keyword) =>
+                    el.name?.includes(keyword)
+                    )),
+                runtime:  formattedRuntime,
+                production_co: contentDetails.raw_tmdb.production_companies[0] ?? null,
+                genres: contentDetails.raw_tmdb.genres
+
+    
+            }
+    
+        
+    }
 
     
     return (
@@ -147,9 +168,9 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
                 
                 <div className="details__btns--wrapper">
                     <div className="btns--wrapper">
-                        <div className="detail-btn play"><IoPlay  /></div>
-                        <div className="detail-btn"><FaPlus  /></div>
-                        <div className="detail-btn"><HiOutlineThumbUp  /></div>
+                        <div className="detail-btn play" onClick={() => handlePlay(item.id ,"history" , item.media_type)}><IoPlay  /></div>
+                        <div className="detail-btn" onClick={() => handleListUpdate(item.id ,"watchlist")}><FaPlus /></div>
+                        <div className="detail-btn" onClick={() => handleListUpdate(item.id ,"favorites")}><HiOutlineThumbUp  /></div>
                     </div>
                     <div>
                         <div className="detail-btn"><MdOutlineKeyboardArrowDown  /></div>
@@ -157,35 +178,39 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
                 </div>
 
                 {/* movie */}
-                {/* <div>{`${indexDetailed.runtime}`} | {`${indexDetailed.production_co?.name}`} </div>
+                {indexDetailed.type === "movie" && <> 
+                <div>{`${indexDetailed.runtime}`} | {`${indexDetailed.production_co?.name}`} </div>
                 <div className="details__genres--wrapper">
 
                     {indexDetailed.genres.slice(0,3).map(
                         (genre , index) => (
-                            <span>
-                                {`${genre.name}`}
-                                {index !== indexDetailed.genres.length - 1 && ", "}
-                            </span>
-                        )
-                    )}
-                </div> */}
-
-
-                {/* tv */}
-                <div>{`${indexDetailed.season_ct}`} | {`${indexDetailed.production_co?.name}`} </div>
-                <div className="details__genres--wrapper">
-
-                    {indexDetailed.genres.slice(0,3).map(
-                        (genre , index) => (
-                            <span>
+                            <span key={genre.id}>
                                 {`${genre.name}`}
                                 {index !== indexDetailed.genres.length - 1 && ", "}
                             </span>
                         )
                     )}
                 </div>
-        
+                </>
+                }
 
+                {/* tv */}
+                {indexDetailed.type === "tv" && <> 
+                <div>{`${indexDetailed.season_ct}`} | {`${indexDetailed.production_co?.name}`} </div>
+                <div className="details__genres--wrapper">
+                
+                {indexDetailed.genres.slice(0,3).map(
+                    (genre , index) => (
+                        <span key={genre.id}>
+                                {`${genre.name}`}
+                                {index !== indexDetailed.genres.length - 1 && ", "}
+                            </span>
+                        )
+                    )}
+                </div>
+                </>
+                }
+        
 
             </div>
             :<div>loading</div>}
