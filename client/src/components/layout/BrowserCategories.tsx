@@ -7,9 +7,6 @@ const BrowserCategories = () => {
      const { categoriesList } = useMovie()
      const { t } =useTranslation()
 
-
-
-    // console.log(categoriesList)
     return (
         <div className="categories-section__container--wrapper">
             

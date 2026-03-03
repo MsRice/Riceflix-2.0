@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useLanguage } from "../../contexts/lang/LanguageContext";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { ContentDetails } from "../../utils/types";
 import { useMovie } from "../../contexts/movie/MovieContext";
 import YouTube from "react-youtube";
@@ -17,6 +17,7 @@ const Watch = () => {
     const {language} = useLanguage()
     const { getContentDetails } = useMovie()
     const navigate = useNavigate()
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     const [watchDetails , setWatchDetails] = useState<ContentDetails | null>(null)
     const [duration, setDuration] = useState(0);
@@ -24,6 +25,7 @@ const Watch = () => {
     const progress = (currentTime / duration) * 100;
     const [ playing , setPlaying ] = useState(true)
     const [ volume , setVolume ] = useState(100)
+    const [controlsVisible, setControlsVisible] = useState(false);
 
     useEffect(() =>{
         if (!contentId) return;
@@ -55,6 +57,12 @@ const Watch = () => {
         setDuration(total);
     };
 
+
+    const handleOverlayPlay = (e:React.MouseEvent<HTMLDivElement>) => {
+        if(e.target === e.currentTarget){
+            handlePlay()
+        }
+    }
     const handlePlay = () => {
         if (!playerRef.current) return;
 
@@ -80,10 +88,20 @@ const Watch = () => {
         setVolume(value)
     };
     const handleFullscreen = () => {
-        const iframe = playerRef.current?.getIframe();
-        iframe?.requestFullscreen();
+        containerRef.current?.requestFullscreen();;
     };
 
+      const handleMouseMove = () => {
+    setControlsVisible(true);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setControlsVisible(false);
+    }, 2000);
+  };
     
     useEffect(() => {
     const interval = setInterval(() => {
@@ -95,10 +113,28 @@ const Watch = () => {
         return () => clearInterval(interval);
     }, []);
 
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+  const container = containerRef.current;
+  if (!container) return;
+
+
+  container.addEventListener("mousemove", handleMouseMove);
+
+  return () => {
+    container.removeEventListener("mousemove", handleMouseMove);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+}, []);
+
     return (
         <>
         {trailer && 
-        <div className="watch__container">
+        <div className="watch__container" ref={containerRef} onMouseMove={handleMouseMove}>
             
             <div key={trailer.id} className="watch--wrapper">
                         <YouTube 
@@ -127,24 +163,26 @@ const Watch = () => {
                         />
                             
             </div>
-            <div className="video-controls__overlay">
+            <div onClick={handleOverlayPlay} className={`video-controls__overlay ${controlsVisible ? "visible" : ''}`}>
                 <div className="control__container--back">
                     <button className="control__container--btn" onClick={() => navigate(-1)}><FaArrowLeft /></button>
                 </div>
 
                 <div className="control__container--tracker">
 
-                    <div className="track">
+                    <div className="control__seek--track">
                         <input
                             type="range"
                             min="0"
                             max={duration}
                             value={currentTime}
+                            className="control__seek--slider"
+                            style={{ "--fill-percent": `${progress}%` } as React.CSSProperties}
                             onChange={(e) =>
                                 playerRef.current?.seekTo(Number(e.target.value), true)
                             }
                             />
-                        <div className="progress" style={{ width: `${progress}%` }} />
+                        
                     </div>
                 </div>
 
@@ -156,16 +194,20 @@ const Watch = () => {
                 </div>
 
                 <div className="control__container--volume">
-                    <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        defaultValue={volume}
-                        onChange={(e) => setVolumeInt(Number(e.target.value))}
+                    <div className="control__volume--track">
+
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={volume}
+                            className="control__volume--slider"
+                            onChange={(e) => setVolumeInt(Number(e.target.value))}
                         />
-                    { volume !== 0 && volume > 50 && <button className="control__container--btn" onClick={handleMute}><RiVolumeUpFill /></button>}
-                    { volume !== 0 && volume < 50 && <button className="control__container--btn" onClick={handleMute}><RiVolumeDownFill /></button>}
-                    { volume === 0 && <button className="control__container--btn" onClick={handleUnmute}><RiVolumeMuteFill /></button>}
+                    </div>
+                    { volume !== 0 && volume > 50 && <button className="control__container--btn volume-btn" onClick={handleMute}><RiVolumeUpFill /></button>}
+                    { volume !== 0 && volume < 50 && <button className="control__container--btn volume-btn" onClick={handleMute}><RiVolumeDownFill /></button>}
+                    { volume === 0 && <button className="control__container--btn volume-btn" onClick={handleUnmute}><RiVolumeMuteFill /></button>}
                     
                 </div>
 

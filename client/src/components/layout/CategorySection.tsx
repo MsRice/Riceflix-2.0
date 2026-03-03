@@ -5,7 +5,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import CategoryCard from "./CategoryCard";
 
 const CategorySection = ({children , sectionResults}:CategorySectionProps) => {
-    // console.log(sectionResults)
+    
     const rowRef = useRef<HTMLDivElement|null>(null)
 
 

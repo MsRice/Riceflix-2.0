@@ -84,12 +84,12 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
             if (!contentDetails) return; 
 
             const meta = metaCategoryData(contentDetails)
-            console.log(meta)
+            
             setIndexDetailed(meta)
     }
 
     function handlePlay(contentId:number ,listName:ProfileListTypes, type: "movie" | "tv" | undefined  ){
-        console.log(item , type)
+      
         handleListUpdate(contentId ,listName)
         navigate(`/watch/${contentId}/${type}`)
         
@@ -98,7 +98,7 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
     function handleListUpdate(contentId:number ,listName:ProfileListTypes ){
         
 
-        console.log(activeProfile?._id , contentId , listName)
+     
         const profileId = activeProfile?._id || 'null'
 
         updateProfileList({profileId, contentId , listName})

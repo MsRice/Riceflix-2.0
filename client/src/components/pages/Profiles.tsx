@@ -100,7 +100,6 @@ const Profiles = () => {
 
         try {
            await getProfile(profileId)
-            console.log(profileId)
            navigate("/browse")
 
         } catch (error) {

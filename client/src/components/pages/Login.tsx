@@ -56,7 +56,6 @@ const handleForm = async (event: React.FormEvent) => {
 
     
     try {
-        console.log('mlb')
         await login(userData)
         navigate('/profiles')
     } catch (error) {

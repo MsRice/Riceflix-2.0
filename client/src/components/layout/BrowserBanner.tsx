@@ -59,8 +59,7 @@ const BrowserBanner = () => {
                     ["Official Trailer", "Official Teaser"].some((keyword) =>
                  el.name?.includes(keyword)
                 ))
-    // console.log(randomMovie)
-    // console.log(bannerDetails)
+
 
     return (
         <div className="browser-banner__container--wrapper">
