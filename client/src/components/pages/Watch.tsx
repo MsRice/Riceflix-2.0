@@ -5,6 +5,7 @@ import type { ContentDetails } from "../../utils/types";
 import { useMovie } from "../../contexts/movie/MovieContext";
 import YouTube from "react-youtube";
 import type { YouTubeProps } from "react-youtube";
+import type { YT } from "youtube"
 
 
 import { FaPlay , FaPause } from "react-icons/fa6";

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMovie } from "../../contexts/movie/MovieContext";
 import { useLanguage } from "../../contexts/lang/LanguageContext";
-import type { ContentDetails } from "../../utils/types";
+import type { ContentDetails, HomeProps } from "../../utils/types";
 import YouTube from "react-youtube";
 import ButtonMain from "../ui/ButtonMain";
 import { FaPlay } from "react-icons/fa6";
@@ -9,7 +9,7 @@ import { CiCircleInfo } from "react-icons/ci";
 import { useTranslation } from "react-i18next";
 
 
-const BrowserBanner = () => {
+const BrowserBanner = ({isDetailsOopen}: HomeProps ) => {
     const { t } = useTranslation()
     const { categoriesList , getContentDetails } = useMovie()
     const { language } = useLanguage()
@@ -64,7 +64,7 @@ const BrowserBanner = () => {
     return (
         <div className="browser-banner__container--wrapper">
 
-        {!videoEnded ? <>
+        {!videoEnded && !isDetailsOopen ? <>
             { trailer &&
                 
                 <div key={trailer.id} className="browser-banner--wrapper">

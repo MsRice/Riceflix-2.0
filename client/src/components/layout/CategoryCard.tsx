@@ -7,7 +7,7 @@ import { useMovie } from "../../contexts/movie/MovieContext";
 import { useState } from "react";
 import { useLanguage } from "../../contexts/lang/LanguageContext";
 import { useAuthentication } from "../../contexts/auth/AuthenticationContext";
-import { useNavigate } from "react-router-dom";
+import {  useLocation , useNavigate } from "react-router-dom";
 
 
 const CategoryCard = ({item}:{item: CategoryMovie}) => {
@@ -16,6 +16,8 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
     const [indexDetailed , setIndexDetailed] = useState<MetaCategoryData | null>(null)
     const { language } = useLanguage()
     const navigate = useNavigate()
+    const location = useLocation()
+
 
     const mockTvDetails: MetaCategoryData = {
         type: 'tv', 
@@ -105,6 +107,15 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
 
 
     }
+    
+    function handleBrowseDetails(contentId:number){
+        console.log(contentId)
+
+        navigate(`/browse/${contentId}` , {
+            state: {backgroundLocation: location}
+        })
+
+    }
 
     function metaCategoryData( contentDetails : ContentDetails ): MetaCategoryData {
         if(contentDetails.type === "tv"){
@@ -173,7 +184,7 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
                         <div className="detail-btn" onClick={() => handleListUpdate(item.id ,"favorites")}><HiOutlineThumbUp  /></div>
                     </div>
                     <div>
-                        <div className="detail-btn"><MdOutlineKeyboardArrowDown  /></div>
+                        <div className="detail-btn" onClick={() => handleBrowseDetails(item.id)}><MdOutlineKeyboardArrowDown  /></div>
                     </div>
                 </div>
 

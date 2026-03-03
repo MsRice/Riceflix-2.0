@@ -466,3 +466,7 @@ export interface AuthContextType {
 export interface AuthenticationProviderProps {
   children: React.ReactNode;
 }
+
+export type HomeProps = {
+  isDetailsOopen: boolean;
+};

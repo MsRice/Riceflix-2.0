@@ -1,0 +1,19 @@
+.container.opened-details {
+  filter: brightness(0.4);
+}
+
+.modal--wrapper {
+  border: 5px solid chartreuse;
+  position: fixed;
+  inset: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.modal__details--container {
+  border: 2px solid fuchsia;
+  border-radius: 12px;
+  width: 60%;
+  margin: 2%;
+}
