@@ -46,7 +46,6 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
             {id: 10765, name: 'Sci-Fi & Fantasy'}
         ]
     }
-
     const mockMovieDetails:MetaCategoryData = {
         type: 'movie', 
         trailer: {
@@ -108,10 +107,10 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
 
     }
     
-    function handleBrowseDetails(contentId:number){
+    function handleBrowseDetails(contentId:number , type: "movie" | "tv" | undefined ){
         console.log(contentId)
 
-        navigate(`/browse/${contentId}` , {
+        navigate(`/browse/${contentId}/${type}` , {
             state: {backgroundLocation: location}
         })
 
@@ -184,7 +183,7 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
                         <div className="detail-btn" onClick={() => handleListUpdate(item.id ,"favorites")}><HiOutlineThumbUp  /></div>
                     </div>
                     <div>
-                        <div className="detail-btn" onClick={() => handleBrowseDetails(item.id)}><MdOutlineKeyboardArrowDown  /></div>
+                        <div className="detail-btn" onClick={() => handleBrowseDetails(item.id , item.media_type)}><MdOutlineKeyboardArrowDown  /></div>
                     </div>
                 </div>
 

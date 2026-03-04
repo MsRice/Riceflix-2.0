@@ -78,6 +78,19 @@ export interface RawTMDBMovieDetails {
   production_companies: ProductionCompany[];
   production_countries: ProductionCountry[];
   release_date: string;
+  release_dates: {
+    results: {
+      iso_3166_1: string;
+      release_dates: {
+        certification: string;
+        descriptors: string[];
+        iso_639_1: string;
+        note: string;
+        release_date: string; // ISO string date
+        type: number;
+      }[];
+    }[];
+  };
   revenue: number;
   runtime?: number | null;
   similar: {
@@ -102,7 +115,13 @@ export interface RawTMDBMovieDetails {
 export interface RawTMDBTVDetail {
   adult: boolean;
   backdrop_path: string | null;
-
+  content_ratings: {
+    results: {
+      descriptors: string[];
+      iso_3166_1: string;
+      rating: string;
+    }[];
+  };
   created_by: {
     id: number;
     credit_id: string;
@@ -127,7 +146,7 @@ export interface RawTMDBTVDetail {
       character: string;
       credit_id: string;
       order: number;
-    };
+    }[];
     crew: {
       adult: boolean;
       gender: number;
@@ -142,7 +161,7 @@ export interface RawTMDBTVDetail {
       credit_id: string;
       department: string; // e.g. "Writing", "Directing", "Crew"
       job: string; // e.g. "Director", "Creator"};
-    };
+    }[];
   };
   episode_run_time: number[]; // can be empty []
   first_air_date: string;
@@ -313,7 +332,70 @@ interface MetaCategoryMovieData {
   production_co?: ProductionCompany | null;
   genres: Genre[];
 }
+
 export type MetaCategoryData = MetaCategoryMovieData | MetaCategoryTVData;
+
+export interface MetaBrowserDetailsMovieData {
+  type: "movie";
+  _id: string | null;
+  title: string | null;
+  trailer?: TMDBDetails;
+  releaseYear?: string;
+  runtime?: string;
+  description: string | null;
+  tagLine?: string | null;
+  production_co?: {
+    id: number;
+    name: string;
+    logo_path: string | null;
+  } | null;
+  genres: {
+    id: number;
+    name: string;
+  }[];
+  maturityRating?: string | null;
+  similar: CategoryMovie[];
+  cast: {
+    id: number;
+    name: string;
+    character: string;
+    profile_path: string | null;
+  }[];
+  writers: string[];
+  directors: string[];
+}
+
+export interface MetaBrowserDetailsTvData {
+  type: "tv";
+  _id: string | null;
+  title: string | null;
+  trailer?: TMDBDetails;
+  releaseYear?: string;
+  season_ct: string | null;
+  maturityRating?: string | null;
+  description: string | null;
+  cast: {
+    id: number;
+    name: string;
+    character: string;
+    profile_path: string | null;
+  }[];
+  genres: {
+    id: number;
+    name: string;
+  }[];
+  tagLine?: string | null;
+  network: {
+    id: number;
+    name: string;
+    logo_path: string | null;
+  } | null;
+  creators: string[];
+}
+
+export type MetaBrowserDetailsData =
+  | MetaBrowserDetailsMovieData
+  | MetaBrowserDetailsTvData;
 
 export interface ProductionCompany {
   id: number;

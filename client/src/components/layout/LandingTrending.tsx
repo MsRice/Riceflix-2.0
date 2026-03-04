@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 const LandingTrending = () => {
     const rowRef = useRef<HTMLDivElement|null>(null)
     const { categoriesList } = useMovie()
-
     const topTen = categoriesList?.trendingAll?.results?.slice(0,10) ?? []
     const [isStart , setIsStart] = useState(true)
     const [isEnd , setIsEnd] = useState(false)

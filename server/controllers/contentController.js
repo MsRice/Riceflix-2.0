@@ -146,8 +146,13 @@ async function getContentDetails(req, res) {
       return res.json(content);
     }
 
+    const appendMap = {
+      movie: "videos,credits,similar,watch/providers,release_dates",
+      tv: "videos,credits,similar,watch/providers,content_ratings",
+    };
+
     const details = await fetchCategories(`${BASE_URL}/${type}/${id}`, {
-      append_to_response: "videos,credits,similar,watch/providers",
+      append_to_response: appendMap[type],
       language,
     });
 
@@ -176,6 +181,7 @@ async function getContentDetails(req, res) {
 async function getSeasonDetails(req, res) {
   try {
     const { id, seasonNumber } = req.params;
+    const { language = "en-US" } = req.query;
     const cacheKey = `tv_${id}_s${seasonNumber}`;
 
     if (!client.isOpen) await client.connect();
@@ -185,7 +191,10 @@ async function getSeasonDetails(req, res) {
 
     const seasonData = await fetchCategories(
       `${BASE_URL}/tv/${id}/season/${seasonNumber}`,
-      { language: "en-US" },
+      {
+        language,
+        append_to_response: "videos,credits",
+      },
     );
     await client.setEx(cacheKey, 604800, JSON.stringify(seasonData));
 

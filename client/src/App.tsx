@@ -46,7 +46,7 @@ const App = () => {
         </ProtectedRoute>
         }/>
 
-      <Route path="/browse/:contentId" element={
+      <Route path="/browse/:contentId/:type" element={
         <ProtectedRoute>
         <BrowserDetails />
         </ProtectedRoute>
@@ -62,7 +62,7 @@ const App = () => {
     </Routes>
     {state?.backgroundLocation && (
       <Routes>
-        <Route path="/browse/:contentId" element={<BrowserDetails />} />
+        <Route path="/browse/:contentId/:type" element={<BrowserDetails />} />
       </Routes>
     )}</>
   );
