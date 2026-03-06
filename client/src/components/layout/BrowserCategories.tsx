@@ -2,16 +2,17 @@ import { useTranslation } from "react-i18next";
 import { useMovie } from "../../contexts/movie/MovieContext";
 import CategorySection from "./CategorySection";
 import { useEffect } from "react";
-// import { useAuthentication } from "../../contexts/auth/AuthenticationContext";
+import { useAuthentication } from "../../contexts/auth/AuthenticationContext";
+
 
 const BrowserCategories = () => {
 
-     const { categoriesList , userList } = useMovie()
-    //  const { activeProfile } = useAuthentication()
+     const { categoriesList } = useMovie()
+     const { userList } = useAuthentication()
      const { t } = useTranslation()
 
     useEffect(() => {
-    console.log("userList updated:", userList)
+    console.log("userList updated:", userList?.watchlist)
     }, [userList])
     return (
         <div className="categories-section__container--wrapper">

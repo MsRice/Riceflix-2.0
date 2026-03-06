@@ -578,9 +578,7 @@ const getUserLists = async (req, res) => {
       return Promise.all(
         list
           .filter((item) => item.id && item.type)
-          .map((item) => {
-            fetchContentDetails({ id: item.id, type: item.type });
-          }),
+          .map((item) => fetchContentDetails({ id: item.id, type: item.type })),
       );
     };
 

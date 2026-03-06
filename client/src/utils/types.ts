@@ -421,9 +421,7 @@ interface TMDBDetails {
 
 export interface MovieContextType {
   categoriesList: CategoriesList | null;
-  userList: UsersList | null;
   loading: boolean;
-  getUsersList: () => Promise<void>;
   getContentDetails: (
     contentId: number,
     type: "movie" | "tv" | undefined,
@@ -554,6 +552,8 @@ export interface AuthContextType {
   updateProfile: (updateData: ProfileCredentials) => Promise<void>;
   deleteProfile: (profileId: string) => Promise<void>;
   updateProfileList: (profileData: ProfileListData) => void;
+  userList: UsersList | null;
+  getUsersList: () => Promise<void>;
 }
 
 export interface AuthenticationProviderProps {

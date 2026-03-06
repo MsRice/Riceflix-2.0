@@ -1,18 +1,18 @@
 
-import { useEffect, useState } from 'react';
-import type { AuthenticationProviderProps, CreateCredentials, Credentials, Profile, ProfileCredentials, ProfileListData, User } from '../../utils/types';
+import { useCallback, useEffect, useState } from 'react';
+import type { AuthenticationProviderProps, CreateCredentials, Credentials, Profile, ProfileCredentials, ProfileListData, User, UsersList } from '../../utils/types';
 import { AuthenticationContext } from './AuthenticationContext';
-import { useMovie } from '../movie/MovieContext';
 
 
 const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
     const [user , setUser] = useState<User | null>(null)
     const [token, setToken] = useState<string | null>(null)
     const [activeProfileId, setActiveProfileId] = useState<string | null>(null);
-     const [activeProfile, setActiveProfile] = useState<Profile | null>(null)
-     const [authLoading, setAuthLoading] = useState(true)
+    const [activeProfile, setActiveProfile] = useState<Profile | null>(null)
+    const [authLoading, setAuthLoading] = useState(true)
+    const [userList , setUserList] = useState<UsersList>({favorites: [], watchlist: [], history: []})
 
-    const { getUsersList } = useMovie()
+ 
     
   useEffect(() => {
   const storedToken = localStorage.getItem('token')
@@ -251,11 +251,40 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
     }, [])
 
 
+        const getUsersList = useCallback(async () => {
+                if (!activeProfileId) return;
+                try {
+                    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profiles/${activeProfileId}/list`,{
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                    
+                    
+                    if(!res.ok){
+                        const error = await res.json()
+                        throw new Error(error.message)
+                    }
     
+                    const data = await res.json()
+
+                    console.log('lkT', data)
+                    setUserList(data)
+    
+                } catch (error) {
+                    console.error(error)
+                }
+         },[activeProfileId ,  token])
+
+    useEffect(() => {
+
+        getUsersList()
+
+    }, [activeProfileId ,token])
     
 
     return (
-        <AuthenticationContext.Provider value={{user,  token, authLoading ,activeProfile , activeProfileId ,setActiveProfileId ,login, register, logout ,createProfile, getProfile,updateProfile, deleteProfile ,updateProfileList}}>
+        <AuthenticationContext.Provider value={{user,  token, authLoading ,activeProfile , activeProfileId ,setActiveProfileId ,login, register, logout ,createProfile, getProfile,updateProfile, deleteProfile ,updateProfileList ,userList , getUsersList}}>
             {children}
         </AuthenticationContext.Provider>
     );
