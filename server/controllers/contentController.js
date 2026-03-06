@@ -139,37 +139,8 @@ async function getContentDetails(req, res) {
     const cachedDetail = await client.get(cacheKey);
     if (cachedDetail) return res.json(JSON.parse(cachedDetail));
 
-    let content = await Content.findOne({ tmdb_id: id });
-
-    if (content) {
-      await client.setEx(cacheKey, 86400, JSON.stringify(content));
-      return res.json(content);
-    }
-
-    const appendMap = {
-      movie: "videos,credits,similar,watch/providers,release_dates",
-      tv: "videos,credits,similar,watch/providers,content_ratings",
-    };
-
-    const details = await fetchCategories(`${BASE_URL}/${type}/${id}`, {
-      append_to_response: appendMap[type],
-      language,
-    });
-
-    const textToEmbed = `${details.title || details.name}: ${details.overview}`;
-    const embedding = await getVoyageEmbedding(textToEmbed);
-
-    content = await Content.create({
-      tmdb_id: id,
-      type: type,
-      title: details.original_title || details.name,
-      description: details.overview,
-      release_date: details.release_date,
-      poster_url: details.poster_path,
-      plot_embedding: embedding,
-      raw_tmdb: details,
-    });
-
+    const content = await fetchContentDetails({ id, type, language });
+    console.log("nmc/lpn1", content);
     await client.setEx(cacheKey, 86400, JSON.stringify(content));
     res.json(content);
   } catch (error) {
@@ -178,6 +149,45 @@ async function getContentDetails(req, res) {
   }
 }
 
+async function fetchContentDetails({ id, type, language = "en-US" }) {
+  console.log("NTT", `${type}/${id}`, language);
+
+  let content = await Content.findOne({ tmdb_id: id });
+
+  // console.log("NTT", content, `${type}/${id}`);
+
+  if (content) {
+    return content;
+  }
+
+  const appendMap = {
+    movie: "videos,credits,similar,watch/providers,release_dates",
+    tv: "videos,credits,similar,watch/providers,content_ratings",
+  };
+
+  const details = await fetchCategories(`${BASE_URL}/${type}/${id}`, {
+    append_to_response: appendMap[type],
+    language,
+  });
+
+  const textToEmbed = `${details.title || details.name}: ${details.overview}`;
+  const embedding = await getVoyageEmbedding(textToEmbed);
+
+  content = await Content.create({
+    tmdb_id: id,
+    type: type,
+    title: details.original_title || details.name,
+    description: details.overview,
+    release_date: details.release_date,
+    poster_url: details.poster_path,
+    plot_embedding: embedding,
+    raw_tmdb: details,
+  });
+
+  console.log("nmc/lpn2", content);
+
+  return content;
+}
 async function getSeasonDetails(req, res) {
   try {
     const { id, seasonNumber } = req.params;
@@ -292,4 +302,5 @@ module.exports = {
   getContentDetails,
   getSeasonDetails,
   searchContent,
+  fetchContentDetails,
 };

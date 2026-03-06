@@ -4,6 +4,21 @@ const { error } = require("console");
 const { type } = require("os");
 const { Schema } = mongoose;
 
+const mediaItemSchema = new Schema(
+  {
+    id: {
+      type: Number,
+      required: true,
+    },
+    type: {
+      type: String,
+      enum: ["movie", "tv"],
+      required: true,
+    },
+  },
+  { _id: false },
+);
+
 const ProfileSchema = new Schema({
   name: {
     type: String,
@@ -24,17 +39,14 @@ const ProfileSchema = new Schema({
     default: false,
   },
   watchlist: {
-    type: [Number],
+    type: [mediaItemSchema],
     default: [],
   },
   history: {
-    type: [Number],
+    type: [mediaItemSchema],
     default: [],
   },
-  favorites: {
-    type: [Number],
-    default: [],
-  },
+  favorites: { type: [mediaItemSchema], default: [] },
 });
 
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;

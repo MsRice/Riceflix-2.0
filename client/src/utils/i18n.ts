@@ -113,6 +113,10 @@ i18n.use(initReactI18next).init({
         category_section_comedy_movies: "Comedy Movies",
         category_section_trending_tv: "Trending Tv",
 
+        category_section_favorites: "Favorites",
+        category_section_watchlist: "Watchlist",
+        category_section_history: "Continue Watching",
+
         browser_nav_link_home: "Home",
         browser_nav_link_show: "Show",
         browser_nav_link_movies: "Movies",
@@ -243,6 +247,10 @@ i18n.use(initReactI18next).init({
         category_section_action_movies: "Películas de Acción",
         category_section_comedy_movies: "Películas de Comedia",
         category_section_trending_tv: "Series en Tendencia",
+
+        category_section_favorites: "Favoritos",
+        category_section_watchlist: "Lista de seguimiento",
+        category_section_history: "Continuar viendo",
 
         browser_nav_link_home: "Inicio",
         browser_nav_link_show: "Series",

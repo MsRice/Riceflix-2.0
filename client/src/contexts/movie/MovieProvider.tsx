@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { MovieContext} from "./MovieContext";
-import type { CategoriesList, ContentDetails, MovieProviderProps } from "../../utils/types";
+import type { CategoriesList, ContentDetails, MovieProviderProps, UsersList } from "../../utils/types";
 import { useAuthentication } from "../auth/AuthenticationContext";
 
 
@@ -8,8 +8,12 @@ const MovieProvider = ({children}: MovieProviderProps) => {
 
 
     const [categoriesList , setCategoriesList] = useState<CategoriesList | null>(null)
+    const [userList , setUserList] = useState<UsersList>({favorites: [], watchlist: [], history: []})
     const [loading , setLoading] = useState(false)
-    const { token } = useAuthentication()
+    const { token , activeProfileId} = useAuthentication()
+
+    
+
     useEffect(() =>{
 
         const getCategoriesList = async() => {
@@ -33,6 +37,37 @@ const MovieProvider = ({children}: MovieProviderProps) => {
         
         getCategoriesList()
     },[])
+
+
+    
+    const getUsersList = useCallback(async () => {
+            if (!activeProfileId) return;
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profiles/${activeProfileId}/list`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                
+                
+                if(!res.ok){
+                    const error = await res.json()
+                    throw new Error(error.message)
+                }
+
+                const data = await res.json()
+                setUserList(data)
+
+            } catch (error) {
+                console.error(error)
+            }
+     },[activeProfileId ,  token])
+
+    useEffect(() => {
+
+        getUsersList()
+
+    }, [activeProfileId ,token])
     
     const getContentDetails = useCallback(
     
@@ -68,7 +103,7 @@ const MovieProvider = ({children}: MovieProviderProps) => {
     )
 
     return(
-        <MovieContext.Provider value={{categoriesList , loading , getContentDetails}}>
+        <MovieContext.Provider value={{categoriesList , userList, loading ,getUsersList, getContentDetails}}>
             {children}
         </MovieContext.Provider>
     )

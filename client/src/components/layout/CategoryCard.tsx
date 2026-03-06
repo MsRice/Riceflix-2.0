@@ -89,20 +89,20 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
             setIndexDetailed(meta)
     }
 
-    function handlePlay(contentId:number ,listName:ProfileListTypes, type: "movie" | "tv" | undefined  ){
+    function handlePlay(contentId:number ,listName:ProfileListTypes, type: "movie" | "tv"   ){
       
-        handleListUpdate(contentId ,listName)
+        handleListUpdate(contentId ,listName , type)
         navigate(`/watch/${contentId}/${type}`)
         
     }
 
-    function handleListUpdate(contentId:number ,listName:ProfileListTypes ){
+    function handleListUpdate(contentId:number ,listName:ProfileListTypes , type: "movie" | "tv" ){
         
 
      
         const profileId = activeProfile?._id || 'null'
 
-        updateProfileList({profileId, contentId , listName})
+        updateProfileList({profileId, contentId , listName , type})
 
 
     }
@@ -179,8 +179,8 @@ const CategoryCard = ({item}:{item: CategoryMovie}) => {
                 <div className="details__btns--wrapper">
                     <div className="btns--wrapper">
                         <div className="detail-btn play" onClick={() => handlePlay(item.id ,"history" , item.media_type)}><IoPlay  /></div>
-                        <div className="detail-btn" onClick={() => handleListUpdate(item.id ,"watchlist")}><FaPlus /></div>
-                        <div className="detail-btn" onClick={() => handleListUpdate(item.id ,"favorites")}><HiOutlineThumbUp  /></div>
+                        <div className="detail-btn" onClick={() => handleListUpdate(item.id ,"watchlist" , item.media_type)}><FaPlus /></div>
+                        <div className="detail-btn" onClick={() => handleListUpdate(item.id ,"favorites" , item.media_type)}><HiOutlineThumbUp  /></div>
                     </div>
                     <div>
                         <div className="detail-btn" onClick={() => handleBrowseDetails(item.id , item.media_type)}><MdOutlineKeyboardArrowDown  /></div>

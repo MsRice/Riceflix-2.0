@@ -46,7 +46,6 @@
 }
 
 .browser-details__trailer--wrapper {
-  /* border: 2px solid chartreuse; */
   height: 100%;
   width: 100%;
   border-radius: 12px 12px 0 0;
@@ -120,22 +119,125 @@
 }
 
 .browser-details__details--container {
-  height: 28vh;
+  max-height: 28vh;
   z-index: 1;
-
+  padding: 0 10px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-bottom: 22px;
 }
 
 .production_co__image--wrapper {
   background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
   border-radius: 8px;
   padding: 10px;
+
+  height: auto;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .production_co__image--wrapper img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+
+.browser-details__info--container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+}
+
+.browser-details__info--wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.browser-details__info--info {
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  gap: 10px;
+}
+
+.span-title {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: grey;
+}
+.span-list {
+  font-size: 0.8rem;
+}
+.browser-details__sub-info--container {
+  min-width: 100px;
+  width: 60%;
+
+  display: flex;
+  flex-direction: column;
+  margin: 15px 20px;
+  gap: 12px;
+}
+
+.browser-details__footer-details--container {
+  margin: 20px 30px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.browser-details__footer-details--container .span-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.browser-details__footer-details--container .span-list {
+  font-size: 1.1rem;
+  font-weight: 300;
+}
+
+.browser__more-opts--container {
+  margin: 20px 30px;
+}
+
+.browser__more-opts--wrapper {
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  gap: 20px;
+}
+
+.category__image--wrapper {
+  height: auto;
+}
+
+.category__cardImage--image {
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+}
+
+.category__card-title {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+  color: black;
+  text-shadow: 0 0 10px whitesmoke;
+  font-weight: 700;
+}
+
+.dividor {
+  border: none;
+  height: 2px;
+  border-radius: 4px;
+  background-color: #333;
+  margin: 50px 0;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

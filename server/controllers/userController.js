@@ -1,9 +1,9 @@
-{
-}
-const User = require("../models/User.js");
-
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
+import User from "../models/User.js";
+import axios from "axios";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import { list } from "voyageai/core/schemas/index.js";
+import { fetchContentDetails } from "./contentController.js";
 
 async function registration(req, res) {
   try {
@@ -387,13 +387,14 @@ async function updateWatchList(req, res) {
   try {
     const userId = req.user.id;
     const { profileId } = req.params;
-    const { contentId } = req.body;
+    const { contentId, type } = req.body;
 
     const updatedUser = await updateList(
       userId,
       profileId,
       "watchlist",
       contentId,
+      type,
     );
 
     if (!updatedUser)
@@ -411,13 +412,14 @@ async function updateFavorites(req, res) {
   try {
     const userId = req.user.id;
     const { profileId } = req.params;
-    const { contentId } = req.body;
+    const { contentId, type } = req.body;
 
     const updatedUser = await updateList(
       userId,
       profileId,
       "favorites",
       contentId,
+      type,
     );
 
     if (!updatedUser)
@@ -436,13 +438,14 @@ async function updateHistory(req, res) {
   try {
     const userId = req.user.id;
     const { profileId } = req.params;
-    const { contentId } = req.body;
+    const { contentId, type } = req.body;
 
     const updatedUser = await updateList(
       userId,
       profileId,
       "history",
       contentId,
+      type,
     );
 
     if (!updatedUser)
@@ -458,12 +461,28 @@ async function updateHistory(req, res) {
   }
 }
 
-async function updateList(userId, profileId, listName, contentId) {
-  return await User.findOneAndUpdate(
+async function updateList(userId, profileId, listName, contentId, type) {
+  console.log("updateList called:", {
+    userId,
+    profileId,
+    listName,
+    contentId,
+    type,
+  });
+
+  const updatedUser = await User.findOneAndUpdate(
     { _id: userId, "profiles._id": profileId },
-    { $addToSet: { [`profiles.$.${listName}`]: Number(contentId) } },
+    {
+      $addToSet: {
+        [`profiles.$.${listName}`]: { id: Number(contentId), type },
+      },
+    },
     { returnDocument: "after" },
   );
+
+  console.log("Updated user:", updatedUser.profiles);
+
+  return updatedUser;
 }
 
 async function deleteWatchList(req, res) {
@@ -528,7 +547,58 @@ async function deleteFromProfileList(userId, profileId, listName, contentId) {
     { returnDocument: "after" },
   );
 }
-module.exports = {
+
+const getUserLists = async (req, res) => {
+  try {
+    const { profileId } = req.params;
+
+    const user = await User.findOne({
+      "profiles._id": profileId,
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const profile = user.profiles.id(profileId);
+
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+    console.log("favorites:", profile.favorites);
+    console.log("watchlist:", profile.watchlist);
+    const lists = {
+      favorites: profile.favorites,
+      watchlist: profile.watchlist,
+      history: profile.history,
+    };
+
+    const buildList = async (list) => {
+      console.log("NT", list);
+
+      return Promise.all(
+        list
+          .filter((item) => item.id && item.type)
+          .map((item) => {
+            fetchContentDetails({ id: item.id, type: item.type });
+          }),
+      );
+    };
+
+    const resolvedLists = {
+      favorites: await buildList(lists.favorites),
+      watchlist: await buildList(lists.watchlist),
+      history: await buildList(lists.history),
+    };
+
+    console.log("TMDB Response 583>:", resolvedLists);
+
+    res.json(resolvedLists);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export {
   registration,
   login,
   getUser,
@@ -548,4 +618,5 @@ module.exports = {
   deleteWatchList,
   deleteFavorites,
   deleteHistory,
+  getUserLists,
 };

@@ -11,6 +11,7 @@ import { FaPlay, FaPlus } from 'react-icons/fa6';
 import { HiOutlineThumbUp } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
 import { RiVolumeMuteFill, RiVolumeUpFill } from 'react-icons/ri';
+import SectionTitle from '../ui/SectionTitle';
 
 const BrowserDetails = () => {
     const navigate = useNavigate();
@@ -29,17 +30,18 @@ const BrowserDetails = () => {
     };
     const { contentId , type} = useParams<Params>()
 
-    function handlePlay(contentId:number ,listName:ProfileListTypes, type: "movie" | "tv" | undefined  ){
+    function handlePlay(contentId:number ,listName:ProfileListTypes, type: "movie" | "tv" | undefined ){
         
-        handleListUpdate(contentId ,listName)
+        console.log(contentId ,listName , type)
+        handleListUpdate(contentId ,listName , type)
         navigate(`/watch/${contentId}/${type}`)
         
     }
 
-    function handleListUpdate(contentId:number ,listName:ProfileListTypes ){
+    function handleListUpdate(contentId:number ,listName:ProfileListTypes , type: "movie" | "tv" | undefined){
                 
         const profileId = activeProfile?._id || 'null'
-        updateProfileList({profileId, contentId , listName})
+        updateProfileList({profileId, contentId , listName , type})
 
     }
 
@@ -62,6 +64,22 @@ const BrowserDetails = () => {
         }
 
     };
+
+    // function handleBrowseDetails(contentId:number){
+    //     console.log(contentId ,type)
+
+
+    //     navigate(`/browse/${contentId}/${type}` , {
+    //        state: {
+    //             backgroundLocation: {
+    //             pathname: location.pathname,
+    //             search: location.search,
+    //             hash: location.hash
+    //             }
+    //         }
+    //     })
+
+    // }
 
 
     function structureDetails(data: ContentDetails | null){
@@ -102,6 +120,7 @@ const BrowserDetails = () => {
                 type: "movie" as const,
                 _id: data?._id ?? null,
                 title: data?.title ?? null,
+                contentId: movieData.id,
                 trailer,
                 releaseYear: data?.release_date?.slice(0,4),
                 runtime: formattedRuntime,
@@ -134,6 +153,7 @@ const BrowserDetails = () => {
                 type: "tv" as const,
                 _id: data?._id ?? null,
                 title: data?.title ?? null,
+                contentId: tvData.id,
                 trailer,
                 releaseYear: tvData.first_air_date?.slice(0,4),
                 season_ct: seasons ? `${seasons} Season${seasons > 1 ? "s" : ""}` : null,
@@ -142,6 +162,7 @@ const BrowserDetails = () => {
                 cast: tvData.credits.cast.slice(0,10) ?? [],
                 genres: tvData.genres,
                 tagLine: tvData.tagline,
+                similar: tvData.similar.results,
                 network: tvData.networks[0] ?? null,
                 creators: tvData.created_by.map( c => c.name)
             }
@@ -149,6 +170,17 @@ const BrowserDetails = () => {
             setBrowserDetails(structuredDetails)
         }
           
+    }
+
+    const [ moreCount , setMoreCount ] = useState(9)
+
+    function handleMore(){
+        if (moreCount === 9){
+            setMoreCount(15)
+        } else{
+            setMoreCount(9)
+
+        }
     }
 
     useEffect(() =>{
@@ -229,10 +261,10 @@ const BrowserDetails = () => {
                             </div>
                             <div className='bdTrailer__trailer--info'>
                                 <div className='bdTrailer__info--wrapper'>
-                                    <ButtonMain className='play-btn' onClick={() => handlePlay(Number(browserDetails?._id) ,"history" , type)}><FaPlay className="button-svg"/>{t("play")}</ButtonMain>
+                                    <ButtonMain className='play-btn' onClick={() => handlePlay(browserDetails?.contentId ,"history" , type)}><FaPlay className="button-svg"/>{browserDetails.type =='movie' ? `${t("play")}` : 'Next Episode'}</ButtonMain>
 
-                                    <div className='detail-btns'><button className="browser-detail-btn" onClick={() => handleListUpdate(Number(browserDetails?._id) ,"watchlist")}><FaPlus /></button></div>
-                                    <div className='detail-btns'><button className="browser-detail-btn" onClick={() => handleListUpdate(Number(browserDetails?._id) ,"favorites")}><HiOutlineThumbUp  /></button></div>
+                                    <div className='detail-btns'><button className="browser-detail-btn" onClick={() => handleListUpdate(browserDetails?.contentId ,"watchlist" ,type)}><FaPlus /></button></div>
+                                    <div className='detail-btns'><button className="browser-detail-btn" onClick={() => handleListUpdate(browserDetails?.contentId ,"favorites" ,type)}><HiOutlineThumbUp  /></button></div>
                                 </div>
                                 <div className='bdTrailer__subinfo--wrapper'>
                     
@@ -247,100 +279,188 @@ const BrowserDetails = () => {
                     </div>
                     
                     {browserDetails?.type === 'movie' &&
+                    <>
+
                     <div className='browser-details__details--container'>
-                        <div>
-                            <div>
-                                {`${browserDetails?.releaseYear}`} | {`${browserDetails?.runtime}`} | {`${browserDetails?.maturityRating}`}
-                            </div>
-                            <div>
-                                {`${browserDetails?.tagLine}`}
-                            </div>
-                            <div className='production_co__image--wrapper'>
-                                <img src={`https://image.tmdb.org/t/p/w185${browserDetails?.production_co?.logo_path}`} alt="" />
-                                
-                            </div>
-                            <div>
-                                {`${browserDetails?.description}`}
-                            </div>
-                        </div>
-                        <div>
-                            <div> Cast: {browserDetails?.cast.map(m => {
-                                return `${m.name},`
-                            }).slice(0,3)} 
-                            </div>
-                            <div> Genres: {browserDetails?.genres.map(m => {
-                                return `${m.name},`
-                            }).slice(0,3)} 
-                            </div>
-                        </div>
-                      
+                        <div className='browser-details__info--container'>
+                            <div className='browser-details__info--wrapper'>
+                                <div className='browser-details__info--info'>
 
-                    </div>
-                    }
-
-
-
-                    {browserDetails?.type === 'tv' &&
-                    <div className='browser-details__details--container'>
-                        TV:
-                        {`${browserDetails?.releaseYear}`} {/* Release Year */}
-                        {`${browserDetails?.releaseYear}`} {/* Duration */}
-
-                    </div>
-                    }
-                  
-                  {browserDetails?.type === 'movie' &&
-                    <div className="browser__more-opts--wrapper">
-                        <h2>More Like This</h2>
-                        {browserDetails.similar.map((movie) => {
-                            return (
-                                <div className="category__image--wrapper" key={movie.id}>
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-                                    className="category__cardImage--image"
-                                    alt={movie.name || movie.title}
-                                />
-
-                                <p className="category__card-title">
-                                    {movie.name || movie.title}
-                                </p>
+                                    <span className='detail-span'>{`${browserDetails?.releaseYear}  |  ${browserDetails?.runtime} | ${browserDetails?.maturityRating}`}</span>
+                                    <span className='detail-span'>{`${browserDetails?.tagLine}`}</span>
+                         
                                 </div>
-                            );
-                        })}
 
-                        <div></div>
+                                {browserDetails.production_co?.logo_path ? <div className='production_co__image--wrapper'>
+                                    <img src={`https://image.tmdb.org/t/p/w185${browserDetails?.production_co?.logo_path}`} className='production_co__image' alt="" />
+                                </div> : 
+                                <div className='production_co__image--wrapper'>
+                                    <p>{`${browserDetails.production_co?.name}`}</p>
+                                </div>
+                                }
+
+                            </div>
+
+                            <div>
+                                <span className='detail-span'>{`${browserDetails?.description}`}</span>
+                            </div>
+                        </div>
+                        <div className='browser-details__sub-info--container'>
+                            <div> <span className='detail-span span-title'>Cast:</span> <span className='span-list'> {browserDetails?.cast.map(m => {
+                                return `${m.name},`
+                            }).slice(0,3)} </span>
+                            </div>
+                            <div> <span className='detail-span span-title'>Genres:</span> <span className='span-list'> {browserDetails?.genres.map(m => {
+                                return `${m.name},`
+                            }).slice(0,3)} </span>
+                            </div>
+                        </div>
 
                     </div>
-                    }
+
+                 
+                    <div className="browser__more-opts--container">
+
+                        <h2 className="browser__more-opts--title">More Like This</h2>
+                        <div className="browser__more-opts--wrapper">
+                            {browserDetails.similar.map((movie) => {
+                                return (
+                                    <div className="category__image--wrapper" key={movie.id} onClick={() => handlePlay(movie.id , "history" , type)}>
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                                        className="category__cardImage--image"
+                                        alt={movie.name || movie.title}
+                                    />
+
+                                    <p className="category__card-title">
+                                        {movie.name || movie.title}
+                                    </p>
+                                    </div>
+                                );
+                            }).slice(0,moreCount)}
+
+
+
+                        </div>
+                            {browserDetails.similar.length > 9 &&
+                                <div className='dividor'><button onClick={handleMore}>{moreCount === 9 ? 'More': 'Less'}</button></div> 
+                            
+                            }
+                    </div>
+
+                    
                 
 
-                    {browserDetails?.type === 'movie' &&
                     <div className='browser-details__footer-details--container'>
-                        <h2>{`About ${browserDetails.title}`}</h2>
-                        <div>Director:{`${browserDetails?.directors.slice(0,5)},`}</div>
-                        <div> Cast: {browserDetails?.cast.map(m => {
-                            return `${m.name},`
-                        }).slice(0,8)} 
+                        <SectionTitle className='primary-title'>{`About ${browserDetails.title}`}</SectionTitle>
+                        <div><span className='detail-span span-title'>Director:</span> <span className='span-list'>{`${browserDetails?.directors.slice(0,5)},`}</span></div>
+                        <div> 
+                            <span className='detail-span span-title'>Cast:</span> <span className='span-list'> {browserDetails?.cast.map(m => {
+                                return `${m.name},`
+                            }).slice(0,8)} </span>
                         </div>
-                        <div> Genres: {browserDetails?.genres.map(m => {
-                            return `${m.name},`
-                        }).slice(0,5)} 
+                        <div> 
+                            <span className='detail-span span-title'>Writers:</span> <span className='span-list'> {browserDetails?.writers.slice(0,1)} </span>
                         </div>
-                        <div>Maturity Rating: {`${browserDetails?.maturityRating}`}</div>
+                        <div> <span className='detail-span span-title'>Genres:</span> <span className='span-list'> {browserDetails?.genres.map(m => {
+                                return `${m.name},`
+                            }).slice(0,5)} </span>
+                        </div>
+                        <div><span className='detail-span span-title'>Maturity Rating:</span> {`${browserDetails?.maturityRating}`}</div>
                       
 
                     </div>
-                    }
+                   </>}
+
+
 
 
 
                     {browserDetails?.type === 'tv' &&
-                    <div className='browser-details__footer-details--container'>
-                        TV:
-                        {`${browserDetails?.releaseYear}`} {/* Release Year */}
-                        {`${browserDetails?.releaseYear}`} {/* Duration */}
+                    <>
+
+                    <div className='browser-details__details--container'>
+                        <div className='browser-details__info--container'>
+                            <div className='browser-details__info--wrapper'>
+                                <div className='browser-details__info--info'>
+
+                                    <span className='detail-span'>{`${browserDetails?.releaseYear}  |  ${browserDetails?.season_ct} | ${browserDetails?.maturityRating}`}</span>
+                                    <span className='detail-span'>{`${browserDetails?.tagLine}`}</span>
+                         
+                                </div>
+
+                                { browserDetails.network?.logo_path && <div className='production_co__image--wrapper'>
+                                    <img src={`https://image.tmdb.org/t/p/w185${browserDetails?.network?.logo_path}`} className='production_co__image' alt="" />
+                                </div>}
+
+                            </div>
+
+                            <div>
+                                <span className='detail-span'>{`${browserDetails?.description}`}</span>
+                            </div>
+                        </div>
+                        <div className='browser-details__sub-info--container'>
+                            <div> <span className='detail-span span-title'>Cast:</span> <span className='span-list'> {browserDetails?.cast.map(m => {
+                                return `${m.name},`
+                            }).slice(0,3)} </span>
+                            </div>
+                            <div> <span className='detail-span span-title'>Genres:</span> <span className='span-list'> {browserDetails?.genres.map(m => {
+                                return `${m.name},`
+                            }).slice(0,3)} </span>
+                            </div>
+                        </div>
 
                     </div>
+
+                    <div className="browser__more-opts--container">
+
+                        <h2 className="browser__more-opts--title">More Like This</h2>
+                        <div className="browser__more-opts--wrapper">
+                            {browserDetails.similar.map((movie) => {
+                                return (
+                                    <div className="category__image--wrapper" key={movie.id}>
+                                    <img
+                                        src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                                        className="category__cardImage--image"
+                                        alt={movie.name || movie.title}
+                                    />
+
+                                    <p className="category__card-title">
+                                        {movie.name || movie.title}
+                                    </p>
+                                    </div>
+                                );
+                            }).slice(0,moreCount)}
+
+
+
+                        </div>
+                            {browserDetails.similar.length > 9 &&
+                                <div className='dividor'><button onClick={handleMore}>{moreCount === 9 ? 'More': 'Less'}</button></div> 
+                            
+                            }
+                    </div>
+
+                    <div className='browser-details__footer-details--container'>
+                        <SectionTitle className='primary-title'>{`About ${browserDetails.title}`}</SectionTitle>
+                        <div><span className='detail-span span-title'>Creators:</span> <span className='span-list'>{`${browserDetails?.creators.slice(0,5)},`}</span></div>
+                        <div> 
+                            <span className='detail-span span-title'>Cast:</span> <span className='span-list'> {browserDetails?.cast.map(m => {
+                                return `${m.name},`
+                            }).slice(0,8)} </span>
+                        </div>
+                        <div> <span className='detail-span span-title'>Genres:</span> <span className='span-list'> {browserDetails?.genres.map(m => {
+                                return `${m.name},`
+                            }).slice(0,5)} </span>
+                        </div>
+                        <div><span className='detail-span span-title'>Maturity Rating:</span> {`${browserDetails?.maturityRating}`}</div>
+                      
+
+                    </div>
+                   
+
+
+                    </>
                     }
                 </div>
 

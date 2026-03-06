@@ -50,4 +50,5 @@ router.delete(
   userController.deleteHistory,
 );
 
+router.get("/profiles/:profileId/list", auth, userController.getUserLists);
 module.exports = router;

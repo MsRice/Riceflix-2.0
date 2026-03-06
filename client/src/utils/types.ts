@@ -339,6 +339,7 @@ export interface MetaBrowserDetailsMovieData {
   type: "movie";
   _id: string | null;
   title: string | null;
+  contentId: number;
   trailer?: TMDBDetails;
   releaseYear?: string;
   runtime?: string;
@@ -369,6 +370,7 @@ export interface MetaBrowserDetailsTvData {
   type: "tv";
   _id: string | null;
   title: string | null;
+  contentId: number;
   trailer?: TMDBDetails;
   releaseYear?: string;
   season_ct: string | null;
@@ -384,6 +386,7 @@ export interface MetaBrowserDetailsTvData {
     id: number;
     name: string;
   }[];
+  similar: CategoryMovie[];
   tagLine?: string | null;
   network: {
     id: number;
@@ -418,7 +421,9 @@ interface TMDBDetails {
 
 export interface MovieContextType {
   categoriesList: CategoriesList | null;
+  userList: UsersList | null;
   loading: boolean;
+  getUsersList: () => Promise<void>;
   getContentDetails: (
     contentId: number,
     type: "movie" | "tv" | undefined,
@@ -444,7 +449,7 @@ export interface CategoryMovie {
 
   overview?: string;
   poster_path?: string | null;
-  media_type?: "movie" | "tv";
+  media_type: "movie" | "tv";
 
   genre_ids?: number[];
   popularity?: number;
@@ -468,6 +473,11 @@ export interface MovieCategory {
   total_results: number;
 }
 
+export interface UsersList {
+  favorites: MovieCategory[];
+  watchlist: MovieCategory[];
+  history: MovieCategory[];
+}
 export interface CategoriesList {
   trendingAll: MovieCategory;
   trendingMovies: MovieCategory;
@@ -526,6 +536,7 @@ export interface ProfileListData {
   profileId: string;
   contentId: number;
   listName: ProfileListTypes;
+  type: "movie" | "tv" | undefined;
 }
 
 export interface AuthContextType {

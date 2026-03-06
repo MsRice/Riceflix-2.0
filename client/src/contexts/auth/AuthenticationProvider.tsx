@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import type { AuthenticationProviderProps, CreateCredentials, Credentials, Profile, ProfileCredentials, ProfileListData, User } from '../../utils/types';
 import { AuthenticationContext } from './AuthenticationContext';
+import { useMovie } from '../movie/MovieContext';
 
 
 const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
@@ -11,7 +12,7 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
      const [activeProfile, setActiveProfile] = useState<Profile | null>(null)
      const [authLoading, setAuthLoading] = useState(true)
 
-    
+    const { getUsersList } = useMovie()
     
   useEffect(() => {
   const storedToken = localStorage.getItem('token')
@@ -120,6 +121,7 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
 
     
     const getProfile = async (profileId: string):Promise<void> => {
+        setActiveProfileId(profileId);
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/user/profile?id=${profileId}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" ,  Authorization: `Bearer ${token}`},
@@ -199,12 +201,20 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
 
 
 
-       const updateProfileList = async ({profileId , contentId , listName}: ProfileListData) => {
+       const updateProfileList = async ({profileId , contentId , listName ,type}: ProfileListData) => {
+
+        console.log("updateProfileList payload:", {
+            profileId,
+            contentId,
+            listName,
+            type
+            });
+
         if(!user || !token) return
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profiles/${profileId}/${listName}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" , Authorization: `Bearer ${token}` },
-            body: JSON.stringify({contentId})
+            body: JSON.stringify({contentId , type})
         });
          if (!res.ok) {
             const error = await res.json()
@@ -217,16 +227,21 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
         setUser((prev) => {
             if (!prev) return prev;
 
+            const updatedProfiles = prev.profiles.map((profile) =>
+                profile._id === updatedProfile._id ? updatedProfile : profile
+            );
+
             return {
             ...prev,
-            profiles: prev.profiles.map((profile) =>
-                profile._id === updatedProfile._id
-                ? updatedProfile
-                : profile
-            ),
+            profiles: updatedProfiles
 
             }
-        })}
+        })
+        setActiveProfile((prev) =>
+            prev && prev._id === updatedProfile._id ? updatedProfile : prev
+        );
+        getUsersList()
+    }
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token")
