@@ -1,3 +1,4 @@
+/// <reference types="youtube" />
 import { useNavigate, useParams } from "react-router-dom";
 import { useLanguage } from "../../contexts/lang/LanguageContext";
 import React, { useEffect, useRef, useState } from "react";
@@ -5,7 +6,6 @@ import type { ContentDetails } from "../../utils/types";
 import { useMovie } from "../../contexts/movie/MovieContext";
 import YouTube from "react-youtube";
 import type { YouTubeProps } from "react-youtube";
-import type { YT } from "youtube"
 
 
 import { FaPlay , FaPause } from "react-icons/fa6";
