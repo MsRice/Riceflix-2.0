@@ -3,7 +3,7 @@ const { VoyageAIClient } = require("voyageai");
 
 const redis = require("redis");
 const Content = require("../models/Content");
-const client = redis.createClient();
+const client = redis.createClient({ url: process.env.REDIS_URL });
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const DISC_URL = "https://api.themoviedb.org/3/discover/movie";
