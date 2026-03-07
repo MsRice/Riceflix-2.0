@@ -12,6 +12,7 @@ import { HiOutlineThumbUp } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
 import { RiVolumeMuteFill, RiVolumeUpFill } from 'react-icons/ri';
 import SectionTitle from '../ui/SectionTitle';
+import { IoIosArrowUp ,  IoIosArrowDown } from "react-icons/io";
 
 const BrowserDetails = () => {
     const navigate = useNavigate();
@@ -32,7 +33,6 @@ const BrowserDetails = () => {
 
     function handlePlay(contentId:number ,listName:ProfileListTypes, type: "movie" | "tv" | undefined ){
         
-        console.log(contentId ,listName , type)
         handleListUpdate(contentId ,listName , type)
         navigate(`/watch/${contentId}/${type}`)
         
@@ -83,7 +83,6 @@ const BrowserDetails = () => {
 
 
     function structureDetails(data: ContentDetails | null){
-        console.log('sdb4polin and their polin haired baby' , data)
 
         const trailer = data?.raw_tmdb?.videos?.results
             ?.find(
@@ -221,7 +220,6 @@ const BrowserDetails = () => {
     },[navigate])
 
 
-    console.log('sdb4polin' , browserDetails)
     return (
         <div className='modal--wrapper'>
             <div className="modal--container" ref={containerRef} onClick={(e) => e.stopPropagation()}>
@@ -343,7 +341,7 @@ const BrowserDetails = () => {
 
                         </div>
                             {browserDetails.similar.length > 9 &&
-                                <div className='dividor'><button onClick={handleMore}>{moreCount === 9 ? 'More': 'Less'}</button></div> 
+                                <div className='dividor'><button onClick={handleMore}>{moreCount === 9 ? <IoIosArrowDown />: <IoIosArrowUp />}</button></div> 
                             
                             }
                     </div>
@@ -418,7 +416,7 @@ const BrowserDetails = () => {
                         <div className="browser__more-opts--wrapper">
                             {browserDetails.similar.map((movie) => {
                                 return (
-                                    <div className="category__image--wrapper" key={movie.id}>
+                                    <div className="category__image--wrapper" key={movie.id} onClick={() => handlePlay(movie.id , "history" , type)}>
                                     <img
                                         src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
                                         className="category__cardImage--image"

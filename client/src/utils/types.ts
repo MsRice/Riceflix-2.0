@@ -463,6 +463,10 @@ export interface CategorySectionProps {
   children: ReactNode;
   sectionResults?: MovieCategory;
 }
+export interface CategoryListSectionProps {
+  children: ReactNode;
+  sectionResults?: ContentDetails[];
+}
 
 export interface MovieCategory {
   page: number;
@@ -472,9 +476,9 @@ export interface MovieCategory {
 }
 
 export interface UsersList {
-  favorites: MovieCategory[];
-  watchlist: MovieCategory[];
-  history: MovieCategory[];
+  favorites: ContentDetails[];
+  watchlist: ContentDetails[];
+  history: ContentDetails[];
 }
 export interface CategoriesList {
   trendingAll: MovieCategory;

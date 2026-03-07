@@ -1,20 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMovie } from "../../contexts/movie/MovieContext";
 import { useLanguage } from "../../contexts/lang/LanguageContext";
-import type { ContentDetails, HomeProps } from "../../utils/types";
+import type { ContentDetails, HomeProps, ProfileListTypes } from "../../utils/types";
 import YouTube from "react-youtube";
 import ButtonMain from "../ui/ButtonMain";
 import { FaPlay } from "react-icons/fa6";
 import { CiCircleInfo } from "react-icons/ci";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useAuthentication } from "../../contexts/auth/AuthenticationContext";
 
 
 const BrowserBanner = ({isDetailsOopen}: HomeProps ) => {
     const { t } = useTranslation()
     const { categoriesList , getContentDetails } = useMovie()
     const { language } = useLanguage()
+    const { updateProfileList , activeProfile} = useAuthentication()
     const[ bannerDetails , setBannerDetails ] = useState<ContentDetails | null>()
     const [videoEnded, setVideoEnded] =useState(false)
+    const navigate = useNavigate()
 
     function hashStringToIndex(str: string, mod: number) {
         let h = 0;
@@ -60,6 +64,31 @@ const BrowserBanner = ({isDetailsOopen}: HomeProps ) => {
                  el.name?.includes(keyword)
                 ))
 
+                    function handlePlay(contentId:number ,listName:ProfileListTypes, type: "movie" | "tv" | undefined  ){
+                      
+                        handleListUpdate(contentId ,listName , type)
+                        navigate(`/watch/${contentId}/${type}`)
+                        
+                    }
+                
+                    function handleListUpdate(contentId:number ,listName:ProfileListTypes , type: "movie" | "tv" | undefined ){
+                        
+                
+                     
+                        const profileId = activeProfile?._id || 'null'
+                
+                        updateProfileList({profileId, contentId , listName , type})
+                
+                
+                    }
+                    
+                    function handleBrowseDetails(contentId:number , type: "movie" | "tv"  ){
+                    
+                        navigate(`/browse/${contentId}/${type}` , {
+                            state: {backgroundLocation: location}
+                        })
+                
+                    }
 
     return (
         <div className="browser-banner__container--wrapper">
@@ -106,8 +135,8 @@ const BrowserBanner = ({isDetailsOopen}: HomeProps ) => {
                 <h1 className="browser-banner--title">{bannerDetails?.title}</h1>
                 <p className="browser-banner--description">{bannerDetails?.description}</p>
                 <div className="banner__buttons">
-                    <ButtonMain className="play-btn"><FaPlay className="button-svg"/>{t("play")}</ButtonMain>
-                    <ButtonMain className="info-btn"><CiCircleInfo className="button-svg"/>{t("more_info")}</ButtonMain>
+                    <ButtonMain className="play-btn" onClick={() => handlePlay(Number(bannerDetails?.raw_tmdb?.id) ,"history" , bannerDetails?.type)}><FaPlay className="button-svg"/>{t("play")}</ButtonMain>
+                    <ButtonMain className="info-btn" onClick={() => handleBrowseDetails(Number(bannerDetails?.raw_tmdb?.id), bannerDetails!.type!)}><CiCircleInfo className="button-svg"/>{t("more_info")}</ButtonMain>
                 </div>
             </div>
         </div>

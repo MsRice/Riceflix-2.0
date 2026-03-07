@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { list } from "voyageai/core/schemas/index.js";
 import { fetchContentDetails } from "./contentController.js";
+import { type } from "os";
 
 async function registration(req, res) {
   try {
@@ -33,7 +34,7 @@ async function registration(req, res) {
     };
 
     const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "15m",
+      expiresIn: "1hr",
     });
 
     const refreshToken = jwt.sign(payload, process.env.REFRESH_SECRET, {
@@ -88,7 +89,7 @@ async function login(req, res) {
     };
 
     const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "15m",
+      expiresIn: "1hr",
     });
 
     const refreshToken = jwt.sign(payload, process.env.REFRESH_SECRET, {
@@ -462,14 +463,6 @@ async function updateHistory(req, res) {
 }
 
 async function updateList(userId, profileId, listName, contentId, type) {
-  console.log("updateList called:", {
-    userId,
-    profileId,
-    listName,
-    contentId,
-    type,
-  });
-
   const updatedUser = await User.findOneAndUpdate(
     { _id: userId, "profiles._id": profileId },
     {
@@ -479,8 +472,6 @@ async function updateList(userId, profileId, listName, contentId, type) {
     },
     { returnDocument: "after" },
   );
-
-  console.log("Updated user:", updatedUser.profiles);
 
   return updatedUser;
 }
@@ -564,8 +555,7 @@ const getUserLists = async (req, res) => {
     if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }
-    console.log("favorites:", profile.favorites);
-    console.log("watchlist:", profile.watchlist);
+
     const lists = {
       favorites: profile.favorites,
       watchlist: profile.watchlist,
@@ -573,12 +563,20 @@ const getUserLists = async (req, res) => {
     };
 
     const buildList = async (list) => {
-      console.log("NT", list);
-
       return Promise.all(
         list
           .filter((item) => item.id && item.type)
-          .map((item) => fetchContentDetails({ id: item.id, type: item.type })),
+          .map(async (item) => {
+            const content = await fetchContentDetails({
+              id: item.id,
+              type: item.type,
+            });
+
+            return {
+              ...content.toObject(),
+              type: item.type,
+            };
+          }),
       );
     };
 
@@ -587,8 +585,6 @@ const getUserLists = async (req, res) => {
       watchlist: await buildList(lists.watchlist),
       history: await buildList(lists.history),
     };
-
-    console.log("TMDB Response 583>:", resolvedLists);
 
     res.json(resolvedLists);
   } catch (error) {

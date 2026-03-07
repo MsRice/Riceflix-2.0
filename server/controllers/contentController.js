@@ -140,7 +140,7 @@ async function getContentDetails(req, res) {
     if (cachedDetail) return res.json(JSON.parse(cachedDetail));
 
     const content = await fetchContentDetails({ id, type, language });
-    console.log("nmc/lpn1", content);
+
     await client.setEx(cacheKey, 86400, JSON.stringify(content));
     res.json(content);
   } catch (error) {
@@ -150,11 +150,7 @@ async function getContentDetails(req, res) {
 }
 
 async function fetchContentDetails({ id, type, language = "en-US" }) {
-  console.log("NTT", `${type}/${id}`, language);
-
   let content = await Content.findOne({ tmdb_id: id });
-
-  // console.log("NTT", content, `${type}/${id}`);
 
   if (content) {
     return content;
@@ -175,7 +171,7 @@ async function fetchContentDetails({ id, type, language = "en-US" }) {
 
   content = await Content.create({
     tmdb_id: id,
-    type: type,
+    content_type: type,
     title: details.original_title || details.name,
     description: details.overview,
     release_date: details.release_date,
@@ -184,10 +180,9 @@ async function fetchContentDetails({ id, type, language = "en-US" }) {
     raw_tmdb: details,
   });
 
-  console.log("nmc/lpn2", content);
-
   return content;
 }
+
 async function getSeasonDetails(req, res) {
   try {
     const { id, seasonNumber } = req.params;

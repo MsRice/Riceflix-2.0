@@ -29,6 +29,11 @@ const ContentSchema = new Schema(
       type: Schema.Types.Mixed,
       default: {},
     },
+    content_type: {
+      type: String,
+      enum: ["movie", "tv"],
+      required: true,
+    },
   },
   {
     discriminatorKey: "content_type",

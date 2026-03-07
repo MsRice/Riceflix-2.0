@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import riceflix_logo  from '../../assets/images/Riceflix_Logos/Riceflix logo.png'
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { FaRegBell, FaRegUser } from "react-icons/fa6";
 import user_smile from '../../assets/images/Netflix_assets/user_smile.png'
@@ -19,6 +19,7 @@ const BrowserNavbar = () => {
 
     const [ openLangMenu , setOpenLangMenu ] = useState(false)
     const menuRef = useRef<HTMLDivElement>(null)
+    const navigate = useNavigate()
 
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -55,18 +56,18 @@ const BrowserNavbar = () => {
             <div className='navigation-title--wrapper'>
                 <Link to={'/'}><img className='navigation-logo' src={riceflix_logo} alt="Riceflix Logo" /></Link>
                 <ul className='browser-nav__links'>
-                    <li>{t("browser_nav_link_home")}</li>
-                    <li>{t("browser_nav_link_show")}</li>
-                    <li>{t("browser_nav_link_movies")}</li>
-                    <li>{t("browser_nav_link_games")}</li>
-                    <li>{t("browser_nav_link_new_popular")}</li>
-                    <li>{t("browser_nav_link_my_list")}</li>
-                    <li>{t("browser_nav_link_browse_by")}</li>
+                    <li onClick={() => navigate('/browse')}>{t("browser_nav_link_home")}</li>
+                    <li className='dev-feature'>{t("browser_nav_link_show")}</li>
+                    <li className='dev-feature'>{t("browser_nav_link_movies")}</li>
+                    <li className='dev-feature'>{t("browser_nav_link_games")}</li>
+                    <li className='dev-feature'>{t("browser_nav_link_new_popular")}</li>
+                    <li className='dev-feature'>{t("browser_nav_link_my_list")}</li>
+                    <li className='dev-feature'>{t("browser_nav_link_browse_by")}</li>
                 </ul>    
             </div>
             <div className='navigation--nav'>
-                <div><HiMiniMagnifyingGlass /></div>
-                <div>Kids</div>
+                <div className='dev-feature'><HiMiniMagnifyingGlass /></div>
+                <div className='dev-feature'>{t("kids")}</div>
                 <div><FaRegBell /></div>
                 <div className='browser-navigation-dropdown--wrapper'>
                     <div className='browser-navigation'>

@@ -203,13 +203,6 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
 
        const updateProfileList = async ({profileId , contentId , listName ,type}: ProfileListData) => {
 
-        console.log("updateProfileList payload:", {
-            profileId,
-            contentId,
-            listName,
-            type
-            });
-
         if(!user || !token) return
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profiles/${profileId}/${listName}`, {
             method: "POST",
@@ -268,7 +261,6 @@ const AuthenticationProvider = ({children}: AuthenticationProviderProps) => {
     
                     const data = await res.json()
 
-                    console.log('lkT', data)
                     setUserList(data)
     
                 } catch (error) {

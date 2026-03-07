@@ -142,16 +142,16 @@ function togglePass(){
                 </div>
                 <div className="footer__links--wrapper">
                     <ul className="footer__links">
-                        <li><a href="#">{t("footer_link_1")}</a></li>
-                        <li><a href="#">{t("footer_link_4")}</a></li>
-                        <li><a href="#">{t("footer_link_6")}</a></li>
-                        <li><a href="#">{t("footer_link_7")}</a></li>
-                        <li><a href="#">{t("footer_link_10")}</a></li>
-                        <li><a href="#">{t("footer_link_15")}</a></li>
-                        <li><a href="#">{t("footer_link_17")}</a></li>
-                        <li><a href="#">{t("footer_link_18")}</a></li>
-                        <li><a href="#">{t("footer_link_19")}</a></li>
-                        <li><a href="#">{t("footer_link_21")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_1")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_4")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_6")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_7")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_10")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_15")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_17")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_18")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_19")}</a></li>
+                        <li className="dev-feature"><a href="#">{t("footer_link_21")}</a></li>
                     </ul>
 
                 </div>

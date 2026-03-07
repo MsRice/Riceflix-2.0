@@ -41,14 +41,26 @@ li {
   background-color: #141414;
   background-color: none;
 }
-.space {
-  background-color: transparent;
-  height: 20dvh;
-  border: 10px solid seagreen;
-  margin: 10px 0;
+
+.dev-feature {
+  position: relative;
+  cursor: not-allowed;
+}
+
+.dev-feature::after {
+  content: "In Development";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: fuchsia;
-  font-size: 2rem;
+  opacity: 0;
+  font-size: 0.8rem;
+  transition: opacity 0.2s;
+}
+
+.dev-feature:hover::after {
+  opacity: 1;
 }

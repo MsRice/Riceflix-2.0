@@ -129,6 +129,8 @@ i18n.use(initReactI18next).init({
         browser_dropdown_opt_transfer_profiles: "Transfer Profile",
         browser_dropdown_opt_account: "Account",
         browser_dropdown_opt_help_center: "Help Center",
+
+        kids: "Kids",
       },
     },
     es: {
@@ -264,6 +266,7 @@ i18n.use(initReactI18next).init({
         browser_dropdown_opt_transfer_profiles: "Transferir Perfil",
         browser_dropdown_opt_account: "Cuenta",
         browser_dropdown_opt_help_center: "Centro de Ayuda",
+        kids: "Niños",
       },
     },
   },
