@@ -24,7 +24,7 @@ const LandingTrending = () => {
             behavior: "smooth"
         })
     }
-
+    console.log("hello_DB4p")
     useEffect(() => {
         const row = rowRef.current;
         if (!row) return;

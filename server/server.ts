@@ -11,7 +11,13 @@ const PORT = Number(process.env.PORT) || 5000;
 connectDB();
 
 // Middleware
-app.use(cors({ origin: process.env.FRONT_URL_PORT }));
+
+const allowedOrigins = [
+  process.env.FRONT_URL_PORT, //live
+  "http://localhost:5173", // Dev default
+  "http://localhost:5174", //Dev port
+];
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

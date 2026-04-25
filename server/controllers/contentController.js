@@ -14,6 +14,7 @@ async function fetchCategories(url, parameters) {
     method: "GET",
     url: url,
     params: parameters,
+    timeout: 5000,
     headers: {
       accept: "application/json",
       Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
@@ -31,64 +32,63 @@ async function getWall(req, res) {
     if (cachedData) {
       return res.json(JSON.parse(cachedData));
     }
-    const [
-      trendingAll,
-      trendingTV,
-      topRatedMovies,
-      actionMovies,
-      comdeyMovies,
-      horrorMovies,
-      romanceMovies,
-      documentaries,
-    ] = await Promise.all([
-      fetchCategories(`${BASE_URL}/trending/all/week`, {
+    const trendingAll = await fetchCategories(`${BASE_URL}/trending/all/week`, {
+      language: "en-US",
+      page: "1",
+    });
+
+    const trendingTV = await fetchCategories(`${BASE_URL}/trending/tv/day`, {
+      language: "en-US",
+      page: "1",
+    });
+
+    const topRatedMovies = await fetchCategories(
+      `${BASE_URL}/movie/top_rated`,
+      {
         language: "en-US",
         page: "1",
-      }),
-      fetchCategories(`${BASE_URL}/trending/tv/day`, {
-        language: "en-US",
-        page: "1",
-      }),
-      fetchCategories("https://api.themoviedb.org/3/movie/top_rated", {
-        language: "en-US",
-        page: "1",
-      }),
-      fetchCategories(DISC_URL, {
-        include_adult: "false",
-        include_video: "true",
-        language: "en-US",
-        sort_by: "popularity.desc",
-        with_genres: 28,
-      }),
-      fetchCategories(DISC_URL, {
-        include_adult: "false",
-        include_video: "true",
-        language: "en-US",
-        sort_by: "popularity.desc",
-        with_genres: 35,
-      }),
-      fetchCategories(DISC_URL, {
-        include_adult: "false",
-        include_video: "true",
-        language: "en-US",
-        sort_by: "popularity.desc",
-        with_genres: 27,
-      }),
-      fetchCategories(DISC_URL, {
-        include_adult: "false",
-        include_video: "true",
-        language: "en-US",
-        sort_by: "popularity.desc",
-        with_genres: 10749,
-      }),
-      fetchCategories(DISC_URL, {
-        include_adult: "false",
-        include_video: "true",
-        language: "en-US",
-        sort_by: "popularity.desc",
-        with_genres: 99,
-      }),
-    ]);
+      },
+    );
+
+    const actionMovies = await fetchCategories(DISC_URL, {
+      include_adult: "false",
+      include_video: "true",
+      language: "en-US",
+      sort_by: "popularity.desc",
+      with_genres: 28,
+    });
+
+    const comdeyMovies = await fetchCategories(DISC_URL, {
+      include_adult: "false",
+      include_video: "true",
+      language: "en-US",
+      sort_by: "popularity.desc",
+      with_genres: 35,
+    });
+
+    const horrorMovies = await fetchCategories(DISC_URL, {
+      include_adult: "false",
+      include_video: "true",
+      language: "en-US",
+      sort_by: "popularity.desc",
+      with_genres: 27,
+    });
+
+    const romanceMovies = await fetchCategories(DISC_URL, {
+      include_adult: "false",
+      include_video: "true",
+      language: "en-US",
+      sort_by: "popularity.desc",
+      with_genres: 10749,
+    });
+
+    const documentaries = await fetchCategories(DISC_URL, {
+      include_adult: "false",
+      include_video: "true",
+      language: "en-US",
+      sort_by: "popularity.desc",
+      with_genres: 99,
+    });
     const categories = {
       trendingAll: normalizeCategory(trendingAll),
       trendingTV: normalizeCategory(trendingTV, "tv"),
