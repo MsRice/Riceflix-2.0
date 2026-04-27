@@ -3,7 +3,7 @@ const { VoyageAIClient } = require("voyageai");
 
 const Content = require("../models/Content");
 
-const redis = require("redis");
+const { createClient } = require("redis");
 let client = null;
 const useRedis = !!process.env.REDIS_URL;
 
@@ -19,14 +19,16 @@ if (useRedis) {
     console.error("Redis error:", err.message);
   });
 
-  try {
-    await tempClient.connect();
-    console.log("✅ Redis connected");
-    client = tempClient; // only assign if successful
-  } catch (err) {
-    console.error("❌ Redis failed, continuing without cache");
-    client = null;
-  }
+  (async () => {
+    try {
+      await tempClient.connect();
+      console.log("✅ Redis connected");
+      client = tempClient; // only assign if successful
+    } catch (err) {
+      console.error("❌ Redis failed, continuing without cache");
+      client = null;
+    }
+  })();
 }
 
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -167,7 +169,7 @@ async function getContentDetails(req, res) {
     let cachedDetail = null;
 
     if (client) {
-      cachedDetail = await client.get(CACHE_KEY);
+      cachedDetail = await client.get(cacheKey);
     }
 
     if (cachedDetail) return res.json(JSON.parse(cachedDetail));
@@ -224,10 +226,10 @@ async function getSeasonDetails(req, res) {
     const { language = "en-US" } = req.query;
     const cacheKey = `tv_${id}_s${seasonNumber}`;
 
-    let conscachedSeason = null;
+    let cachedSeason = null;
 
     if (client) {
-      conscachedSeason = await client.get(CACHE_KEY);
+      cachedSeason = await client.get(CACHE_KEY);
     }
 
     if (cachedSeason) return res.json(JSON.parse(cachedSeason));
@@ -264,12 +266,12 @@ async function searchContent(req, res) {
     let cachedResults = null;
 
     if (client) {
-      const cachedResults = await client.get(cacheKey);
+      cachedResults = await client.get(cacheKey);
     }
 
     if (cachedResults) return res.json(JSON.parse(cachedResults));
 
-    const data = await fecthCategories(`${BASE_URL}/search/multi`, {
+    const data = await fetchCategories(`${BASE_URL}/search/multi`, {
       query: normalizedQuery,
       include_adult: false,
       language: "en-US",
