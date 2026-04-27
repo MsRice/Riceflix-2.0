@@ -8,18 +8,25 @@ let client = null;
 const useRedis = !!process.env.REDIS_URL;
 
 if (useRedis) {
-  client = redis.createClient({ url: process.env.REDIS_URL });
-
-  client.on("error", (err) => {
-    console.error("Redis error", err.message);
+  const tempClient = createClient({
+    url: process.env.REDIS_URL,
+    socket: {
+      reconnectStrategy: false,
+    },
   });
-  client
-    .connect()
-    .then(() => console.log("✅ Redis connected"))
-    .catch((err) => {
-      console.error("❌ Redis failed, continuing without cache");
-      client = null;
-    });
+
+  tempClient.on("error", (err) => {
+    console.error("Redis error:", err.message);
+  });
+
+  try {
+    await tempClient.connect();
+    console.log("✅ Redis connected");
+    client = tempClient; // only assign if successful
+  } catch (err) {
+    console.error("❌ Redis failed, continuing without cache");
+    client = null;
+  }
 }
 
 const BASE_URL = "https://api.themoviedb.org/3";
