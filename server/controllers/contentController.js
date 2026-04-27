@@ -1,9 +1,26 @@
 const axios = require("axios");
 const { VoyageAIClient } = require("voyageai");
 
-const redis = require("redis");
 const Content = require("../models/Content");
-const client = redis.createClient({ url: process.env.REDIS_URL });
+
+const redis = require("redis");
+let client = null;
+const useRedis = !!process.env.REDIS_URL;
+
+if (useRedis) {
+  client = redis.createClient({ url: process.env.REDIS_URL });
+
+  client.on("error", (err) => {
+    console.error("Redis error", err.message);
+  });
+  client
+    .connect()
+    .then(() => console.log("✅ Redis connected"))
+    .catch((err) => {
+      console.error("❌ Redis failed, continuing without cache");
+      client = null;
+    });
+}
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const DISC_URL = "https://api.themoviedb.org/3/discover/movie";
@@ -26,9 +43,12 @@ async function fetchCategories(url, parameters) {
 
 async function getWall(req, res) {
   try {
-    if (!client.isOpen) await client.connect();
+    let cachedData = null;
 
-    const cachedData = await client.get(CACHE_KEY);
+    if (client) {
+      cachedData = await client.get(CACHE_KEY);
+    }
+
     if (cachedData) {
       return res.json(JSON.parse(cachedData));
     }
@@ -99,7 +119,10 @@ async function getWall(req, res) {
       romanceMovies: normalizeCategory(romanceMovies, "movie"),
       documentaries: normalizeCategory(documentaries, "movie"),
     };
-    await client.setEx(CACHE_KEY, 14400, JSON.stringify(categories));
+
+    if (client) {
+      await client.setEx(CACHE_KEY, 14400, JSON.stringify(categories));
+    }
     res.json(categories);
   } catch (error) {
     console.error("Wall Error:", error);
@@ -134,14 +157,19 @@ async function getContentDetails(req, res) {
   const cacheKey = `content_${type}_${id}_${language}`;
 
   try {
-    if (!client.isOpen) await client.connect();
+    let cachedDetail = null;
 
-    const cachedDetail = await client.get(cacheKey);
+    if (client) {
+      cachedDetail = await client.get(CACHE_KEY);
+    }
+
     if (cachedDetail) return res.json(JSON.parse(cachedDetail));
 
     const content = await fetchContentDetails({ id, type, language });
 
-    await client.setEx(cacheKey, 86400, JSON.stringify(content));
+    if (client) {
+      await client.setEx(cacheKey, 86400, JSON.stringify(content));
+    }
     res.json(content);
   } catch (error) {
     console.error("CONTENT CONTROLLER ERROR:", error);
@@ -189,9 +217,12 @@ async function getSeasonDetails(req, res) {
     const { language = "en-US" } = req.query;
     const cacheKey = `tv_${id}_s${seasonNumber}`;
 
-    if (!client.isOpen) await client.connect();
+    let conscachedSeason = null;
 
-    const cachedSeason = await client.get(cacheKey);
+    if (client) {
+      conscachedSeason = await client.get(CACHE_KEY);
+    }
+
     if (cachedSeason) return res.json(JSON.parse(cachedSeason));
 
     const seasonData = await fetchCategories(
@@ -201,8 +232,10 @@ async function getSeasonDetails(req, res) {
         append_to_response: "videos,credits",
       },
     );
-    await client.setEx(cacheKey, 604800, JSON.stringify(seasonData));
 
+    if (client) {
+      await client.setEx(cacheKey, 604800, JSON.stringify(seasonData));
+    }
     res.json(seasonData);
   } catch (error) {
     console.error(error);
@@ -221,9 +254,12 @@ async function searchContent(req, res) {
     const normalizedQuery = query.toLowerCase().trim();
     const cacheKey = `search_${normalizedQuery}`;
 
-    if (!client.isOpen) await client.connect();
+    let cachedResults = null;
 
-    const cachedResults = await client.get(cacheKey);
+    if (client) {
+      const cachedResults = await client.get(cacheKey);
+    }
+
     if (cachedResults) return res.json(JSON.parse(cachedResults));
 
     const data = await fecthCategories(`${BASE_URL}/search/multi`, {
@@ -236,8 +272,9 @@ async function searchContent(req, res) {
     const filteredResults = data.results.filter(
       (item) => item.poster_path || item.profile_path,
     );
-
-    await client.setEx(cacheKey, 86400, JSON.stringify(filteredResults));
+    if (client) {
+      await client.setEx(cacheKey, 86400, JSON.stringify(filteredResults));
+    }
 
     res.json(filteredResults);
   } catch (error) {
